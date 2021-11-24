@@ -5,9 +5,7 @@
  */
 package programmablecalculator.complexnumberoperations;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.Locale;
+
 import org.apache.commons.math3.complex.*;
 import org.junit.After;
 import org.junit.AfterClass;

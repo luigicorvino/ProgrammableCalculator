@@ -5,7 +5,9 @@
  */
 package programmablecalculator.numbersstack;
 
+import java.util.NoSuchElementException;
 import org.apache.commons.math3.complex.Complex;
+import org.apache.commons.math3.complex.ComplexFormat;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -23,6 +25,7 @@ import static org.junit.Assert.*;
  */
 public class NumbersStackTest {
     public NumbersStack stack;
+    private ComplexFormat format=new ComplexFormat();
     public NumbersStackTest() {
     }
     @Before
@@ -44,8 +47,17 @@ public class NumbersStackTest {
         assertTrue(stack.contains(c2));
     }
     
+    @Test(expected=NoSuchElementException.class)
+    public void testEmptyStack(){
+       stack.pop();
+    }
     
-    
+    @Test
+    public void testPop(){
+        stack.push(new Complex(5,7));
+        Complex c1=stack.pop();
+        assertEquals("5 + 7i",format.format(c1));
+    }
     
     
     
