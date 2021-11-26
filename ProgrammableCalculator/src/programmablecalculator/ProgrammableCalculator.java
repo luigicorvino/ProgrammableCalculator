@@ -5,11 +5,13 @@
  */
 package programmablecalculator;
 import org.apache.commons.math3.complex.*;
+import programmablecalculator.programmablecalculatorgui.ProgrammableCalculatorGUI;
+
 /**
  *
  * @author luigi
  */
-public class ProgrammableCalculator {
+public class ProgrammableCalculator  {
 
     /**
      * @param args the command line arguments
@@ -28,7 +30,9 @@ public class ProgrammableCalculator {
         Complex root=c.sqrt();
         String s2=format.format(root);
         System.out.println(s2);
+        ProgrammableCalculatorGUI calculator=new ProgrammableCalculatorGUI();
+        calculator.setVisible(true);
         
     }
+    }
     
-}
