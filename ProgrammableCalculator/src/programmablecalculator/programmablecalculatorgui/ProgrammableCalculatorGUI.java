@@ -107,6 +107,7 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     private void ProcessInputButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProcessInputButtonActionPerformed
      String input;
      input=this.checkInputField();
+     System.out.println(input);
      if (input!=null)
          controller.elaborateInput(input);
      else
@@ -118,20 +119,46 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     public String checkInputField(){
      String numberWithNoSpace=InputField.getText().replaceAll("\\s","");
      String inputText=InputField.getText().toLowerCase();
-     Pattern patternBothParts= Pattern.compile("([-]?[0-9]+\\.?[0-9]*)([-|+]+[0-9]*\\.?[0-9]*)[j$]+");
+     Pattern incompatibleInput=Pattern.compile("(^[a-z0-9]+\\.?[a-z 0-9]+)([a-z0-9]?\\.?[^i]+)$");
+     Pattern patternBothParts= Pattern.compile("(^[-]?[0-9]+\\.?[0-9]*)([-|+]+[0-9]*\\.?[0-9]*)[i$]+");
      Pattern patternRealNumber= Pattern.compile("([-]?[0-9]+\\.?[0-9]*)$");
-     Pattern patternOnlyImmaginaryPart= Pattern.compile("([-]?[0-9]*\\.?[0-9]*)[j$]");
+     Pattern patternOnlyImmaginaryPart= Pattern.compile("([-]?[0-9]*\\.?[0-9]*)[i$]+");
      Matcher matcherBothParts = patternBothParts.matcher(inputText);
      Matcher matcherRealNumber = patternRealNumber.matcher(inputText);
      Matcher matcherOnlyImmaginaryPart = patternOnlyImmaginaryPart.matcher(inputText);
-     if(matcherBothParts.find() || matcherRealNumber.find()|| matcherOnlyImmaginaryPart.find() )
-         return inputText;
+     Matcher matcherIncompatibleInput=incompatibleInput.matcher(inputText);
+     if(matcherIncompatibleInput.find()){
+         showMessageDialog(null,"Errore nel formato del numero o dell'operazione");
+         return null;
+     }
+     else if(matcherBothParts.find() || matcherRealNumber.find() ){
+         if(inputText.contains("+i") || inputText.contains("-i")){
+             return inputText.replaceAll("[i$]", "1.0i");
+         }else{
+             return inputText;
+             
+        }
+             
+     }
+     else if (matcherOnlyImmaginaryPart.find())
+         if(inputText.contains("+i") || inputText.contains("-i"))
+             return inputText.replaceAll("[i$]","1.0i");
+         else{
+             if(inputText.startsWith("-"))
+                 return "0.0 "+inputText;
+             else
+                 return "0.0 + "+ inputText;
+         }
+          
+     
      else if(inputText.matches("[+{1}]") || inputText.matches("[-{1}]"))
          return inputText;
+    
      else{
          showMessageDialog(null,"Errore nel formato del numero o dell'operazione");
          return null;
-     } 
+     }
+        
     }    
     public void setTextField(String text){
             InputField.setText(text);
