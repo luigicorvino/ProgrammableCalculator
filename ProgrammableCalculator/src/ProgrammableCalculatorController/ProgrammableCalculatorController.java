@@ -22,27 +22,31 @@ public class ProgrammableCalculatorController {
         numberStack = new NumbersStack();
     }
     
-    public void elaborateInput(String operation) {
-              
+    public String elaborateInput(String operation) {
+        String result = "";
         switch (operation) {
             
             case "+": {
-                return;
+                if (doAdd() == false)
+                   result = "There aren't 2 complex numbers to add ";
+                break;
             } 
             
             case "-": {
-                return;
+                break;
             }
             
+            default : {
+                // Insert od complex number in the numbersStack
+                ComplexFormat cFormat = new ComplexFormat();
+                Complex complex = cFormat.parse(operation);
+                numberStack.push(complex);
+                break;
+            }
                
         }
         
-        if ( operation.matches("^(?=[iI.\\d+-])([+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][+-]?\\d+)?(?![iI.\\d]))?([+-]?(?:(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][+-]?\\d+)?)?[iI])?$")) {
-            ComplexFormat cFormat = new ComplexFormat();
-            Complex complex = cFormat.parse(operation);
-            System.out.println(" Complex: " + complex.toString());
-            numberStack.push(complex);
-        }
+        return result;
       
     }
     
@@ -52,10 +56,20 @@ public class ProgrammableCalculatorController {
     }
     
     public Complex topNumberStack() {
-        return numberStack.peekLast();
+        return numberStack.peekFirst();
     }
     
-    
+    public Complex[] getTwelweNumbersStack() {
+        
+        Complex[] twelveComplex = {};
+        Iterator<Complex> stack = numberStack.iterator();
+        int i = 0;
+        while(stack.hasNext() && i<12) {
+            twelveComplex[i] = stack.next();
+            i+=1;
+        }
+        return twelveComplex;
+    }
     
     
     

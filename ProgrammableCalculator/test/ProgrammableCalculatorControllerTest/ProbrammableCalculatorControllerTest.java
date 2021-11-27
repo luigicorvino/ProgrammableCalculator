@@ -33,6 +33,7 @@ public class ProbrammableCalculatorControllerTest {
     }
     
     ControllerStub controller;
+    ComplexFormat format;
     
     public ProbrammableCalculatorControllerTest() {
         
@@ -50,6 +51,7 @@ public class ProbrammableCalculatorControllerTest {
     @Before
     public void setUp() {
         controller = new ControllerStub();
+        format = new ComplexFormat();
     }
     
     @After
@@ -57,45 +59,77 @@ public class ProbrammableCalculatorControllerTest {
     }
     
     @Test
-    public void testelaborateInputComplexNumber1() {
+    public void testElaborateInputComplexNumber1() {
         controller.elaborateInput("5+2i");
         Complex c =  controller.topNumberStack();
-        ComplexFormat format = new ComplexFormat();
         assertEquals(format.format(c), "5 + 2i");
     }
     
     @Test
-    public void testelaborateInputComplexNumber2() {
+    public void testElaborateInputComplexNumber2() {
         controller.elaborateInput("6");
         Complex c =  controller.topNumberStack();
-        ComplexFormat format = new ComplexFormat();
         assertEquals(format.format(c), "6");
     }
     
     @Test
-    public void testelaborateInputComplexNumber3() {
+    public void testElaborateInputComplexNumber3() {
         controller.elaborateInput("-6");
         Complex c =  controller.topNumberStack();
-        ComplexFormat format = new ComplexFormat();
         assertEquals(format.format(c), "-6");
     }
     
     @Test
-    public void testelaborateInputComplexNumber4() {
+    public void testElaborateInputComplexNumber4() {
         controller.elaborateInput("0-5i");
         Complex c =  controller.topNumberStack();
-        ComplexFormat format = new ComplexFormat();
         assertEquals(format.format(c), "0 - 5i");
     }
     
     @Test
-    public void testelaborateInputComplexNumber5() {
+    public void testElaborateInputComplexNumber5() {
         controller.elaborateInput("0+1i");
         Complex c =  controller.topNumberStack();
         ComplexFormat format = new ComplexFormat();
-        System.out.print(format.format(c));
         assertEquals(format.format(c), "0 + i");
     }
+    
+    @Test
+    public void testElaborateInputSum() {
+        Complex c;
+        controller.elaborateInput("5+2i");
+        controller.elaborateInput("5+2i");
+        controller.elaborateInput("+");
+        c = controller.topNumberStack();
+        assertEquals(format.format(c), "10 + 4i");
+        
+        controller.elaborateInput("5");
+        controller.elaborateInput("5+2i");
+        controller.elaborateInput("+");
+        c = controller.topNumberStack();
+        assertEquals(format.format(c), "10 + 2i");
+        
+        controller.elaborateInput("5+2i");
+        controller.elaborateInput("8-5i");
+        controller.elaborateInput("+");
+        c = controller.topNumberStack();
+        assertEquals(format.format(c), "13 - 3i");
+        
+        controller.elaborateInput("0+2i");
+        controller.elaborateInput("-9-8i");
+        controller.elaborateInput("+");
+        c = controller.topNumberStack();
+        assertEquals(format.format(c), "-9 - 6i");
+    }
+    
+    @Test
+    public void testTopNumberStack() {
+        controller.elaborateInput("3+4i");
+        controller.elaborateInput("7-2i");
+        ComplexFormat format = new ComplexFormat();
+        assertEquals(format.format(controller.topNumberStack()), "7 - 2i");
+    }
+    
     
 
     @Test
