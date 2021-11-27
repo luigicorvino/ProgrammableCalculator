@@ -6,7 +6,9 @@
 package ProgrammableCalculatorControllerTest;
 
 import ProgrammableCalculatorController.ProgrammableCalculatorController;
+import java.text.NumberFormat;
 import java.util.Iterator;
+import java.util.Locale;
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.complex.ComplexFormat;
 import org.junit.After;
@@ -157,6 +159,68 @@ public class ProbrammableCalculatorControllerTest {
         controller.elaborateInput("-5-2i");
         assertTrue(controller.doAdd());
         assertEquals("-7 - 3i",format.format(controller.topNumberStack()));
+        
+        
+    }
+    
+    @Test
+    public void testdoSub(){
+        ComplexFormat format = new ComplexFormat();
+        //Test Case 1
+        assertFalse(controller.doSub());
+        controller.elaborateInput("9+3i");
+        assertFalse(controller.doSub());
+        controller.elaborateInput("7+5i");
+        assertTrue(controller.doSub());
+        assertEquals("2 - 2i",format.format(controller.topNumberStack()));
+        //Test Case 2
+        assertFalse(controller.doSub());
+        controller.elaborateInput("1+6i");
+        assertTrue(controller.doSub());
+        assertEquals("1 - 8i", format.format(controller.topNumberStack()));
+        //Test Case 3
+        assertFalse(controller.doSub());
+        controller.elaborateInput("4-5i");
+        assertTrue(controller.doSub());
+        assertEquals("-3 - 3i",format.format(controller.topNumberStack()));
+        //Test Case 4
+        assertFalse(controller.doSub());
+        controller.elaborateInput("-5-2i");
+        assertTrue(controller.doSub());
+        assertEquals("2 - i",format.format(controller.topNumberStack()));
+        
+        
+    }
+    
+    
+    @Test
+    public void testdoMultiply(){
+        ComplexFormat format;
+        NumberFormat nf=NumberFormat.getInstance(new Locale("en","US"));
+        format=new ComplexFormat(nf);
+        //Test Case 1
+        assertFalse(controller.doMultiply());
+        controller.elaborateInput("2+3i");
+        assertFalse(controller.doMultiply());
+        controller.elaborateInput("4+1i");
+        assertTrue(controller.doMultiply());
+        assertEquals("5 + 14i",format.format(controller.topNumberStack()));
+        //Test Case 2
+        assertFalse(controller.doMultiply());
+        controller.elaborateInput("-0.5+0.2i");
+        assertEquals("-0.5 + 0.2i",format.format(controller.topNumberStack()));
+        /*assertTrue(controller.doSub());
+        assertEquals("-5.3 - 6i", format.format(controller.topNumberStack()));
+        //Test Case 3
+        assertFalse(controller.doMultiply());
+        controller.elaborateInput("2-7i");
+        assertTrue(controller.doMultiply());
+        assertEquals("-52.6 + 25.1i",format.format(controller.topNumberStack()));
+        //Test Case 4
+        assertFalse(controller.doMultiply());
+        controller.elaborateInput("-0.2-i");
+        assertTrue(controller.doMultiply());
+        assertEquals("35.62 + 47.58i",format.format(controller.topNumberStack()));*/
         
         
     }

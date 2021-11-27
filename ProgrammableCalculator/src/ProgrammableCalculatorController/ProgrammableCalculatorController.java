@@ -4,8 +4,10 @@
  * and open the template in the editor.
  */
 package ProgrammableCalculatorController;
+import java.text.NumberFormat;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import org.apache.commons.math3.complex.*;
 import java.util.regex.*;
 import programmablecalculator.complexnumberoperations.ComplexNumberOperations;
@@ -38,7 +40,10 @@ public class ProgrammableCalculatorController {
             
             default : {
                 // Insert od complex number in the numbersStack
-                ComplexFormat cFormat = new ComplexFormat();
+                ComplexFormat cFormat;
+                NumberFormat nf=NumberFormat.getInstance(new Locale("en","US"));
+                cFormat=new ComplexFormat(nf);
+                //ComplexFormat cFormat = new ComplexFormat();
                 Complex complex = cFormat.parse(operation);
                 numberStack.push(complex);
                 break;
@@ -81,4 +86,24 @@ public class ProgrammableCalculatorController {
         numberStack.push(ComplexNumberOperations.add(c1, c2));
         return true;
     }
+    
+    public boolean doSub(){
+        if(numberStack.size()<2)
+            return false;
+        Complex c2=numberStack.pop();
+        Complex c1=numberStack.pop();
+        numberStack.push(ComplexNumberOperations.sub(c1, c2));
+        return true;
+    }
+    
+    
+    public boolean doMultiply(){
+        if(numberStack.size()<2)
+            return false;
+        Complex c2=numberStack.pop();
+        Complex c1=numberStack.pop();
+        numberStack.push(ComplexNumberOperations.multiply(c1, c2));
+        return true;
+    }
+    
 }
