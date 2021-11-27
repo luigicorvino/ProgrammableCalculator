@@ -5,6 +5,8 @@
  */
 package programmablecalculator.numbersstack;
 
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.NoSuchElementException;
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.complex.ComplexFormat;
@@ -25,8 +27,10 @@ import static org.junit.Assert.*;
  */
 public class NumbersStackTest {
     public NumbersStack stack;
-    private ComplexFormat format=new ComplexFormat();
+    private final ComplexFormat format;
     public NumbersStackTest() {
+        NumberFormat nf=NumberFormat.getInstance(new Locale("en","US"));
+        format=new ComplexFormat(nf);
     }
     @Before
     public void setUp() {
@@ -36,8 +40,8 @@ public class NumbersStackTest {
     @Test
     public void testPush() {
         System.out.println("push");
-        Complex c1=new Complex(3,5);
         assertTrue(stack.isEmpty());
+        Complex c1=new Complex(3,5);
         stack.push(c1);
         assertFalse(stack.isEmpty());
         assertTrue(stack.contains(c1));
@@ -55,8 +59,14 @@ public class NumbersStackTest {
     @Test
     public void testPop(){
         stack.push(new Complex(5,7));
-        Complex c1=stack.pop();
-        assertEquals("5 + 7i",format.format(c1));
+        assertEquals("5 + 7i",format.format(stack.pop()));
+        assertTrue(stack.isEmpty());
+        stack.push(new Complex(10,2));
+        stack.push(new Complex(4.5,7));
+        assertEquals("4.5 + 7i",format.format(stack.pop()));
+        assertFalse(stack.isEmpty());
+        assertEquals("10 + 2i",format.format(stack.pop()));
+        assertTrue(stack.isEmpty());
     }
     
     

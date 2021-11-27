@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import org.apache.commons.math3.complex.*;
 import java.util.regex.*;
+import programmablecalculator.complexnumberoperations.ComplexNumberOperations;
 import programmablecalculator.numbersstack.NumbersStack;
 /**
  *
@@ -52,5 +53,18 @@ public class ProgrammableCalculatorController {
     
     public Complex topNumberStack() {
         return numberStack.peekLast();
+    }
+    
+    
+    
+    
+    
+    public boolean doAdd(){
+        if(numberStack.size()<2)
+            return false;
+        Complex c2=numberStack.pop();
+        Complex c1=numberStack.pop();
+        numberStack.push(ComplexNumberOperations.add(c1, c2));
+        return true;
     }
 }

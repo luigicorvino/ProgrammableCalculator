@@ -98,6 +98,34 @@ public class ProbrammableCalculatorControllerTest {
     }
     
 
+    @Test
+    public void testdoAdd(){
+        ComplexFormat format = new ComplexFormat();
+        //Test Case 1
+        assertFalse(controller.doAdd());
+        controller.elaborateInput("5+2i");
+        assertFalse(controller.doAdd());
+        controller.elaborateInput("7+3i");
+        assertTrue(controller.doAdd());
+        assertEquals("12 + 5i",format.format(controller.topNumberStack()));
+        //Test Case 2
+        assertFalse(controller.doAdd());
+        controller.elaborateInput("-10-8i");
+        assertTrue(controller.doAdd());
+        assertEquals("2 - 3i", format.format(controller.topNumberStack()));
+        //Test Case 3
+        assertFalse(controller.doAdd());
+        controller.elaborateInput("-4+2i");
+        assertTrue(controller.doAdd());
+        assertEquals("-2 - i",format.format(controller.topNumberStack()));
+        //Test Case 4
+        assertFalse(controller.doAdd());
+        controller.elaborateInput("-5-2i");
+        assertTrue(controller.doAdd());
+        assertEquals("-7 - 3i",format.format(controller.topNumberStack()));
+        
+        
+    }
     // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:
     //
