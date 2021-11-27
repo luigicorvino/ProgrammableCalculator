@@ -208,8 +208,7 @@ public class ProbrammableCalculatorControllerTest {
         //Test Case 2
         assertFalse(controller.doMultiply());
         controller.elaborateInput("-0.5+0.2i");
-        assertEquals("-0.5 + 0.2i",format.format(controller.topNumberStack()));
-        /*assertTrue(controller.doSub());
+        assertTrue(controller.doMultiply());
         assertEquals("-5.3 - 6i", format.format(controller.topNumberStack()));
         //Test Case 3
         assertFalse(controller.doMultiply());
@@ -218,9 +217,9 @@ public class ProbrammableCalculatorControllerTest {
         assertEquals("-52.6 + 25.1i",format.format(controller.topNumberStack()));
         //Test Case 4
         assertFalse(controller.doMultiply());
-        controller.elaborateInput("-0.2-i");
+        controller.elaborateInput("-0.2-1i");
         assertTrue(controller.doMultiply());
-        assertEquals("35.62 + 47.58i",format.format(controller.topNumberStack()));*/
+        assertEquals("35.62 + 47.58i",format.format(controller.topNumberStack()));
         
         
     }

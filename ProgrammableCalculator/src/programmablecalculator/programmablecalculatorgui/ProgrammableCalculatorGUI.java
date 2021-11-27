@@ -13,16 +13,23 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import static javax.swing.JOptionPane.showMessageDialog;
 import ProgrammableCalculatorController.ProgrammableCalculatorController;
+import java.text.NumberFormat;
+import java.util.Iterator;
+import java.util.Locale;
+import javax.swing.DefaultListModel;
+import org.apache.commons.math3.complex.Complex;
+import org.apache.commons.math3.complex.ComplexFormat;
 public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
-
+    private DefaultListModel visibleStackModel;
+    public ProgrammableCalculatorController controller;
     /**
      * Creates new form ProgrammableCalculatorGUI
      */
     public ProgrammableCalculatorGUI() {
-       
+        visibleStackModel=new DefaultListModel<>();
         initComponents();
-        
-       
+        visibleStack.setModel(visibleStackModel);
+        controller= new ProgrammableCalculatorController();
     }
 
     /**
@@ -38,6 +45,8 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         InputField = new javax.swing.JTextField();
         LabelTextField = new javax.swing.JLabel();
         ProcessInputButton = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        visibleStack = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ProgrammableCalculator");
@@ -57,18 +66,22 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
             }
         });
 
+        jScrollPane1.setViewportView(visibleStack);
+
         javax.swing.GroupLayout CalculatorPanelLayout = new javax.swing.GroupLayout(CalculatorPanel);
         CalculatorPanel.setLayout(CalculatorPanelLayout);
         CalculatorPanelLayout.setHorizontalGroup(
             CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(CalculatorPanelLayout.createSequentialGroup()
-                .addComponent(InputField, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(LabelTextField)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(CalculatorPanelLayout.createSequentialGroup()
+                .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(InputField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addComponent(ProcessInputButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
-            .addGroup(CalculatorPanelLayout.createSequentialGroup()
-                .addComponent(LabelTextField)
-                .addGap(0, 0, Short.MAX_VALUE))
         );
         CalculatorPanelLayout.setVerticalGroup(
             CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -79,7 +92,9 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
                 .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(InputField, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ProcessInputButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(211, 211, 211))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -100,10 +115,6 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void InputFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InputFieldActionPerformed
-      
-    }//GEN-LAST:event_InputFieldActionPerformed
-
     private void ProcessInputButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProcessInputButtonActionPerformed
      String input;
      input=this.checkInputField();
@@ -112,10 +123,14 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
          controller.elaborateInput(input);
      else
          InputField.setText("");
-     
+     update();
          
      
     }//GEN-LAST:event_ProcessInputButtonActionPerformed
+
+    private void InputFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InputFieldActionPerformed
+
+    }//GEN-LAST:event_InputFieldActionPerformed
     public String checkInputField(){
      String numberWithNoSpace=InputField.getText().replaceAll("\\s","");
      String inputText=InputField.getText().toLowerCase();
@@ -165,6 +180,21 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     }
      
     
+    private void update(){
+        ComplexFormat format;
+        NumberFormat nf= NumberFormat.getInstance(new Locale("en","US"));
+        format=new ComplexFormat(nf);
+        visibleStackModel.clear();
+        Iterator<Complex> stack = controller.getNumbersStack();
+        int i = 0;
+        while(stack.hasNext() && i<12) {
+            visibleStackModel.addElement(format.format(stack.next()));
+            i+=1;
+        }
+    }
+
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -201,11 +231,12 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
             }
         });
     }
-    public ProgrammableCalculatorController controller=new ProgrammableCalculatorController();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel CalculatorPanel;
     private javax.swing.JTextField InputField;
     private javax.swing.JLabel LabelTextField;
     private javax.swing.JButton ProcessInputButton;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JList<String> visibleStack;
     // End of variables declaration//GEN-END:variables
 }
