@@ -22,6 +22,10 @@ import org.apache.commons.math3.complex.ComplexFormat;
 public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     private DefaultListModel visibleStackModel;
     public ProgrammableCalculatorController controller;
+    private final String incompatibleInput;
+    private final String bothParts;
+    private final String onlyRealPart;
+    private final String onlyImmaginaryPart;
     /**
      * Creates new form ProgrammableCalculatorGUI
      */
@@ -30,6 +34,11 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         initComponents();
         visibleStack.setModel(visibleStackModel);
         controller= new ProgrammableCalculatorController();
+        incompatibleInput="(^[a-z0-9]+\\.?[a-z 0-9]+)([a-z0-9]?\\.?[^i]+)$";
+        bothParts="(^[-]?[0-9]+\\.?[0-9]*)([-|+]+[0-9]*\\.?[0-9]*)[i$]+";
+        onlyRealPart="([-]?[0-9]+\\.?[0-9]*)$";
+        onlyImmaginaryPart="([-]?[0-9]*\\.?[0-9]*)[i$]+";
+        
     }
 
     /**
@@ -118,7 +127,6 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     private void ProcessInputButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProcessInputButtonActionPerformed
      String input;
      input=this.checkInputField();
-     System.out.println(input);
      if (input!=null)
          controller.elaborateInput(input);
      else
@@ -132,49 +140,73 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
 
     }//GEN-LAST:event_InputFieldActionPerformed
     public String checkInputField(){
+     String input;
      String numberWithNoSpace=InputField.getText().replaceAll("\\s","");
      String inputText=InputField.getText().toLowerCase();
-     Pattern incompatibleInput=Pattern.compile("(^[a-z0-9]+\\.?[a-z 0-9]+)([a-z0-9]?\\.?[^i]+)$");
-     Pattern patternBothParts= Pattern.compile("(^[-]?[0-9]+\\.?[0-9]*)([-|+]+[0-9]*\\.?[0-9]*)[i$]+");
-     Pattern patternRealNumber= Pattern.compile("([-]?[0-9]+\\.?[0-9]*)$");
-     Pattern patternOnlyImmaginaryPart= Pattern.compile("([-]?[0-9]*\\.?[0-9]*)[i$]+");
-     Matcher matcherBothParts = patternBothParts.matcher(inputText);
-     Matcher matcherRealNumber = patternRealNumber.matcher(inputText);
-     Matcher matcherOnlyImmaginaryPart = patternOnlyImmaginaryPart.matcher(inputText);
-     Matcher matcherIncompatibleInput=incompatibleInput.matcher(inputText);
-     if(matcherIncompatibleInput.find()){
-         showMessageDialog(null,"Errore nel formato del numero o dell'operazione");
-         return null;
-     }
-     else if(matcherBothParts.find() || matcherRealNumber.find() ){
-         if(inputText.contains("+i") || inputText.contains("-i")){
-             return inputText.replaceAll("[i$]", "1.0i");
-         }else{
-             return inputText;
-             
-        }
-             
-     }
-     else if (matcherOnlyImmaginaryPart.find())
-         if(inputText.contains("+i") || inputText.contains("-i"))
-             return inputText.replaceAll("[i$]","1.0i");
-         else{
-             if(inputText.startsWith("-"))
-                 return "0.0 "+inputText;
-             else
-                 return "0.0 + "+ inputText;
-         }
-          
-     
-     else if(inputText.matches("[+{1}]") || inputText.matches("[-{1}]"))
+     if(inputText.matches("[+{1}]") || inputText.matches("[-{1}]") || inputText.matches("[*{1}]") || inputText.matches("[/{1}]")) //check for an input that represents an operation
          return inputText;
     
      else{
+         input=checkInputProcess(inputText);
+         return input;
+     }
+    }    
+    
+    private String checkInputProcess(String inputText){
+        Pattern inputCheck =Pattern.compile(incompatibleInput); //alphanumeric input sequence that is not accepted by the calculator
+        Matcher inputMatcher=inputCheck.matcher(inputText);
+        if(inputMatcher.find()){
+            showMessageDialog(null,"Errore nel formato del numero o dell'operazione");
+            return null;
+        }
+        inputCheck=Pattern.compile(bothParts); //input sequence of a complex number with both real and immaginary part
+        inputMatcher=inputCheck.matcher(inputText);
+        if(inputMatcher.find()) {
+            if(inputText.contains("+i") || inputText.contains("-i")){
+                return inputText.replaceAll("[i$]", "1.0i"); //modify the input in order to get the right format
+            }else{
+                return inputText;
+             
+        } 
+            }
+        inputCheck=Pattern.compile(onlyRealPart); //input sequence of a complex number with only real part
+        inputMatcher=inputCheck.matcher(inputText);
+        if(inputMatcher.find())
+            return inputText;
+        inputCheck=Pattern.compile(onlyImmaginaryPart); // input sequence of a complex number with only immaginary part
+        inputMatcher=inputCheck.matcher(inputText);
+        if (inputMatcher.find())
+            if(inputText.contains("+i") || inputText.contains("-i"))
+                return inputText.replaceAll("[i$]","1.0i");
+            else{
+                if(inputText.startsWith("-"))
+                   return "0.0 "+inputText; // modify the string input based on his sign in order to get the right format
+                else
+                   return "0.0 + "+ inputText;
+         }
+        else{
          showMessageDialog(null,"Errore nel formato del numero o dell'operazione");
          return null;
      }
-        
-    }    
+    
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     public void setTextField(String text){
             InputField.setText(text);
     }
@@ -198,39 +230,7 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ProgrammableCalculatorGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ProgrammableCalculatorGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ProgrammableCalculatorGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ProgrammableCalculatorGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                
-                new ProgrammableCalculatorGUI().setVisible(true);
-                
-            }
-        });
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel CalculatorPanel;
     private javax.swing.JTextField InputField;
