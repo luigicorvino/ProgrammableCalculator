@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ProgrammableCalculatorController;
+package programmablecalculator.programmablecalculatorcontroller;
 import java.text.NumberFormat;
 import java.util.Iterator;
 import java.util.List;

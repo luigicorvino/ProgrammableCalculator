@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ProgrammableCalculatorControllerTest;
+package programmablecalculator.programmablecalculatorcontroller;
 
-import ProgrammableCalculatorController.ProgrammableCalculatorController;
 import java.text.NumberFormat;
 import java.util.Iterator;
 import java.util.Locale;
@@ -38,7 +37,8 @@ public class ProbrammableCalculatorControllerTest {
     ComplexFormat format;
     
     public ProbrammableCalculatorControllerTest() {
-        
+        NumberFormat nf=NumberFormat.getInstance(new Locale("en","US"));
+        format=new ComplexFormat(nf);
     }
     
     @BeforeClass
@@ -53,7 +53,6 @@ public class ProbrammableCalculatorControllerTest {
     @Before
     public void setUp() {
         controller = new ControllerStub();
-        format = new ComplexFormat();
     }
     
     @After
@@ -136,7 +135,7 @@ public class ProbrammableCalculatorControllerTest {
 
     @Test
     public void testdoAdd(){
-        ComplexFormat format = new ComplexFormat();
+        //ComplexFormat format = new ComplexFormat();
         //Test Case 1
         assertFalse(controller.doAdd());
         controller.elaborateInput("5+2i");
@@ -165,7 +164,7 @@ public class ProbrammableCalculatorControllerTest {
     
     @Test
     public void testdoSub(){
-        ComplexFormat format = new ComplexFormat();
+       // ComplexFormat format = new ComplexFormat();
         //Test Case 1
         assertFalse(controller.doSub());
         controller.elaborateInput("9+3i");
@@ -195,9 +194,9 @@ public class ProbrammableCalculatorControllerTest {
     
     @Test
     public void testdoMultiply(){
-        ComplexFormat format;
-        NumberFormat nf=NumberFormat.getInstance(new Locale("en","US"));
-        format=new ComplexFormat(nf);
+        //ComplexFormat format;
+      //  NumberFormat nf=NumberFormat.getInstance(new Locale("en","US"));
+      //  format=new ComplexFormat(nf);
         //Test Case 1
         assertFalse(controller.doMultiply());
         controller.elaborateInput("2+3i");
@@ -226,6 +225,9 @@ public class ProbrammableCalculatorControllerTest {
     
     @Test
     public void testdoDivide() {
+       // ComplexFormat format;
+       // NumberFormat nf=NumberFormat.getInstance(new Locale("en","US"));
+       // format=new ComplexFormat(nf);
         Complex c;
         assertFalse(controller.doDivide());
         controller.elaborateInput("20 +4i");

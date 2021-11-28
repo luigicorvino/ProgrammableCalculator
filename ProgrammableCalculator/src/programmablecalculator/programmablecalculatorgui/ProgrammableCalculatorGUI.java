@@ -12,7 +12,7 @@ package programmablecalculator.programmablecalculatorgui;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import static javax.swing.JOptionPane.showMessageDialog;
-import ProgrammableCalculatorController.ProgrammableCalculatorController;
+import programmablecalculator.programmablecalculatorcontroller.ProgrammableCalculatorController;
 import java.text.NumberFormat;
 import java.util.Iterator;
 import java.util.Locale;
