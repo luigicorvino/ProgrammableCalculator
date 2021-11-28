@@ -20,7 +20,7 @@ import javax.swing.DefaultListModel;
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.complex.ComplexFormat;
 public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
-    private DefaultListModel visibleStackModel;
+    private DefaultListModel<String> visibleStackModel;
     public ProgrammableCalculatorController controller;
     private final String incompatibleInput;
     private final String bothParts;
@@ -55,7 +55,7 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         LabelTextField = new javax.swing.JLabel();
         ProcessInputButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        visibleStack = new javax.swing.JList<>();
+        visibleStack = new javax.swing.JList<String>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ProgrammableCalculator");
