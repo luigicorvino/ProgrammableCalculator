@@ -81,7 +81,7 @@ public class ProgrammableCalculatorController {
     
     public Complex[] getTwelweNumbersStack() {
         
-        Complex[] twelveComplex = {};
+        Complex[] twelveComplex = new Complex[12];
         Iterator<Complex> stack = numberStack.iterator();
         int i = 0;
         while(stack.hasNext() && i<12) {

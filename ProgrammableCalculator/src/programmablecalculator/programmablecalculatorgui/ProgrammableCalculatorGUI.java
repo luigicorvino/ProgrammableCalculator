@@ -13,16 +13,32 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import static javax.swing.JOptionPane.showMessageDialog;
 import ProgrammableCalculatorController.ProgrammableCalculatorController;
+import java.text.NumberFormat;
+import java.util.Iterator;
+import java.util.Locale;
+import javax.swing.DefaultListModel;
+import org.apache.commons.math3.complex.Complex;
+import org.apache.commons.math3.complex.ComplexFormat;
 public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
-
+    private DefaultListModel visibleStackModel;
+    public ProgrammableCalculatorController controller;
+    private final String incompatibleInput;
+    private final String bothParts;
+    private final String onlyRealPart;
+    private final String onlyImmaginaryPart;
     /**
      * Creates new form ProgrammableCalculatorGUI
      */
     public ProgrammableCalculatorGUI() {
-       
+        visibleStackModel=new DefaultListModel<>();
         initComponents();
+        visibleStack.setModel(visibleStackModel);
+        controller= new ProgrammableCalculatorController();
+        incompatibleInput="(^[a-z0-9]+\\.?[a-z 0-9]+)([a-z0-9]?\\.?[^i]+)$";
+        bothParts="(^[-]?[0-9]+\\.?[0-9]*)([-|+]+[0-9]*\\.?[0-9]*)[i$]+";
+        onlyRealPart="([-]?[0-9]+\\.?[0-9]*)$";
+        onlyImmaginaryPart="([-]?[0-9]*\\.?[0-9]*)[i$]+";
         
-       
     }
 
     /**
@@ -38,6 +54,8 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         InputField = new javax.swing.JTextField();
         LabelTextField = new javax.swing.JLabel();
         ProcessInputButton = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        visibleStack = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ProgrammableCalculator");
@@ -57,18 +75,22 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
             }
         });
 
+        jScrollPane1.setViewportView(visibleStack);
+
         javax.swing.GroupLayout CalculatorPanelLayout = new javax.swing.GroupLayout(CalculatorPanel);
         CalculatorPanel.setLayout(CalculatorPanelLayout);
         CalculatorPanelLayout.setHorizontalGroup(
             CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(CalculatorPanelLayout.createSequentialGroup()
-                .addComponent(InputField, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(LabelTextField)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(CalculatorPanelLayout.createSequentialGroup()
+                .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(InputField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addComponent(ProcessInputButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
-            .addGroup(CalculatorPanelLayout.createSequentialGroup()
-                .addComponent(LabelTextField)
-                .addGap(0, 0, Short.MAX_VALUE))
         );
         CalculatorPanelLayout.setVerticalGroup(
             CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -79,7 +101,9 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
                 .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(InputField, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ProcessInputButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(211, 211, 211))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -100,10 +124,6 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void InputFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InputFieldActionPerformed
-      
-    }//GEN-LAST:event_InputFieldActionPerformed
-
     private void ProcessInputButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProcessInputButtonActionPerformed
      String input;
      input=this.checkInputField();
@@ -111,74 +131,112 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
          controller.elaborateInput(input);
      else
          InputField.setText("");
-     
+     update();
          
      
     }//GEN-LAST:event_ProcessInputButtonActionPerformed
+
+    private void InputFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InputFieldActionPerformed
+
+    }//GEN-LAST:event_InputFieldActionPerformed
     public String checkInputField(){
+     String input;
      String numberWithNoSpace=InputField.getText().replaceAll("\\s","");
      String inputText=InputField.getText().toLowerCase();
-     Pattern patternBothParts= Pattern.compile("([-]?[0-9]+\\.?[0-9]*)([-|+]+[0-9]*\\.?[0-9]*)[j$]+");
-     Pattern patternRealNumber= Pattern.compile("([-]?[0-9]+\\.?[0-9]*)$");
-     Pattern patternOnlyImmaginaryPart= Pattern.compile("([-]?[0-9]*\\.?[0-9]*)[j$]");
-     Matcher matcherBothParts = patternBothParts.matcher(inputText);
-     Matcher matcherRealNumber = patternRealNumber.matcher(inputText);
-     Matcher matcherOnlyImmaginaryPart = patternOnlyImmaginaryPart.matcher(inputText);
-     if(matcherBothParts.find() || matcherRealNumber.find()|| matcherOnlyImmaginaryPart.find() )
+     if(inputText.matches("[+{1}]") || inputText.matches("[-{1}]") || inputText.matches("[*{1}]") || inputText.matches("[/{1}]")) //check for an input that represents an operation
          return inputText;
-     else if(inputText.matches("[+{1}]") || inputText.matches("[-{1}]"))
-         return inputText;
+    
      else{
+         input=checkInputProcess(inputText);
+         return input;
+     }
+    }    
+    
+    private String checkInputProcess(String inputText){
+        Pattern inputCheck =Pattern.compile(incompatibleInput); //alphanumeric input sequence that is not accepted by the calculator
+        Matcher inputMatcher=inputCheck.matcher(inputText);
+        if(inputMatcher.find()){
+            showMessageDialog(null,"Errore nel formato del numero o dell'operazione");
+            return null;
+        }
+        inputCheck=Pattern.compile(bothParts); //input sequence of a complex number with both real and immaginary part
+        inputMatcher=inputCheck.matcher(inputText);
+        if(inputMatcher.find()) {
+            if(inputText.contains("+i") || inputText.contains("-i")){
+                return inputText.replaceAll("[i$]", "1.0i"); //modify the input in order to get the right format
+            }else{
+                return inputText;
+             
+        } 
+            }
+        inputCheck=Pattern.compile(onlyRealPart); //input sequence of a complex number with only real part
+        inputMatcher=inputCheck.matcher(inputText);
+        if(inputMatcher.find())
+            return inputText;
+        inputCheck=Pattern.compile(onlyImmaginaryPart); // input sequence of a complex number with only immaginary part
+        inputMatcher=inputCheck.matcher(inputText);
+        if (inputMatcher.find())
+            if(inputText.contains("+i") || inputText.contains("-i"))
+                return inputText.replaceAll("[i$]","1.0i");
+            else{
+                if(inputText.startsWith("-"))
+                   return "0.0 "+inputText; // modify the string input based on his sign in order to get the right format
+                else
+                   return "0.0 + "+ inputText;
+         }
+        else{
          showMessageDialog(null,"Errore nel formato del numero o dell'operazione");
          return null;
-     } 
-    }    
+     }
+    
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     public void setTextField(String text){
             InputField.setText(text);
     }
      
     
+    private void update(){
+        ComplexFormat format;
+        NumberFormat nf= NumberFormat.getInstance(new Locale("en","US"));
+        format=new ComplexFormat(nf);
+        visibleStackModel.clear();
+        Iterator<Complex> stack = controller.getNumbersStack();
+        int i = 0;
+        while(stack.hasNext() && i<12) {
+            visibleStackModel.addElement(format.format(stack.next()));
+            i+=1;
+        }
+    }
+
+    
+    
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ProgrammableCalculatorGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ProgrammableCalculatorGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ProgrammableCalculatorGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ProgrammableCalculatorGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                
-                new ProgrammableCalculatorGUI().setVisible(true);
-                
-            }
-        });
-    }
-    public ProgrammableCalculatorController controller=new ProgrammableCalculatorController();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel CalculatorPanel;
     private javax.swing.JTextField InputField;
     private javax.swing.JLabel LabelTextField;
     private javax.swing.JButton ProcessInputButton;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JList<String> visibleStack;
     // End of variables declaration//GEN-END:variables
 }
