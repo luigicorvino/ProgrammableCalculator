@@ -18,9 +18,8 @@ import programmablecalculator.numbersstack.NumbersStack;
  * @author lex99
  */
 public class ProgrammableCalculatorController {
-    private String input;
     private NumbersStack numberStack;
-    
+    private final ComplexFormat format;
     
     public abstract class CallBackOperation {       
         public abstract Complex call(Complex c1, Complex c2);
@@ -58,10 +57,16 @@ public class ProgrammableCalculatorController {
     
     public ProgrammableCalculatorController() {
         numberStack = new NumbersStack();
+        NumberFormat nf=NumberFormat.getInstance(new Locale("en","US"));
+        format=new ComplexFormat(nf);
     }
     
+      /*@brief: elaborate the user's input implementing the calculator's logic
+      @param1: user's input
+      @return: An error message if needed, a null String otherwise
+    */
     public String elaborateInput(String operation) {
-        String result = "";
+        String result = null;
         switch (operation) {
             
             case "+": {
@@ -89,12 +94,8 @@ public class ProgrammableCalculatorController {
             }
             
             default: {
-                // Insert od complex number in the numbersStack
-                ComplexFormat cFormat;
-                NumberFormat nf=NumberFormat.getInstance(new Locale("en","US"));
-                cFormat=new ComplexFormat(nf);
-                //ComplexFormat cFormat = new ComplexFormat();
-                Complex complex = cFormat.parse(operation);
+                // Insert complex number in the numbersStack
+                Complex complex = format.parse(operation);
                 numberStack.push(complex);
                 break;
             }
@@ -109,24 +110,12 @@ public class ProgrammableCalculatorController {
         
         return numberStack.iterator();
     }
-    
-    public Complex topNumberStack() {
-        return numberStack.peekFirst();
+
+    public NumbersStack getNumberStack() {
+        return numberStack;
     }
     
-    public Complex[] getTwelweNumbersStack() {
-        
-        Complex[] twelveComplex = new Complex[12];
-        Iterator<Complex> stack = numberStack.iterator();
-        int i = 0;
-        while(stack.hasNext() && i<12) {
-            twelveComplex[i] = stack.next();
-            i+=1;
-        }
-        return twelveComplex;
-    }
-    
-    
+
     private boolean takeComplexAndOperation( CallBackOperation operation) {
         if(numberStack.size()<2)
             return false;
@@ -137,34 +126,6 @@ public class ProgrammableCalculatorController {
         
     }
     
-    
-    public boolean doAdd(){
-        if(numberStack.size()<2)
-            return false;
-        Complex c2=numberStack.pop();
-        Complex c1=numberStack.pop();
-        numberStack.push(ComplexNumberOperations.add(c1, c2));
-        return true;
-    }
-    
-    public boolean doSub(){
-        if(numberStack.size()<2)
-            return false;
-        Complex c2=numberStack.pop();
-        Complex c1=numberStack.pop();
-        numberStack.push(ComplexNumberOperations.sub(c1, c2));
-        return true;
-    }
-    
-    
-    public boolean doMultiply(){
-        if(numberStack.size()<2)
-            return false;
-        Complex c2=numberStack.pop();
-        Complex c1=numberStack.pop();
-        numberStack.push(ComplexNumberOperations.multiply(c1, c2));
-        return true;
-    }
-    
+
     
 }

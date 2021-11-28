@@ -125,10 +125,14 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ProcessInputButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProcessInputButtonActionPerformed
+     String message="";
      String input;
      input=this.checkInputField();
-     if (input!=null)
-         controller.elaborateInput(input);
+     if (input!=null){
+        message=controller.elaborateInput(input);
+        if(message!=null)
+            showMessageDialog(null,message);
+     }
      else
          InputField.setText("");
      update();

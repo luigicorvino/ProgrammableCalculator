@@ -29,7 +29,9 @@ public class ProbrammableCalculatorControllerTest {
         public ControllerStub() {
             super();
         }
-        
+        public Complex topNumberStack() {
+        return super.getNumberStack().peekFirst();
+    }
         
         
     }
@@ -38,7 +40,8 @@ public class ProbrammableCalculatorControllerTest {
     ComplexFormat format;
     
     public ProbrammableCalculatorControllerTest() {
-        
+        NumberFormat nf=NumberFormat.getInstance(new Locale("en","US"));
+        format=new ComplexFormat(nf);
     }
     
     @BeforeClass
@@ -53,7 +56,6 @@ public class ProbrammableCalculatorControllerTest {
     @Before
     public void setUp() {
         controller = new ControllerStub();
-        format = new ComplexFormat();
         
     }
     
@@ -137,7 +139,6 @@ public class ProbrammableCalculatorControllerTest {
 
     @Test
     public void testdoAdd(){
-        ComplexFormat format = new ComplexFormat();
         //Test Case 1
         assertEquals("There aren't 2 complex numbers to add ",controller.elaborateInput("+"));
         controller.elaborateInput("5+2i");
@@ -163,7 +164,6 @@ public class ProbrammableCalculatorControllerTest {
     
     @Test
     public void testdoSub(){
-        ComplexFormat format = new ComplexFormat();
         //Test Case 1
         assertEquals("There aren't 2 complex numbers to sub ",controller.elaborateInput("-"));
         controller.elaborateInput("9+3i");
@@ -193,9 +193,6 @@ public class ProbrammableCalculatorControllerTest {
     
     @Test
     public void testdoMultiply(){
-        ComplexFormat format;
-        NumberFormat nf=NumberFormat.getInstance(new Locale("en","US"));
-        format=new ComplexFormat(nf);
         //Test Case 1
         assertEquals("There aren't 2 complex numbers to multiply ",controller.elaborateInput("*"));
         controller.elaborateInput("2+3i");
@@ -224,9 +221,6 @@ public class ProbrammableCalculatorControllerTest {
     @Test
     public void testdoDivide() {
         Complex c;
-        ComplexFormat format;
-        NumberFormat nf=NumberFormat.getInstance(new Locale("en","US"));
-        format=new ComplexFormat(nf);
         
         assertEquals("There aren't 2 complex numbers to divide ",controller.elaborateInput("/"));
         controller.elaborateInput("20 +4i");

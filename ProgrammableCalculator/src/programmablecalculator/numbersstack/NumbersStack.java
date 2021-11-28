@@ -13,5 +13,5 @@ import org.apache.commons.math3.complex.Complex;
  * @author luigi
  */
 public class NumbersStack extends ArrayDeque<Complex>{
-    
+    //TODO: methods for numbers stack manipulation
 }
