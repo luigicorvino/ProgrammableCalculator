@@ -21,6 +21,41 @@ public class ProgrammableCalculatorController {
     private String input;
     private NumbersStack numberStack;
     
+    
+    public abstract class CallBackOperation {       
+        public abstract Complex call(Complex c1, Complex c2);
+    
+    }
+    public class CallbackAdd extends CallBackOperation {
+            
+        @Override
+        public  Complex call(Complex c1, Complex c2) {
+            return ComplexNumberOperations.add(c1, c2);
+        }
+    }
+    public class CallbackSub extends CallBackOperation {
+            
+        @Override
+        public  Complex call(Complex c1, Complex c2) {
+            return ComplexNumberOperations.sub(c1, c2);
+        }
+    }
+    public class CallbackMultiply extends CallBackOperation {
+            
+        @Override
+        public  Complex call(Complex c1, Complex c2) {
+            return ComplexNumberOperations.multiply(c1, c2);
+        }
+    }
+    public class CallbackDivide extends CallBackOperation {
+            
+        @Override
+        public  Complex call(Complex c1, Complex c2) {
+            return ComplexNumberOperations.divide(c1, c2);
+        }
+    }
+        
+    
     public ProgrammableCalculatorController() {
         numberStack = new NumbersStack();
     }
@@ -30,26 +65,26 @@ public class ProgrammableCalculatorController {
         switch (operation) {
             
             case "+": {
-                if (doAdd() == false)
+                if (takeComplexAndOperation(new CallbackAdd()) == false)
                    result = "There aren't 2 complex numbers to add ";
                 break;
             } 
             
             case "-": {
-                if (doSub()== false)
+                if (takeComplexAndOperation(new CallbackSub())== false)
                    result = "There aren't 2 complex numbers to sub ";
                 break;
             }
             
             case "*": {
-                if (doMultiply()== false)
+                if (takeComplexAndOperation(new CallbackMultiply())== false)
                    result = "There aren't 2 complex numbers to multiply ";
                 break;
             }
             
             case "/": {
-                if (doDivide() == false)
-                   result = "There aren't 2 complex numbers to add ";
+                if (takeComplexAndOperation(new CallbackDivide())== false)
+                   result = "There aren't 2 complex numbers to divide ";
                 break;
             }
             
@@ -91,17 +126,17 @@ public class ProgrammableCalculatorController {
         return twelveComplex;
     }
     
-    /*
-    private boolean takeComplexAndOperation( Callable func) {
+    
+    private boolean takeComplexAndOperation( CallBackOperation operation) {
         if(numberStack.size()<2)
             return false;
         Complex c2=numberStack.pop();
         Complex c1=numberStack.pop();
-        func.call();
-        //numberStack.push(func.call());
+        numberStack.push(operation.call(c1,c2));
+        return true;
         
     }
-    */
+    
     
     public boolean doAdd(){
         if(numberStack.size()<2)
@@ -131,13 +166,5 @@ public class ProgrammableCalculatorController {
         return true;
     }
     
-    public boolean doDivide() {
-        if(numberStack.size() < 2)
-            return false;
-        Complex c2 = numberStack.pop();
-        Complex c1 = numberStack.pop();
-        numberStack.push(ComplexNumberOperations.divide(c1, c2));
-        return true;
-    }
     
 }
