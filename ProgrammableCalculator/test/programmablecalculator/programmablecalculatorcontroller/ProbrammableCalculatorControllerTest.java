@@ -5,6 +5,7 @@
  */
 package programmablecalculator.programmablecalculatorcontroller;
 
+import programmablecalculator.programmablecalculatorcontroller.ProgrammableCalculatorController;
 import java.text.NumberFormat;
 import java.util.Iterator;
 import java.util.Locale;
@@ -37,8 +38,7 @@ public class ProbrammableCalculatorControllerTest {
     ComplexFormat format;
     
     public ProbrammableCalculatorControllerTest() {
-        NumberFormat nf=NumberFormat.getInstance(new Locale("en","US"));
-        format=new ComplexFormat(nf);
+        
     }
     
     @BeforeClass
@@ -53,6 +53,8 @@ public class ProbrammableCalculatorControllerTest {
     @Before
     public void setUp() {
         controller = new ControllerStub();
+        format = new ComplexFormat();
+        
     }
     
     @After
@@ -135,28 +137,25 @@ public class ProbrammableCalculatorControllerTest {
 
     @Test
     public void testdoAdd(){
-        //ComplexFormat format = new ComplexFormat();
+        ComplexFormat format = new ComplexFormat();
         //Test Case 1
-        assertFalse(controller.doAdd());
+        assertEquals("There aren't 2 complex numbers to add ",controller.elaborateInput("+"));
         controller.elaborateInput("5+2i");
-        assertFalse(controller.doAdd());
+        assertEquals("There aren't 2 complex numbers to add ",controller.elaborateInput("+"));
         controller.elaborateInput("7+3i");
-        assertTrue(controller.doAdd());
+        controller.elaborateInput("+");
         assertEquals("12 + 5i",format.format(controller.topNumberStack()));
         //Test Case 2
-        assertFalse(controller.doAdd());
         controller.elaborateInput("-10-8i");
-        assertTrue(controller.doAdd());
+        controller.elaborateInput("+");
         assertEquals("2 - 3i", format.format(controller.topNumberStack()));
         //Test Case 3
-        assertFalse(controller.doAdd());
         controller.elaborateInput("-4+2i");
-        assertTrue(controller.doAdd());
+        controller.elaborateInput("+");
         assertEquals("-2 - i",format.format(controller.topNumberStack()));
         //Test Case 4
-        assertFalse(controller.doAdd());
         controller.elaborateInput("-5-2i");
-        assertTrue(controller.doAdd());
+        controller.elaborateInput("+");
         assertEquals("-7 - 3i",format.format(controller.topNumberStack()));
         
         
@@ -164,28 +163,28 @@ public class ProbrammableCalculatorControllerTest {
     
     @Test
     public void testdoSub(){
-       // ComplexFormat format = new ComplexFormat();
+        ComplexFormat format = new ComplexFormat();
         //Test Case 1
-        assertFalse(controller.doSub());
+        assertEquals("There aren't 2 complex numbers to sub ",controller.elaborateInput("-"));
         controller.elaborateInput("9+3i");
-        assertFalse(controller.doSub());
+        assertEquals("There aren't 2 complex numbers to sub ",controller.elaborateInput("-"));
         controller.elaborateInput("7+5i");
-        assertTrue(controller.doSub());
+        controller.elaborateInput("-");
         assertEquals("2 - 2i",format.format(controller.topNumberStack()));
         //Test Case 2
-        assertFalse(controller.doSub());
+        assertEquals("There aren't 2 complex numbers to sub ",controller.elaborateInput("-"));
         controller.elaborateInput("1+6i");
-        assertTrue(controller.doSub());
+        controller.elaborateInput("-");
         assertEquals("1 - 8i", format.format(controller.topNumberStack()));
         //Test Case 3
-        assertFalse(controller.doSub());
+        assertEquals("There aren't 2 complex numbers to sub ",controller.elaborateInput("-"));
         controller.elaborateInput("4-5i");
-        assertTrue(controller.doSub());
+        controller.elaborateInput("-");
         assertEquals("-3 - 3i",format.format(controller.topNumberStack()));
         //Test Case 4
-        assertFalse(controller.doSub());
+        assertEquals("There aren't 2 complex numbers to sub ",controller.elaborateInput("-"));
         controller.elaborateInput("-5-2i");
-        assertTrue(controller.doSub());
+        controller.elaborateInput("-");
         assertEquals("2 - i",format.format(controller.topNumberStack()));
         
         
@@ -194,30 +193,29 @@ public class ProbrammableCalculatorControllerTest {
     
     @Test
     public void testdoMultiply(){
-        //ComplexFormat format;
-      //  NumberFormat nf=NumberFormat.getInstance(new Locale("en","US"));
-      //  format=new ComplexFormat(nf);
+        ComplexFormat format;
+        NumberFormat nf=NumberFormat.getInstance(new Locale("en","US"));
+        format=new ComplexFormat(nf);
         //Test Case 1
-        assertFalse(controller.doMultiply());
+        assertEquals("There aren't 2 complex numbers to multiply ",controller.elaborateInput("*"));
         controller.elaborateInput("2+3i");
-        assertFalse(controller.doMultiply());
+        assertEquals("There aren't 2 complex numbers to multiply ",controller.elaborateInput("*"));
         controller.elaborateInput("4+1i");
-        assertTrue(controller.doMultiply());
+        controller.elaborateInput("*");
         assertEquals("5 + 14i",format.format(controller.topNumberStack()));
         //Test Case 2
-        assertFalse(controller.doMultiply());
+        assertEquals("There aren't 2 complex numbers to multiply ",controller.elaborateInput("*"));
         controller.elaborateInput("-0.5+0.2i");
-        assertTrue(controller.doMultiply());
+        controller.elaborateInput("*");
         assertEquals("-5.3 - 6i", format.format(controller.topNumberStack()));
         //Test Case 3
-        assertFalse(controller.doMultiply());
+        assertEquals("There aren't 2 complex numbers to multiply ",controller.elaborateInput("*"));
         controller.elaborateInput("2-7i");
-        assertTrue(controller.doMultiply());
+        controller.elaborateInput("*");
         assertEquals("-52.6 + 25.1i",format.format(controller.topNumberStack()));
         //Test Case 4
-        assertFalse(controller.doMultiply());
         controller.elaborateInput("-0.2-1i");
-        assertTrue(controller.doMultiply());
+        controller.elaborateInput("*");
         assertEquals("35.62 + 47.58i",format.format(controller.topNumberStack()));
         
         
@@ -225,11 +223,12 @@ public class ProbrammableCalculatorControllerTest {
     
     @Test
     public void testdoDivide() {
-       // ComplexFormat format;
-       // NumberFormat nf=NumberFormat.getInstance(new Locale("en","US"));
-       // format=new ComplexFormat(nf);
         Complex c;
-        assertFalse(controller.doDivide());
+        ComplexFormat format;
+        NumberFormat nf=NumberFormat.getInstance(new Locale("en","US"));
+        format=new ComplexFormat(nf);
+        
+        assertEquals("There aren't 2 complex numbers to divide ",controller.elaborateInput("/"));
         controller.elaborateInput("20 +4i");
         controller.elaborateInput("0 + 2i");
         controller.elaborateInput("/");
