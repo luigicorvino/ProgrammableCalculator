@@ -12,7 +12,7 @@ package programmablecalculator.programmablecalculatorgui;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import static javax.swing.JOptionPane.showMessageDialog;
-import ProgrammableCalculatorController.ProgrammableCalculatorController;
+import programmablecalculator.programmablecalculatorcontroller.ProgrammableCalculatorController;
 import java.text.NumberFormat;
 import java.util.Iterator;
 import java.util.Locale;
@@ -20,7 +20,7 @@ import javax.swing.DefaultListModel;
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.complex.ComplexFormat;
 public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
-    private DefaultListModel visibleStackModel;
+    private DefaultListModel<String> visibleStackModel;
     public ProgrammableCalculatorController controller;
     private final String incompatibleInput;
     private final String bothParts;
@@ -55,7 +55,7 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         LabelTextField = new javax.swing.JLabel();
         ProcessInputButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        visibleStack = new javax.swing.JList<>();
+        visibleStack = new javax.swing.JList<String>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ProgrammableCalculator");
@@ -147,65 +147,10 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
          return inputText;
     
      else{
-         input=checkInputProcess(inputText);
+         input=checkNumberProcess(inputText);
          return input;
      }
     }    
-    
-    private String checkInputProcess(String inputText){
-        Pattern inputCheck =Pattern.compile(incompatibleInput); //alphanumeric input sequence that is not accepted by the calculator
-        Matcher inputMatcher=inputCheck.matcher(inputText);
-        if(inputMatcher.find()){
-            showMessageDialog(null,"Errore nel formato del numero o dell'operazione");
-            return null;
-        }
-        inputCheck=Pattern.compile(bothParts); //input sequence of a complex number with both real and immaginary part
-        inputMatcher=inputCheck.matcher(inputText);
-        if(inputMatcher.find()) {
-            if(inputText.contains("+i") || inputText.contains("-i")){
-                return inputText.replaceAll("[i$]", "1.0i"); //modify the input in order to get the right format
-            }else{
-                return inputText;
-             
-        } 
-            }
-        inputCheck=Pattern.compile(onlyRealPart); //input sequence of a complex number with only real part
-        inputMatcher=inputCheck.matcher(inputText);
-        if(inputMatcher.find())
-            return inputText;
-        inputCheck=Pattern.compile(onlyImmaginaryPart); // input sequence of a complex number with only immaginary part
-        inputMatcher=inputCheck.matcher(inputText);
-        if (inputMatcher.find())
-            if(inputText.contains("+i") || inputText.contains("-i"))
-                return inputText.replaceAll("[i$]","1.0i");
-            else{
-                if(inputText.startsWith("-"))
-                   return "0.0 "+inputText; // modify the string input based on his sign in order to get the right format
-                else
-                   return "0.0 + "+ inputText;
-         }
-        else{
-         showMessageDialog(null,"Errore nel formato del numero o dell'operazione");
-         return null;
-     }
-    
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     public void setTextField(String text){
             InputField.setText(text);
@@ -224,9 +169,74 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
             i+=1;
         }
     }
+    private String checkNumberProcess(String inputText){
+        Pattern inputCheck =Pattern.compile(incompatibleInput); //alphanumeric input sequence that is not accepted by the calculator
+        Matcher inputMatcher=inputCheck.matcher(inputText);
+        if(inputMatcher.find()){
+            showMessageDialog(null,"Errore nel formato del numero o dell'operazione");
+            return null;
+        }
+        inputCheck=Pattern.compile(bothParts); //input sequence of a complex number with both real and immaginary part
+        inputMatcher=inputCheck.matcher(inputText);
+        if(inputMatcher.find()) {
+            if(inputText.contains("+i") || inputText.contains("-i")){
+                return inputText.replaceAll("[i$]", "1.0i"); //modify the input in order to get the right format
+            }else{
+                return inputText;
+            } 
+        }
+        inputCheck=Pattern.compile(onlyRealPart); //input sequence of a complex number with only real part
+        inputMatcher=inputCheck.matcher(inputText);
+        if(inputMatcher.find())
+            return inputText;
+        inputCheck=Pattern.compile(onlyImmaginaryPart); // input sequence of a complex number with only immaginary part
+        inputMatcher=inputCheck.matcher(inputText);
+        if (inputMatcher.find())
+            if(inputText.contains("+i") || inputText.contains("-i"))
+                return inputText.replaceAll("[i$]","1.0i");
+            else{
+                if(inputText.startsWith("-"))
+                   return "0.0 "+inputText; // modify the string input based on his sign in order to get the right format
+                else
+                   return "0.0 + "+ inputText;
+         }
+        else{
+            showMessageDialog(null,"Errore nel formato del numero o dell'operazione");
+            return null;
+        } 
+    
+    }
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(ProgrammableCalculatorGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(ProgrammableCalculatorGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(ProgrammableCalculatorGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(ProgrammableCalculatorGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
 
-    
-    
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new ProgrammableCalculatorGUI().setVisible(true);
+            }
+        });
+    }
     /**
      * @param args the command line arguments
      */
