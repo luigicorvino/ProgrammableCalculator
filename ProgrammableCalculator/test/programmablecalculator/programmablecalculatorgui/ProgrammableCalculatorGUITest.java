@@ -58,7 +58,7 @@ public class ProgrammableCalculatorGUITest {
         assertFalse("50.0+1.g0i".equals(calculator.checkInputField()));
         calculator.setTextField("50.0+1.0gi");
         assertFalse("50.0+1.0gi".equals(calculator.checkInputField()));
-    
+        
 }
         
         
