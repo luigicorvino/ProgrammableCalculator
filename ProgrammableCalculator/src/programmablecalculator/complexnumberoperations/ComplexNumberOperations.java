@@ -29,4 +29,8 @@ public class ComplexNumberOperations {
         Complex result=c1.multiply(c2);
         return result;
     }
+    
+    public static Complex divide(Complex c1, Complex c2) {
+        return c1.divide(c2);
+    }
 }

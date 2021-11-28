@@ -224,6 +224,24 @@ public class ProbrammableCalculatorControllerTest {
         
         
     }
+    
+    @Test
+    public void testdoDivide() {
+        Complex c;
+        assertFalse(controller.doDivide());
+        controller.elaborateInput("20 +4i");
+        controller.elaborateInput("0 + 2i");
+        controller.elaborateInput("/");
+        c = controller.topNumberStack();
+        assertEquals(format.format(c), "2 - 10i");
+        
+        controller.elaborateInput("0 + 50i");
+        controller.elaborateInput("2 + 2i");
+        controller.elaborateInput("/");
+        c = controller.topNumberStack();
+        assertEquals(format.format(c), "12.5 + 12.5i");
+        
+    }
     // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:
     //

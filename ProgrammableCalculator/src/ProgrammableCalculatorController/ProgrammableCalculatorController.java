@@ -8,6 +8,7 @@ import java.text.NumberFormat;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Callable;
 import org.apache.commons.math3.complex.*;
 import java.util.regex.*;
 import programmablecalculator.complexnumberoperations.ComplexNumberOperations;
@@ -35,10 +36,24 @@ public class ProgrammableCalculatorController {
             } 
             
             case "-": {
+                if (doSub()== false)
+                   result = "There aren't 2 complex numbers to sub ";
                 break;
             }
             
-            default : {
+            case "*": {
+                if (doMultiply()== false)
+                   result = "There aren't 2 complex numbers to multiply ";
+                break;
+            }
+            
+            case "/": {
+                if (doDivide() == false)
+                   result = "There aren't 2 complex numbers to add ";
+                break;
+            }
+            
+            default: {
                 // Insert od complex number in the numbersStack
                 ComplexFormat cFormat;
                 NumberFormat nf=NumberFormat.getInstance(new Locale("en","US"));
@@ -76,7 +91,17 @@ public class ProgrammableCalculatorController {
         return twelveComplex;
     }
     
-    
+    /*
+    private boolean takeComplexAndOperation( Callable func) {
+        if(numberStack.size()<2)
+            return false;
+        Complex c2=numberStack.pop();
+        Complex c1=numberStack.pop();
+        func.call();
+        //numberStack.push(func.call());
+        
+    }
+    */
     
     public boolean doAdd(){
         if(numberStack.size()<2)
@@ -103,6 +128,15 @@ public class ProgrammableCalculatorController {
         Complex c2=numberStack.pop();
         Complex c1=numberStack.pop();
         numberStack.push(ComplexNumberOperations.multiply(c1, c2));
+        return true;
+    }
+    
+    public boolean doDivide() {
+        if(numberStack.size() < 2)
+            return false;
+        Complex c2 = numberStack.pop();
+        Complex c1 = numberStack.pop();
+        numberStack.push(ComplexNumberOperations.divide(c1, c2));
         return true;
     }
     
