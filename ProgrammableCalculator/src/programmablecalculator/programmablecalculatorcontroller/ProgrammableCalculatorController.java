@@ -138,7 +138,7 @@ public class ProgrammableCalculatorController {
                 break;
             }
             
-            /*
+            
             case "swap": {
             try { 
                 if (numberStack.size() < 2)
@@ -160,7 +160,6 @@ public class ProgrammableCalculatorController {
                 }
                 break;
             }
-            */
             
             default: {
                 // Insert complex number in the numbersStack

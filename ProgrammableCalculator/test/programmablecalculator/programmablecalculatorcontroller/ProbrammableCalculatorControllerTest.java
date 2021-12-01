@@ -319,7 +319,7 @@ public class ProbrammableCalculatorControllerTest {
     }
     
     @Test
-    public void testDoSwap() {
+    public void testDoDup() {
         Complex c;
         
         assertEquals("There isn't one complex numbers to dup ",controller.elaborateInput("dup"));
@@ -344,6 +344,49 @@ public class ProbrammableCalculatorControllerTest {
         assertEquals(format.format(c), "7 + 9i");
         c = controller.popNumberStack();
         assertEquals(format.format(c), "7 + 9i");
+    }
+    
+    @Test
+    public void testDoSwap() {
+        Complex c;
+        
+        assertEquals("There isn't 2 complex numbers to swap ",controller.elaborateInput("swap"));
+        controller.elaborateInput("3 - 9i");
+        assertEquals("There isn't 2 complex numbers to swap ",controller.elaborateInput("swap"));
+        controller.elaborateInput("4 + 7i");
+        controller.elaborateInput("swap");
+        c = controller.popNumberStack();
+        assertEquals(format.format(c), "3 - 9i");
+        c = controller.popNumberStack();
+        assertEquals(format.format(c), "4 + 7i");
+        
+        controller.elaborateInput("-9 + 2i");
+        controller.elaborateInput("6 + 8i");
+        controller.elaborateInput("swap");
+        c = controller.popNumberStack();
+        assertEquals(format.format(c), "-9 + 2i");
+        c = controller.popNumberStack();
+        assertEquals(format.format(c), "6 + 8i");
+    }
+    
+    
+    @Test
+    public void testDoOver() {
+        Complex c;
+        
+        assertEquals("There isn't 2 complex numbers to swap ",controller.elaborateInput("swap"));
+        controller.elaborateInput("-21 - 9i");
+        assertEquals("There isn't 2 complex numbers to swap ",controller.elaborateInput("swap"));
+        controller.elaborateInput("6 + 7i");
+        controller.elaborateInput("over");
+        c = controller.popNumberStack();
+        assertEquals(format.format(c), "-21 - 9i");
+        
+        controller.elaborateInput("0 + 9i");
+        controller.elaborateInput("33 - 3i");
+        controller.elaborateInput("over");
+        c = controller.popNumberStack();
+        assertEquals(format.format(c), "0 + 9i");
     }
    
     // TODO add test methods here.
