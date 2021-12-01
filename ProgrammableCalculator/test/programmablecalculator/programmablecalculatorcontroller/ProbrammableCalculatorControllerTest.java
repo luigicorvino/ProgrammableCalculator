@@ -29,9 +29,15 @@ public class ProbrammableCalculatorControllerTest {
         public ControllerStub() {
             super();
         }
+        
         public Complex topNumberStack() {
-        return super.getNumberStack().peekFirst();
-    }
+            return super.getNumberStack().peekFirst();
+        }
+        
+        public Complex popNumberStack() {
+            return super.getNumberStack().pop();
+        }
+        
         
         
     }
@@ -290,6 +296,55 @@ public class ProbrammableCalculatorControllerTest {
         assertEquals(format.format(c), "0 + 2i");
     }
     
+    @Test
+    public void testDoDrop() {
+        Complex c;
+        
+        assertEquals("There isn't one complex numbers to drop ",controller.elaborateInput("drop"));
+        controller.elaborateInput("5 - 5i");
+        controller.elaborateInput("drop");
+        c = controller.topNumberStack();
+        assertEquals(c, null);
+        
+        controller.elaborateInput("-4");
+        controller.elaborateInput("drop");
+        c = controller.topNumberStack();
+        assertEquals(c, null);
+        
+        controller.elaborateInput("-4 + 8i");
+        controller.elaborateInput("3 + 9i");
+        controller.elaborateInput("drop");
+        c = controller.topNumberStack();
+        assertEquals(format.format(c), "-4 + 8i");
+    }
+    
+    @Test
+    public void testDoSwap() {
+        Complex c;
+        
+        assertEquals("There isn't one complex numbers to dup ",controller.elaborateInput("dup"));
+        controller.elaborateInput("3 - 9i");
+        controller.elaborateInput("dup");
+        c = controller.topNumberStack();
+        assertEquals(format.format(c), "3 - 9i");
+        c = controller.popNumberStack();
+        assertEquals(format.format(c), "3 - 9i");
+        
+        controller.elaborateInput("-4 + 123i");
+        controller.elaborateInput("dup");
+        c = controller.topNumberStack();
+        assertEquals(format.format(c), "-4 + 123i");
+        c = controller.popNumberStack();
+        assertEquals(format.format(c), "-4 + 123i");
+        
+        controller.elaborateInput("43 + 6i");
+        controller.elaborateInput("7 + 9i");
+        controller.elaborateInput("dup");
+        c = controller.topNumberStack();
+        assertEquals(format.format(c), "7 + 9i");
+        c = controller.popNumberStack();
+        assertEquals(format.format(c), "7 + 9i");
+    }
    
     // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:

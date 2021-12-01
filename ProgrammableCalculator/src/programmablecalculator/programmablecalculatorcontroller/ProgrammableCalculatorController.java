@@ -125,36 +125,42 @@ public class ProgrammableCalculatorController {
             }
             
             case "drop": {
-                if (numberStack.size() < 1)
+                if (numberStack.isEmpty())
                     return result = "There isn't one complex numbers to drop ";
                 numberStack.drop();
+                break;
             }
             
             case "dup": {
                 if (numberStack.size() < 1)
                     return result = "There isn't one complex numbers to dup ";
                 numberStack.dup();
+                break;
             }
             
+            /*
             case "swap": {
             try { 
                 if (numberStack.size() < 2)
                     return result = "There isn't 2 complex numbers to swap ";
                 numberStack.swap();
-            } catch (NotEnoughElementsException ex) {
+                } catch (NotEnoughElementsException ex) {
                 Logger.getLogger(ProgrammableCalculatorController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+                }
+                break;
             }
             
             case "over": {
             try {
-                if (numberStack.size() < 2)
-                    return result = "There isn't 2 complex numbers to over ";
+                //if (numberStack.size() < 2)
+                    
                 numberStack.over();
-            } catch (NotEnoughElementsException ex) {
-                Logger.getLogger(ProgrammableCalculatorController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (NotEnoughElementsException ex) {
+                    return result = "There isn't 2 complex numbers to over "; 
+                }
+                break;
             }
-            }
+            */
             
             default: {
                 // Insert complex number in the numbersStack
