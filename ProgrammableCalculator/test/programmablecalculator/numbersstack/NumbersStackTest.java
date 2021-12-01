@@ -30,6 +30,7 @@ public class NumbersStackTest {
     private final ComplexFormat format;
     public NumbersStackTest() {
         NumberFormat nf=NumberFormat.getInstance(new Locale("en","US"));
+        nf.setMaximumFractionDigits(8);
         format=new ComplexFormat(nf);
     }
     @Before
@@ -62,6 +63,7 @@ public class NumbersStackTest {
     @Test
     public void testPop(){
         //Test case 1
+        System.out.println("pop");
         stack.push(new Complex(5,7));
         assertEquals("5 + 7i",format.format(stack.pop()));
         assertTrue(stack.isEmpty());
@@ -77,6 +79,7 @@ public class NumbersStackTest {
     
     @Test
     public void testClear(){
+        System.out.println("clear");
         stack.push(new Complex(2,3));
         stack.push(new Complex(4,5));
         stack.push(new Complex(1,2));
@@ -86,7 +89,108 @@ public class NumbersStackTest {
     }
     
     
+    @Test
+    public void testDrop(){
+        System.out.println("drop");        
+        stack.push(new Complex(2,3));
+        stack.push(new Complex(4,5));
+        stack.push(new Complex(1,2)); 
+        assertEquals("1 + 2i", format.format(stack.getFirst()));
+        stack.drop();
+        assertEquals("4 + 5i", format.format(stack.getFirst()));
+        stack.drop();
+        assertEquals("2 + 3i",format.format(stack.getFirst()));
+        stack.drop();
+        assertTrue(stack.isEmpty());
+    }
     
+    @Test
+    public void testDup(){
+        System.out.println("dup");        
+        stack.push(new Complex(2,3));
+        stack.dup();
+        assertTrue(stack.size()==2);
+        assertEquals("2 + 3i", format.format(stack.pop()));
+        assertTrue(stack.size()==1);
+        assertEquals("2 + 3i", format.format(stack.pop()));
+        assertTrue(stack.isEmpty());
+        stack.push(new Complex(5,4));
+        stack.dup();
+        stack.push(new Complex(3,2));
+        stack.dup();
+        assertTrue(stack.size()==4);
+        assertEquals("3 + 2i", format.format(stack.pop()));
+        assertEquals("3 + 2i", format.format(stack.pop()));
+        assertEquals("5 + 4i", format.format(stack.pop()));
+        assertEquals("5 + 4i", format.format(stack.pop()));
+        assertTrue(stack.isEmpty());
+    }
+
+    @Test (expected=NotEnoughElementsException.class)
+    public void testSwapException() throws NotEnoughElementsException{
+        System.out.println("swap exception");        
+        stack.swap();
+        stack.push(new Complex(3,4));
+        stack.swap();
+    }
+    
+    @Test
+    public void testSwap() throws NotEnoughElementsException{
+        System.out.println("swap");
+        stack.push(new Complex(2,3));
+        stack.push(new Complex(5,4));
+        stack.swap();
+        assertEquals("2 + 3i", format.format(stack.pop()));
+        assertEquals("5 + 4i", format.format(stack.pop()));
+        stack.push(new Complex(1,2));
+        stack.push(new Complex(3,4));
+        stack.push(new Complex(5,6));
+        stack.push(new Complex(7,8));
+        stack.swap();
+        assertEquals("5 + 6i", format.format(stack.pop()));
+        stack.swap();
+        assertEquals("3 + 4i", format.format(stack.pop()));
+        stack.swap();
+        assertEquals("1 + 2i", format.format(stack.pop()));
+        assertEquals("7 + 8i", format.format(stack.pop()));
+    }
+    
+    
+    @Test (expected=NotEnoughElementsException.class)
+    public void testOverException() throws NotEnoughElementsException{
+        System.out.println("over exception");        
+        stack.over();
+        stack.push(new Complex(3,4));
+        stack.over();
+    }
+    
+    
+    @Test
+    public void testOver() throws NotEnoughElementsException{
+        System.out.println("over");
+        stack.push(new Complex(2,3));
+        stack.push(new Complex(5,4));
+        stack.over();
+        assertEquals("2 + 3i", format.format(stack.pop()));
+        assertEquals("5 + 4i", format.format(stack.pop()));
+        assertEquals("2 + 3i", format.format(stack.pop()));
+        stack.push(new Complex(1,2));
+        stack.push(new Complex(3,4));
+        stack.push(new Complex(5,6));
+        stack.push(new Complex(7,8));
+        stack.over();
+        assertEquals("5 + 6i", format.format(stack.pop()));
+        assertEquals("7 + 8i", format.format(stack.pop()));
+        stack.over();
+        assertEquals("3 + 4i", format.format(stack.pop()));
+        assertEquals("5 + 6i", format.format(stack.pop()));
+        stack.over();
+        assertEquals("1 + 2i", format.format(stack.pop()));
+        assertEquals("3 + 4i", format.format(stack.pop()));
+        assertEquals("1 + 2i", format.format(stack.pop()));
+        assertTrue(stack.isEmpty());
+    }
+
     
     
 }

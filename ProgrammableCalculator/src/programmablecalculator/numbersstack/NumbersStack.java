@@ -6,6 +6,7 @@
 package programmablecalculator.numbersstack;
 
 import java.util.ArrayDeque;
+import java.util.NoSuchElementException;
 import org.apache.commons.math3.complex.Complex;
 
 /**
@@ -17,21 +18,33 @@ public class NumbersStack extends ArrayDeque<Complex>{
     
     
     
-   public void drop(){
-       return;
+   public void drop() throws NoSuchElementException{
+       this.removeFirst();
+       
    }
    
    
-   public void dup(){
-       return;
+   public void dup() throws NoSuchElementException{
+       this.push(this.getFirst());
    }
    
    
-   public void swap(){
-       return;
+   public void swap() throws NotEnoughElementsException{
+       if(this.size()<2)
+           throw new NotEnoughElementsException();
+       Complex c1 = this.pop();
+       Complex c2 = this.pop();
+       this.push(c1);
+       this.push(c2);
+       
    }
    
-   public void over(){
-       return;
+   public void over() throws NotEnoughElementsException{
+       if(this.size()<2)
+           throw new NotEnoughElementsException();
+       Complex first=this.pop();
+       Complex dup=this.getFirst();
+       this.push(first);
+       this.push(dup);
    }
 }
