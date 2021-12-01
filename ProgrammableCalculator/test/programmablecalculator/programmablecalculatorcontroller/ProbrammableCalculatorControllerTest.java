@@ -41,6 +41,7 @@ public class ProbrammableCalculatorControllerTest {
     
     public ProbrammableCalculatorControllerTest() {
         NumberFormat nf=NumberFormat.getInstance(new Locale("en","US"));
+        nf.setMaximumFractionDigits(8);
         format=new ComplexFormat(nf);
     }
     
@@ -138,7 +139,7 @@ public class ProbrammableCalculatorControllerTest {
     
 
     @Test
-    public void testdoAdd(){
+    public void testDoAdd(){
         //Test Case 1
         assertEquals("There aren't 2 complex numbers to add ",controller.elaborateInput("+"));
         controller.elaborateInput("5+2i");
@@ -163,7 +164,7 @@ public class ProbrammableCalculatorControllerTest {
     }
     
     @Test
-    public void testdoSub(){
+    public void testDoSub(){
         //Test Case 1
         assertEquals("There aren't 2 complex numbers to sub ",controller.elaborateInput("-"));
         controller.elaborateInput("9+3i");
@@ -192,7 +193,7 @@ public class ProbrammableCalculatorControllerTest {
     
     
     @Test
-    public void testdoMultiply(){
+    public void testDoMultiply(){
         //Test Case 1
         assertEquals("There aren't 2 complex numbers to multiply ",controller.elaborateInput("*"));
         controller.elaborateInput("2+3i");
@@ -219,7 +220,7 @@ public class ProbrammableCalculatorControllerTest {
     }
     
     @Test
-    public void testdoDivide() {
+    public void testDoDivide() {
         Complex c;
         
         assertEquals("There aren't 2 complex numbers to divide ",controller.elaborateInput("/"));
@@ -235,6 +236,56 @@ public class ProbrammableCalculatorControllerTest {
         c = controller.topNumberStack();
         assertEquals(format.format(c), "12.5 + 12.5i");
         
+    }
+    
+    public void testDoInvertSign() {
+        Complex c;
+        
+        assertEquals("There isn't one complex numbers to divide ",controller.elaborateInput("+-"));
+        controller.elaborateInput("20 + 4i");
+        controller.elaborateInput("+-");
+        c = controller.topNumberStack();
+        assertEquals(format.format(c), "-20 - 4i");
+        
+        controller.elaborateInput("0 + 50i");
+        controller.elaborateInput("+-");
+        c = controller.topNumberStack();
+        assertEquals(format.format(c), "0 - 50i");
+        
+        controller.elaborateInput("-4");
+        controller.elaborateInput("+-");
+        c = controller.topNumberStack();
+        assertEquals(format.format(c), "4");
+        
+        controller.elaborateInput("0 - 9i");
+        controller.elaborateInput("+-");
+        c = controller.topNumberStack();
+        assertEquals(format.format(c), "0 + 9i");
+        
+        controller.elaborateInput("12 - 9i");
+        controller.elaborateInput("+-");
+        c = controller.topNumberStack();
+        assertEquals(format.format(c), "-12 + 9i");
+    }
+    
+    public void testDoSqrt() {
+        Complex c;
+        
+        assertEquals("There isn't one complex numbers to divide ",controller.elaborateInput("sqrt"));
+        controller.elaborateInput("25 + 4i");
+        controller.elaborateInput("sqrt");
+        c = controller.topNumberStack();
+        assertEquals(format.format(c), "5.01587369 + 0.39873412i");
+        
+        controller.elaborateInput("21 - 6i");
+        controller.elaborateInput("sqrt");
+        c = controller.topNumberStack();
+        assertEquals(format.format(c), "4.62819239 - 0.64820122i");
+        
+        controller.elaborateInput("-4");
+        controller.elaborateInput("sqrt");
+        c = controller.topNumberStack();
+        assertEquals(format.format(c), "2i");
     }
     // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:

@@ -21,36 +21,53 @@ public class ProgrammableCalculatorController {
     private NumbersStack numberStack;
     private final ComplexFormat format;
     
-    public abstract class CallBackOperation {       
+    public abstract class CallBackBinaryOperation {       
         public abstract Complex call(Complex c1, Complex c2);
     
     }
-    public class CallbackAdd extends CallBackOperation {
+    
+    public class CallbackAdd extends CallBackBinaryOperation {
             
         @Override
         public  Complex call(Complex c1, Complex c2) {
             return ComplexNumberOperations.add(c1, c2);
         }
     }
-    public class CallbackSub extends CallBackOperation {
+    public class CallbackSub extends CallBackBinaryOperation {
             
         @Override
         public  Complex call(Complex c1, Complex c2) {
             return ComplexNumberOperations.sub(c1, c2);
         }
     }
-    public class CallbackMultiply extends CallBackOperation {
+    public class CallbackMultiply extends CallBackBinaryOperation {
             
         @Override
         public  Complex call(Complex c1, Complex c2) {
             return ComplexNumberOperations.multiply(c1, c2);
         }
     }
-    public class CallbackDivide extends CallBackOperation {
+    public class CallbackDivide extends CallBackBinaryOperation {
             
         @Override
         public  Complex call(Complex c1, Complex c2) {
             return ComplexNumberOperations.divide(c1, c2);
+        }
+    }
+    
+    
+    public abstract class CallBackUnaryOperation {
+        public abstract Complex call(Complex c1);
+        
+    }
+    public class CallBackInvertSign extends CallBackUnaryOperation {
+        public Complex call(Complex c1) {
+            return ComplexNumberOperations.invert(c1);
+        }
+    }
+    public class CallBackSqrt extends CallBackUnaryOperation {
+        public Complex call(Complex c1) {
+            return ComplexNumberOperations.sqrt(c1);
         }
     }
         
@@ -70,26 +87,37 @@ public class ProgrammableCalculatorController {
         switch (operation) {
             
             case "+": {
-                if (takeComplexAndOperation(new CallbackAdd()) == false)
+                if (takeComplexAndBinaryOperation(new CallbackAdd()) == false)
                    result = "There aren't 2 complex numbers to add ";
                 break;
             } 
             
             case "-": {
-                if (takeComplexAndOperation(new CallbackSub())== false)
+                if (takeComplexAndBinaryOperation(new CallbackSub())== false)
                    result = "There aren't 2 complex numbers to sub ";
                 break;
             }
             
             case "*": {
-                if (takeComplexAndOperation(new CallbackMultiply())== false)
+                if (takeComplexAndBinaryOperation(new CallbackMultiply())== false)
                    result = "There aren't 2 complex numbers to multiply ";
                 break;
             }
             
             case "/": {
-                if (takeComplexAndOperation(new CallbackDivide())== false)
+                if (takeComplexAndBinaryOperation(new CallbackDivide())== false)
                    result = "There aren't 2 complex numbers to divide ";
+                break;
+            }
+            
+            case "+-": {
+                if (takeComplexAndUnaryOperation(new CallBackInvertSign())== false)
+                   result = "There isn't one complex numbers to divide ";
+                break;
+            }
+            case "sqrt": {
+                if (takeComplexAndUnaryOperation(new CallBackSqrt())== false)
+                   result = "There isn't one complex numbers to divide ";
                 break;
             }
             
@@ -116,7 +144,7 @@ public class ProgrammableCalculatorController {
     }
     
 
-    private boolean takeComplexAndOperation( CallBackOperation operation) {
+    private boolean takeComplexAndBinaryOperation( CallBackBinaryOperation operation) {
         if(numberStack.size()<2)
             return false;
         Complex c2=numberStack.pop();
@@ -124,6 +152,13 @@ public class ProgrammableCalculatorController {
         numberStack.push(operation.call(c1,c2));
         return true;
         
+    }
+    
+    private boolean takeComplexAndUnaryOperation( CallBackUnaryOperation operation) {
+        if(numberStack.size()<1)
+            return false;
+        numberStack.push(operation.call(numberStack.pop()));
+        return true;
     }
     
 
