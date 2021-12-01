@@ -51,8 +51,8 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         CalculatorPanel = new javax.swing.JPanel();
-        InputField = new javax.swing.JTextField();
-        ProcessInputButton = new javax.swing.JButton();
+        inputField = new javax.swing.JTextField();
+        processInputButton = new javax.swing.JButton();
         jButtonPlus = new javax.swing.JButton();
         jButtonMinus = new javax.swing.JButton();
         jButtonMultiply = new javax.swing.JButton();
@@ -63,9 +63,9 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         jButtonSwap = new javax.swing.JButton();
         jButtonSquareRoot = new javax.swing.JButton();
         jButtonInvertSign = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        jLabelStackOperations = new javax.swing.JLabel();
+        jLabelVisibleStack = new javax.swing.JLabel();
+        jLabelNumberOperations = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         visibleStack = new javax.swing.JList<String>();
 
@@ -77,23 +77,12 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         CalculatorPanel.setName("ProgrammableCalculator"); // NOI18N
         CalculatorPanel.setPreferredSize(new java.awt.Dimension(500, 500));
 
-        InputField.addActionListener(new java.awt.event.ActionListener() {
+        processInputButton.setBackground(new java.awt.Color(51, 51, 240));
+        processInputButton.setForeground(new java.awt.Color(255, 255, 255));
+        processInputButton.setText("Insert");
+        processInputButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                InputFieldActionPerformed(evt);
-            }
-        });
-
-        ProcessInputButton.setBackground(new java.awt.Color(51, 51, 240));
-        ProcessInputButton.setForeground(new java.awt.Color(255, 255, 255));
-        ProcessInputButton.setText("Insert");
-        ProcessInputButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ProcessInputButtonActionPerformed(evt);
-            }
-        });
-        ProcessInputButton.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                ProcessInputButtonKeyPressed(evt);
+                processInputButtonActionPerformed(evt);
             }
         });
 
@@ -187,15 +176,15 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Stack Operations");
+        jLabelStackOperations.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelStackOperations.setText("Stack Operations");
 
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Calculator's stack");
+        jLabelVisibleStack.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelVisibleStack.setText("Calculator's stack");
 
-        jLabel3.setBackground(new java.awt.Color(51, 51, 240));
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Number Operations");
+        jLabelNumberOperations.setBackground(new java.awt.Color(51, 51, 240));
+        jLabelNumberOperations.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelNumberOperations.setText("Number Operations");
 
         javax.swing.GroupLayout CalculatorPanelLayout = new javax.swing.GroupLayout(CalculatorPanel);
         CalculatorPanel.setLayout(CalculatorPanelLayout);
@@ -206,12 +195,12 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
                 .addGap(0, 712, Short.MAX_VALUE))
             .addGroup(CalculatorPanelLayout.createSequentialGroup()
                 .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelVisibleStack, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(CalculatorPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel3)
+                        .addComponent(jLabelNumberOperations)
                         .addGap(284, 284, 284)
                         .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
+                            .addComponent(jLabelStackOperations)
                             .addGroup(CalculatorPanelLayout.createSequentialGroup()
                                 .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(jButtonSwap, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -234,9 +223,9 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
                                 .addComponent(jButtonMultiply, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(33, 33, 33)
                                 .addComponent(jButtonDivision, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(InputField, javax.swing.GroupLayout.PREFERRED_SIZE, 627, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(inputField, javax.swing.GroupLayout.PREFERRED_SIZE, 627, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(ProcessInputButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(processInputButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36))
         );
         CalculatorPanelLayout.setVerticalGroup(
@@ -244,12 +233,12 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
             .addGroup(CalculatorPanelLayout.createSequentialGroup()
                 .addGap(47, 47, 47)
                 .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(InputField, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ProcessInputButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(inputField, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(processInputButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabelNumberOperations)
+                    .addComponent(jLabelStackOperations))
                 .addGap(5, 5, 5)
                 .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonPlus)
@@ -265,7 +254,7 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
                     .addComponent(jButtonInvertSign)
                     .addComponent(jButtonSwap))
                 .addGap(35, 35, 35)
-                .addComponent(jLabel2)
+                .addComponent(jLabelVisibleStack)
                 .addContainerGap())
         );
 
@@ -290,61 +279,58 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonDivisionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDivisionActionPerformed
-        // TODO add your handling code here:
+        checkOperationStatusAndUpdate("/");
     }//GEN-LAST:event_jButtonDivisionActionPerformed
 
     private void jButtonMultiplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMultiplyActionPerformed
-        // TODO add your handling code here:
+        checkOperationStatusAndUpdate("*");
     }//GEN-LAST:event_jButtonMultiplyActionPerformed
 
     private void ProcessInputButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ProcessInputButtonKeyPressed
         // TODO add your handling code here:
     }//GEN-LAST:event_ProcessInputButtonKeyPressed
 
-    private void ProcessInputButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProcessInputButtonActionPerformed
+    private void processInputButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_processInputButtonActionPerformed
         String message="";
         String input;
         input=this.checkInputField();
         if (input!=null){
-            message=controller.elaborateInput(input);
-            if(message!=null)
-            showMessageDialog(null,message);
+           checkOperationStatusAndUpdate(input);
         }
-        else
-            InputField.setText("");
-        update();
-    }//GEN-LAST:event_ProcessInputButtonActionPerformed
+        inputField.setText("");
+        
+    }//GEN-LAST:event_processInputButtonActionPerformed
 
     private void InputFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InputFieldActionPerformed
 
     }//GEN-LAST:event_InputFieldActionPerformed
 
     private void jButtonSwapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSwapActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_jButtonSwapActionPerformed
 
     private void jButtonPlusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPlusActionPerformed
-        // TODO add your handling code here:
+       checkOperationStatusAndUpdate("+");
     }//GEN-LAST:event_jButtonPlusActionPerformed
 
     private void jButtonMinusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMinusActionPerformed
-        // TODO add your handling code here:
+       checkOperationStatusAndUpdate("-");
     }//GEN-LAST:event_jButtonMinusActionPerformed
 
     private void jButtonSquareRootActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSquareRootActionPerformed
-        // TODO add your handling code here:
+       checkOperationStatusAndUpdate("sqrt");
     }//GEN-LAST:event_jButtonSquareRootActionPerformed
 
     private void jButtonInvertSignActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInvertSignActionPerformed
-        // TODO add your handling code here:
+       checkOperationStatusAndUpdate("+-");
     }//GEN-LAST:event_jButtonInvertSignActionPerformed
 
     private void jButtonClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearActionPerformed
-        // TODO add your handling code here:
+        checkOperationStatusAndUpdate("clear");
     }//GEN-LAST:event_jButtonClearActionPerformed
 
     private void jButtonDropActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDropActionPerformed
-        // TODO add your handling code here:
+        checkOperationStatusAndUpdate("drop");
     }//GEN-LAST:event_jButtonDropActionPerformed
 
     private void jButtonDupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDupActionPerformed
@@ -352,9 +338,10 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonDupActionPerformed
     public String checkInputField(){
      String input;
-     String numberWithNoSpace=InputField.getText().replaceAll("\\s","");
-     String inputText=InputField.getText().toLowerCase();
-     if(inputText.matches("[+{1}]") || inputText.matches("[-{1}]") || inputText.matches("[*{1}]") || inputText.matches("[/{1}]")) //check for an input that represents an operation
+     String numberWithNoSpace=inputField.getText().replaceAll("\\s","");
+     String inputText=inputField.getText().toLowerCase();
+     if(inputText.equals("+") || inputText.equals("-") || inputText.equals("*") || inputText.equals("/") || inputText.equals("sqrt") || inputText.equals("+-")
+             || inputText.equals("clear") || inputText.equals("drop"))                          //check for an input that represents an operation
          return inputText;
     
      else{
@@ -364,7 +351,7 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     }    
     
     public void setTextField(String text){
-            InputField.setText(text);
+            inputField.setText(text);
     }
      
     
@@ -417,6 +404,13 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         } 
     
     }
+    protected void checkOperationStatusAndUpdate(String input){
+        String message=controller.elaborateInput(input);
+        if(message!=null)
+            showMessageDialog(null,message);
+        else
+            update();
+    }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -454,8 +448,7 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel CalculatorPanel;
-    private javax.swing.JTextField InputField;
-    private javax.swing.JButton ProcessInputButton;
+    private javax.swing.JTextField inputField;
     private javax.swing.JButton jButtonClear;
     private javax.swing.JButton jButtonDivision;
     private javax.swing.JButton jButtonDrop;
@@ -466,10 +459,11 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     private javax.swing.JButton jButtonPlus;
     private javax.swing.JButton jButtonSquareRoot;
     private javax.swing.JButton jButtonSwap;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabelNumberOperations;
+    private javax.swing.JLabel jLabelStackOperations;
+    private javax.swing.JLabel jLabelVisibleStack;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton processInputButton;
     private javax.swing.JList<String> visibleStack;
     // End of variables declaration//GEN-END:variables
 }
