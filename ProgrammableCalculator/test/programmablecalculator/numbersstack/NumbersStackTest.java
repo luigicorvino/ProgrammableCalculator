@@ -75,6 +75,16 @@ public class NumbersStackTest {
     }
     
     
+    @Test
+    public void testClear(){
+        stack.push(new Complex(2,3));
+        stack.push(new Complex(4,5));
+        stack.push(new Complex(1,2));
+        assertEquals(stack.size(),3);
+        stack.clear();
+        assertTrue(stack.isEmpty());
+    }
+    
     
     
     

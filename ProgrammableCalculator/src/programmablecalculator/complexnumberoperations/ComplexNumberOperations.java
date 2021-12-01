@@ -57,12 +57,13 @@ public class ComplexNumberOperations {
     }
     
     
-    public static Complex sqrt(Complex c1){
-        return new Complex(1,1);
+    public static Complex sqrt(Complex c){
+        return c.sqrt();
     }
     
-    public static Complex invert(Complex c1){
-        return new Complex(1,1);
+    public static Complex invert(Complex c){
+        return new Complex(c.getReal()*-1,c.getImaginary()*-1);
+        //return multiply(c1,new Complex(-1,-1));
     }
     
     

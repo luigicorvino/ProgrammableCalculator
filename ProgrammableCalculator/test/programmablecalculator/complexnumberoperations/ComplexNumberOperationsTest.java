@@ -21,6 +21,7 @@ public class ComplexNumberOperationsTest {
     private final ComplexFormat format;
     public ComplexNumberOperationsTest() {
         NumberFormat nf=NumberFormat.getInstance(new Locale("en","US"));
+        nf.setMaximumFractionDigits(8);
         format=new ComplexFormat(nf);
     }
     
@@ -113,5 +114,59 @@ public class ComplexNumberOperationsTest {
         result = ComplexNumberOperations.multiply(c1, c2);
         assertEquals(expResult,format.format(result) );    
     }
+    
+    
+    @Test
+    public void testSqrt(){
+        System.out.println("sqrt");
+        //Test case 1
+        Complex c=new Complex(3.5,4);
+        Complex result=ComplexNumberOperations.sqrt(c);
+        String expResult = "2.09941336 + 0.95264708i";
+        assertEquals(expResult,format.format(result));
+        //Test case 2
+        c=new Complex(7,-2);
+        result=ComplexNumberOperations.sqrt(c);
+        expResult = "2.67208812 - 0.37423915i";
+        assertEquals(expResult,format.format(result));   
+        //Test case 3
+        c=new Complex(-0.5,10);
+        result=ComplexNumberOperations.sqrt(c);
+        expResult = "2.18088195 + 2.29265045i";
+        assertEquals(expResult,format.format(result));  
+        //Test case 4
+        c=new Complex(-15,-20.5);
+        result=ComplexNumberOperations.sqrt(c);
+        expResult = "2.28054507 - 4.49453955i";
+        assertEquals(expResult,format.format(result));  
+        
+    }
+    
+    @Test
+    public void testInvert(){
+        System.out.println("invert");
+        //Test case 1
+        Complex c=new Complex(3.5,4);
+        Complex result=ComplexNumberOperations.invert(c);
+        String expResult = "-3.5 - 4i";
+        assertEquals(expResult,format.format(result));
+        //Test case 2
+        c=new Complex(7,-2);
+        result=ComplexNumberOperations.invert(c);
+        expResult = "-7 + 2i";
+        assertEquals(expResult,format.format(result));   
+        //Test case 3
+        c=new Complex(-0.5,10);
+        result=ComplexNumberOperations.invert(c);
+        expResult = "0.5 - 10i";
+        assertEquals(expResult,format.format(result));  
+        //Test case 4
+        c=new Complex(-15,-20.5);
+        result=ComplexNumberOperations.invert(c);
+        expResult = "15 + 20.5i";
+        assertEquals(expResult,format.format(result));  
+        
+    }    
+    
     
 }
