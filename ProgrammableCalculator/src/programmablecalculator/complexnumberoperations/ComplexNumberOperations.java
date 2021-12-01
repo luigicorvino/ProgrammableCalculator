@@ -55,4 +55,16 @@ public class ComplexNumberOperations {
     public static Complex divide(Complex c1, Complex c2) {
         return c1.divide(c2);
     }
+    
+    
+    public static Complex sqrt(Complex c1){
+        return new Complex(1,1);
+    }
+    
+    public static Complex invert(Complex c1){
+        return new Complex(1,1);
+    }
+    
+    
+    
 }

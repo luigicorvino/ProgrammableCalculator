@@ -14,4 +14,24 @@ import org.apache.commons.math3.complex.Complex;
  */
 public class NumbersStack extends ArrayDeque<Complex>{
     //TODO: methods for numbers stack manipulation
+    
+    
+    
+   public void drop(){
+       return;
+   }
+   
+   
+   public void dup(){
+       return;
+   }
+   
+   
+   public void swap(){
+       return;
+   }
+   
+   public void over(){
+       return;
+   }
 }

@@ -311,7 +311,7 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
             showMessageDialog(null,message);
         }
         else
-        InputField.setText("");
+            InputField.setText("");
         update();
     }//GEN-LAST:event_ProcessInputButtonActionPerformed
 
