@@ -6,7 +6,6 @@
 
 package programmablecalculator.variablearray;
 
-import java.util.ArrayList;
 import org.apache.commons.math3.complex.Complex;
 
 /**
@@ -15,16 +14,31 @@ import org.apache.commons.math3.complex.Complex;
  */
 public class VariableArray{
     private static final int alphabetStart = 97;
-    private ArrayList<Complex> variables;
+    private Complex[] variables;
     
     public VariableArray(){
-        variables=new ArrayList<>(26);
+        variables = new Complex[26];
+    }
+    
+    public void insertValue(char variable, Complex value){
+       variables[getIndex(variable)] = value;
+    }
+    
+    public Complex getValue(char variable){
+        return variables[getIndex(variable)];
     }
     
     
     protected int getIndex(char variable){
         return (int) variable - alphabetStart;
     }
+
+    protected Complex[] getVariables(){
+        return variables;
+    }
+    
+    
+    
     
     
 }

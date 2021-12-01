@@ -6,7 +6,9 @@
 package programmablecalculator.variablearray;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Locale;
+import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.complex.ComplexFormat;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -20,7 +22,16 @@ import static org.junit.Assert.*;
  * @author luigi
  */
 public class VariableArrayTest {
-    public VariableArray variables;
+
+    private class VariableArrayStub extends VariableArray{
+    
+        public VariableArrayStub(){
+            super();
+        }
+    
+    }
+    
+    private VariableArrayStub variables;
     private final ComplexFormat format;
     public VariableArrayTest() {
         NumberFormat nf=NumberFormat.getInstance(new Locale("en","US"));
@@ -30,7 +41,7 @@ public class VariableArrayTest {
     
     @Before
     public void setUp() {
-        variables = new VariableArray();
+        variables = new VariableArrayStub();
     }
     
     @After
@@ -57,4 +68,40 @@ public class VariableArrayTest {
         // TODO review the generated test code and remove the default call to fail.
     }
     
+    @Test
+    public void insertValueTest(){
+        String variable = "a";
+        int index = variables.getIndex(variable.charAt(0));
+        Complex value = new Complex (5,4);
+        variables.insertValue(variable.charAt(0), value);
+        assertEquals("5 + 4i", format.format(variables.getVariables()[index]));
+        variable = "z";
+        index = variables.getIndex(variable.charAt(0));
+        value = new Complex (3,2);
+        variables.insertValue(variable.charAt(0), value);
+        assertEquals("3 + 2i", format.format(variables.getVariables()[index]));
+        variable = "m";
+        index = variables.getIndex(variable.charAt(0));
+        value = new Complex (8,-5);
+        variables.insertValue(variable.charAt(0), value);
+        assertEquals("8 - 5i", format.format(variables.getVariables()[index]));
+    }
+    
+    @Test
+    public void getValueTest(){
+        String variable = "a";
+        Complex value = new Complex (5,4);
+        variables.insertValue(variable.charAt(0), value);
+        assertEquals("5 + 4i",format.format(variables.getValue(variable.charAt(0))));
+
+        variable = "z";
+        value = new Complex (5,4);
+        variables.insertValue(variable.charAt(0), value);
+        assertEquals("5 + 4i",format.format(variables.getValue(variable.charAt(0))));
+
+        variable = "m";
+        value = new Complex (8,-5);
+        variables.insertValue(variable.charAt(0), value);
+        assertEquals("8 - 5i",format.format(variables.getValue(variable.charAt(0))));
+    }
 }
