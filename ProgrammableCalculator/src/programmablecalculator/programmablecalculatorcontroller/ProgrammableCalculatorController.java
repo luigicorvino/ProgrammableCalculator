@@ -9,9 +9,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Callable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.math3.complex.*;
 import java.util.regex.*;
 import programmablecalculator.complexnumberoperations.ComplexNumberOperations;
+import programmablecalculator.numbersstack.NotEnoughElementsException;
 import programmablecalculator.numbersstack.NumbersStack;
 /**
  *
@@ -112,13 +115,45 @@ public class ProgrammableCalculatorController {
             
             case "+-": {
                 if (takeComplexAndUnaryOperation(new CallBackInvertSign())== false)
-                   result = "There isn't one complex numbers to divide ";
+                   result = "There isn't one complex numbers to invert sign ";
                 break;
             }
             case "sqrt": {
                 if (takeComplexAndUnaryOperation(new CallBackSqrt())== false)
-                   result = "There isn't one complex numbers to divide ";
+                   result = "There isn't one complex numbers to sqrt ";
                 break;
+            }
+            
+            case "drop": {
+                if (numberStack.size() < 1)
+                    return result = "There isn't one complex numbers to drop ";
+                numberStack.drop();
+            }
+            
+            case "dup": {
+                if (numberStack.size() < 1)
+                    return result = "There isn't one complex numbers to dup ";
+                numberStack.dup();
+            }
+            
+            case "swap": {
+            try { 
+                if (numberStack.size() < 2)
+                    return result = "There isn't 2 complex numbers to swap ";
+                numberStack.swap();
+            } catch (NotEnoughElementsException ex) {
+                Logger.getLogger(ProgrammableCalculatorController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            }
+            
+            case "over": {
+            try {
+                if (numberStack.size() < 2)
+                    return result = "There isn't 2 complex numbers to over ";
+                numberStack.over();
+            } catch (NotEnoughElementsException ex) {
+                Logger.getLogger(ProgrammableCalculatorController.class.getName()).log(Level.SEVERE, null, ex);
+            }
             }
             
             default: {

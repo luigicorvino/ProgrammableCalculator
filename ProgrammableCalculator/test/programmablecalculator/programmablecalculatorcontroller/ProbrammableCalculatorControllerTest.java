@@ -238,10 +238,11 @@ public class ProbrammableCalculatorControllerTest {
         
     }
     
+    @Test
     public void testDoInvertSign() {
         Complex c;
         
-        assertEquals("There isn't one complex numbers to divide ",controller.elaborateInput("+-"));
+        assertEquals("There isn't one complex numbers to invert sign ",controller.elaborateInput("+-"));
         controller.elaborateInput("20 + 4i");
         controller.elaborateInput("+-");
         c = controller.topNumberStack();
@@ -250,7 +251,7 @@ public class ProbrammableCalculatorControllerTest {
         controller.elaborateInput("0 + 50i");
         controller.elaborateInput("+-");
         c = controller.topNumberStack();
-        assertEquals(format.format(c), "0 - 50i");
+        assertEquals(format.format(c), "-0 - 50i");
         
         controller.elaborateInput("-4");
         controller.elaborateInput("+-");
@@ -260,7 +261,7 @@ public class ProbrammableCalculatorControllerTest {
         controller.elaborateInput("0 - 9i");
         controller.elaborateInput("+-");
         c = controller.topNumberStack();
-        assertEquals(format.format(c), "0 + 9i");
+        assertEquals(format.format(c), "-0 + 9i");
         
         controller.elaborateInput("12 - 9i");
         controller.elaborateInput("+-");
@@ -268,10 +269,11 @@ public class ProbrammableCalculatorControllerTest {
         assertEquals(format.format(c), "-12 + 9i");
     }
     
+    @Test
     public void testDoSqrt() {
         Complex c;
         
-        assertEquals("There isn't one complex numbers to divide ",controller.elaborateInput("sqrt"));
+        assertEquals("There isn't one complex numbers to sqrt ",controller.elaborateInput("sqrt"));
         controller.elaborateInput("25 + 4i");
         controller.elaborateInput("sqrt");
         c = controller.topNumberStack();
@@ -280,13 +282,15 @@ public class ProbrammableCalculatorControllerTest {
         controller.elaborateInput("21 - 6i");
         controller.elaborateInput("sqrt");
         c = controller.topNumberStack();
-        assertEquals(format.format(c), "4.62819239 - 0.64820122i");
+        assertEquals(format.format(c), "4.62819239 - 0.64820123i");
         
         controller.elaborateInput("-4");
         controller.elaborateInput("sqrt");
         c = controller.topNumberStack();
-        assertEquals(format.format(c), "2i");
+        assertEquals(format.format(c), "0 + 2i");
     }
+    
+   
     // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:
     //
