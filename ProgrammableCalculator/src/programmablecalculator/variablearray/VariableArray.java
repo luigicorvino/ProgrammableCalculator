@@ -46,5 +46,9 @@ public class VariableArray{
         return Character.isLetter(variable);
     }
     
-    
+    public VariableArray copy(){
+        VariableArray copy = new VariableArray();
+        copy.variables = this.variables.clone();
+        return copy;
+    }
 }

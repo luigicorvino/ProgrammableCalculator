@@ -5,6 +5,7 @@
  */
 package programmablecalculator.savevariablestack;
 
+import java.util.ArrayDeque;
 import org.apache.commons.math3.complex.Complex;
 import programmablecalculator.variablearray.NotACharacterException;
 import programmablecalculator.variablearray.VariableArray;
@@ -14,15 +15,26 @@ import programmablecalculator.variablearray.VariableArray;
  * @author luigi
  */
 public class SaveVariableStack {
-  //  private ArrayDeque<vVariableArray>
+    private ArrayDeque<VariableArray> variableStack;
     private VariableArray currentArray;
 
     public SaveVariableStack( ) {
+        variableStack = new ArrayDeque<>();
         currentArray = new VariableArray();
     }
 
 
     
+    public void save(){
+        variableStack.push(currentArray.copy());
+    }
+    
+    
+    public void restore(){
+        currentArray = variableStack.pop();
+    }
+
+
     
     public void insertValue(char variable, Complex value) throws NotACharacterException{
        currentArray.insertValue(variable, value);
@@ -38,4 +50,7 @@ public class SaveVariableStack {
         return currentArray;
     }
     
+    protected ArrayDeque<VariableArray> getVariableStack() {
+        return variableStack;
+    }
 }

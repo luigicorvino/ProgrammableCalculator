@@ -79,4 +79,58 @@ public class SaveVariableStackTest {
     }
 
     
+    @Test
+    public void testSave() throws NotACharacterException{
+        System.out.println("save");
+        variableStack.insertValue("a".charAt(0), new Complex (1,2));
+        variableStack.insertValue("z".charAt(0), new Complex (5,6));
+        variableStack.insertValue("m".charAt(0), new Complex (3,4));
+        variableStack.save();
+        assertEquals("1 + 2i",format.format(variableStack.getVariableStack().getFirst().getValue("a".charAt(0))));
+        assertEquals("5 + 6i",format.format(variableStack.getVariableStack().getFirst().getValue("z".charAt(0))));
+        assertEquals("3 + 4i",format.format(variableStack.getVariableStack().getFirst().getValue("m".charAt(0))));
+        variableStack.insertValue("a".charAt(0), new Complex (7,8));
+        variableStack.insertValue("z".charAt(0), new Complex (11,12));
+        variableStack.insertValue("m".charAt(0), new Complex (9,10));
+        variableStack.save();
+        assertEquals("7 + 8i",format.format(variableStack.getVariableStack().getFirst().getValue("a".charAt(0))));
+        assertEquals("11 + 12i",format.format(variableStack.getVariableStack().getFirst().getValue("z".charAt(0))));
+        assertEquals("9 + 10i",format.format(variableStack.getVariableStack().getFirst().getValue("m".charAt(0))));
+        variableStack.getVariableStack().pop();
+        assertEquals("1 + 2i",format.format(variableStack.getVariableStack().getFirst().getValue("a".charAt(0))));
+        assertEquals("5 + 6i",format.format(variableStack.getVariableStack().getFirst().getValue("z".charAt(0))));
+        assertEquals("3 + 4i",format.format(variableStack.getVariableStack().getFirst().getValue("m".charAt(0))));
+        variableStack.getVariableStack().pop();
+        assertTrue(variableStack.getVariableStack().isEmpty());
+    }
+    
+    
+    
+    @Test
+    public void testRestore() throws NotACharacterException {
+        System.out.println("restore");
+        variableStack.insertValue("a".charAt(0), new Complex (1,2));
+        variableStack.insertValue("z".charAt(0), new Complex (5,6));
+        variableStack.insertValue("m".charAt(0), new Complex (3,4));
+        variableStack.save();
+        variableStack.insertValue("a".charAt(0), new Complex (7,8));
+        variableStack.insertValue("z".charAt(0), new Complex (11,12));
+        variableStack.insertValue("m".charAt(0), new Complex (9,10));
+        variableStack.save();
+        variableStack.insertValue("a".charAt(0), new Complex (13,14));
+        variableStack.insertValue("z".charAt(0), new Complex (17,18));
+        variableStack.insertValue("m".charAt(0), new Complex (15,16));
+        assertEquals("13 + 14i",format.format(variableStack.getValue("a".charAt(0))));
+        assertEquals("17 + 18i",format.format(variableStack.getValue("z".charAt(0))));
+        assertEquals("15 + 16i",format.format(variableStack.getValue("m".charAt(0))));
+        variableStack.restore();
+        assertEquals("7 + 8i",format.format(variableStack.getValue("a".charAt(0))));
+        assertEquals("11 + 12i",format.format(variableStack.getValue("z".charAt(0))));
+        assertEquals("9 + 10i",format.format(variableStack.getValue("m".charAt(0))));
+        variableStack.restore();
+        assertEquals("1 + 2i",format.format(variableStack.getValue("a".charAt(0))));
+        assertEquals("5 + 6i",format.format(variableStack.getValue("z".charAt(0))));
+        assertEquals("3 + 4i",format.format(variableStack.getValue("m".charAt(0))));
+        assertTrue(variableStack.getVariableStack().isEmpty());
+    }
 }

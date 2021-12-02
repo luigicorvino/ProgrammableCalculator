@@ -52,6 +52,13 @@ public class VariableArrayTest {
      * Test of getIndex method, of class VariableArray.
      * @throws programmablecalculator.variablearray.NotACharacterException
      */
+    @Test (expected=NotACharacterException.class)
+    public void getIndexExceptionTest() throws NotACharacterException{
+        variables.getIndex("-".charAt(0));
+    }    
+       
+    
+ 
     @Test
     public void testGetIndex() throws NotACharacterException{
         String variable = "a";
@@ -68,6 +75,12 @@ public class VariableArrayTest {
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
     }
+    
+    @Test (expected=NotACharacterException.class)
+    public void insertValueExceptionTest() throws NotACharacterException{
+        variables.insertValue("-".charAt(0),new Complex(1,1));
+    }    
+    
     
     @Test
     public void insertValueTest() throws NotACharacterException{
@@ -87,6 +100,13 @@ public class VariableArrayTest {
         variables.insertValue(variable.charAt(0), value);
         assertEquals("8 - 5i", format.format(variables.getVariables()[index]));
     }
+    
+    
+    @Test (expected=NotACharacterException.class)
+    public void getValueExceptionTest() throws NotACharacterException{
+        variables.getValue("-".charAt(0));
+    }
+    
     
     @Test
     public void getValueTest() throws NotACharacterException{
