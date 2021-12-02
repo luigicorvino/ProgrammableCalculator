@@ -405,6 +405,7 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         ComplexFormat format;
         NumberFormat nf= NumberFormat.getInstance(new Locale("en","US"));
         format=new ComplexFormat(nf);
+        nf.setMaximumFractionDigits(8);
         visibleStackModel.clear();
         Iterator<Complex> stack = controller.getNumbersStack();
         int i = 0;
