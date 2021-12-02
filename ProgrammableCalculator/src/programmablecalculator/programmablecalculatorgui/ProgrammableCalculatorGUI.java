@@ -9,6 +9,7 @@ package programmablecalculator.programmablecalculatorgui;
  *
  * @author bad-b
  */
+import java.awt.event.KeyEvent;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import static javax.swing.JOptionPane.showMessageDialog;
@@ -22,22 +23,27 @@ import org.apache.commons.math3.complex.ComplexFormat;
 public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     private DefaultListModel<String> visibleStackModel;
     public ProgrammableCalculatorController controller;
-    private final String incompatibleInput;
+    
     private final String bothParts;
     private final String onlyRealPart;
     private final String onlyImmaginaryPart;
     /**
      * Creates new form ProgrammableCalculatorGUI
      */
+    /*if find bothParts  
+    matchergroup(0) contains a letter -> error
+    matchergroup(1) contains a letter except i -> error
+    
+    */
+    
     public ProgrammableCalculatorGUI() {
         visibleStackModel=new DefaultListModel<>();
         initComponents();
         visibleStack.setModel(visibleStackModel);
         controller= new ProgrammableCalculatorController();
-        incompatibleInput="(^[a-z0-9]+\\.?[a-z 0-9]+)([a-z0-9]?\\.?[^i]+)$";
-        bothParts="(^[-]?[0-9]+\\.?[0-9]*)([-|+]+[0-9]*\\.?[0-9]*)[i$]+";
-        onlyRealPart="([-]?[0-9]+\\.?[0-9]*)$";
-        onlyImmaginaryPart="([-]?[0-9]*\\.?[0-9]*)[i$]+";
+        bothParts="(^[-]?\\d+\\.?\\d*)([-|+]+\\d*\\.?\\d*)[i$]+";
+        onlyRealPart="^[-]?\\d+\\.?\\d*$";
+        onlyImmaginaryPart="^[-]?\\d*\\.?\\d*[i{1}$]+";
         
     }
 
@@ -66,6 +72,7 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         jLabelStackOperations = new javax.swing.JLabel();
         jLabelVisibleStack = new javax.swing.JLabel();
         jLabelNumberOperations = new javax.swing.JLabel();
+        jButtonOver = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         visibleStack = new javax.swing.JList<String>();
 
@@ -76,6 +83,12 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         CalculatorPanel.setToolTipText("");
         CalculatorPanel.setName("ProgrammableCalculator"); // NOI18N
         CalculatorPanel.setPreferredSize(new java.awt.Dimension(500, 500));
+
+        inputField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                inputFieldKeyPressed(evt);
+            }
+        });
 
         processInputButton.setBackground(new java.awt.Color(51, 51, 240));
         processInputButton.setForeground(new java.awt.Color(255, 255, 255));
@@ -186,6 +199,15 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         jLabelNumberOperations.setForeground(new java.awt.Color(255, 255, 255));
         jLabelNumberOperations.setText("Number Operations");
 
+        jButtonOver.setBackground(new java.awt.Color(51, 51, 240));
+        jButtonOver.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonOver.setText("OVER");
+        jButtonOver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonOverActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout CalculatorPanelLayout = new javax.swing.GroupLayout(CalculatorPanel);
         CalculatorPanel.setLayout(CalculatorPanelLayout);
         CalculatorPanelLayout.setHorizontalGroup(
@@ -206,9 +228,12 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
                                     .addComponent(jButtonSwap, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jButtonClear, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(25, 25, 25)
-                                .addComponent(jButtonDrop)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButtonDup)))))
+                                .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(CalculatorPanelLayout.createSequentialGroup()
+                                        .addComponent(jButtonDrop)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jButtonDup))
+                                    .addComponent(jButtonOver))))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(CalculatorPanelLayout.createSequentialGroup()
                 .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -252,7 +277,8 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
                 .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonSquareRoot)
                     .addComponent(jButtonInvertSign)
-                    .addComponent(jButtonSwap))
+                    .addComponent(jButtonSwap)
+                    .addComponent(jButtonOver))
                 .addGap(35, 35, 35)
                 .addComponent(jLabelVisibleStack)
                 .addContainerGap())
@@ -287,7 +313,7 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonMultiplyActionPerformed
 
     private void ProcessInputButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ProcessInputButtonKeyPressed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_ProcessInputButtonKeyPressed
 
     private void processInputButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_processInputButtonActionPerformed
@@ -306,7 +332,7 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_InputFieldActionPerformed
 
     private void jButtonSwapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSwapActionPerformed
-        
+        checkOperationStatusAndUpdate("swap");
     }//GEN-LAST:event_jButtonSwapActionPerformed
 
     private void jButtonPlusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPlusActionPerformed
@@ -334,14 +360,32 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonDropActionPerformed
 
     private void jButtonDupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDupActionPerformed
-        // TODO add your handling code here:
+        checkOperationStatusAndUpdate("dup");
     }//GEN-LAST:event_jButtonDupActionPerformed
-    public String checkInputField(){
+
+    private void inputFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inputFieldKeyPressed
+        if(evt.getKeyCode()== KeyEvent.VK_ENTER){
+             String message="";
+             String input;
+             input=checkInputField();
+            if (input!=null){
+               checkOperationStatusAndUpdate(input);
+        }
+        inputField.setText("");
+        }
+            
+    }//GEN-LAST:event_inputFieldKeyPressed
+
+    private void jButtonOverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOverActionPerformed
+       checkOperationStatusAndUpdate("over");
+    }//GEN-LAST:event_jButtonOverActionPerformed
+    protected String checkInputField(){
      String input;
      String numberWithNoSpace=inputField.getText().replaceAll("\\s","");
      String inputText=inputField.getText().toLowerCase();
      if(inputText.equals("+") || inputText.equals("-") || inputText.equals("*") || inputText.equals("/") || inputText.equals("sqrt") || inputText.equals("+-")
-             || inputText.equals("clear") || inputText.equals("drop"))                          //check for an input that represents an operation
+             || inputText.equals("clear") || inputText.equals("drop") || inputText.equals("dup") || inputText.equals("over") 
+             || inputText.equals("swap"))   //check for an input that represents an operation
          return inputText;
     
      else{
@@ -351,11 +395,13 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     }    
     
     public void setTextField(String text){
-            inputField.setText(text);
+        inputField.setText(text);
     }
-     
+    public DefaultListModel getModel(){
+        return visibleStackModel;
+    }
     
-    private void update(){
+    protected void update(){
         ComplexFormat format;
         NumberFormat nf= NumberFormat.getInstance(new Locale("en","US"));
         format=new ComplexFormat(nf);
@@ -368,36 +414,43 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         }
     }
     private String checkNumberProcess(String inputText){
-        Pattern inputCheck =Pattern.compile(incompatibleInput); //alphanumeric input sequence that is not accepted by the calculator
+        Pattern inputCheck=Pattern.compile(bothParts); //input sequence of a complex number with both real and immaginary part
         Matcher inputMatcher=inputCheck.matcher(inputText);
-        if(inputMatcher.find()){
-            showMessageDialog(null,"Errore nel formato del numero o dell'operazione");
-            return null;
-        }
-        inputCheck=Pattern.compile(bothParts); //input sequence of a complex number with both real and immaginary part
-        inputMatcher=inputCheck.matcher(inputText);
         if(inputMatcher.find()) {
-            if(inputText.contains("+i") || inputText.contains("-i")){
-                return inputText.replaceAll("[i$]", "1.0i"); //modify the input in order to get the right format
-            }else{
-                return inputText;
-            } 
-        }
+                 if(inputText.contains("+i") || inputText.contains("-i")){
+                     return inputText.replaceAll("[i$]", "1.0i"); //modify the input in order to get the right format
+                 }else{
+                     return inputText;
+                 }   
+            
+        }    
         inputCheck=Pattern.compile(onlyRealPart); //input sequence of a complex number with only real part
         inputMatcher=inputCheck.matcher(inputText);
         if(inputMatcher.find())
             return inputText;
+        
         inputCheck=Pattern.compile(onlyImmaginaryPart); // input sequence of a complex number with only immaginary part
         inputMatcher=inputCheck.matcher(inputText);
-        if (inputMatcher.find())
-            if(inputText.contains("+i") || inputText.contains("-i"))
-                return inputText.replaceAll("[i$]","1.0i");
-            else{
+        if (inputMatcher.find()){
+            if(inputText.equals("i")){
+                String input=inputText.replace("i","1.0i");
+                return "0.0+" + input;
+            }
+            else if(inputText.equals("-i")){
+                    String input=inputText.replace("i","1.0i");
+                    return "0.0" + input;
+            }    
+            else if( inputText.contains("+i") || inputText.contains("-i")){
+                return inputText.replace("i","1.0i");
+            
+            }
+            else
                 if(inputText.startsWith("-"))
-                   return "0.0 "+inputText; // modify the string input based on his sign in order to get the right format
+                    return "0.0"+inputText;
                 else
-                   return "0.0 + "+ inputText;
-         }
+                    return "0.0+"+inputText;
+            
+        }    
         else{
             showMessageDialog(null,"Errore nel formato del numero o dell'operazione");
             return null;
@@ -456,6 +509,7 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     private javax.swing.JButton jButtonInvertSign;
     private javax.swing.JButton jButtonMinus;
     private javax.swing.JButton jButtonMultiply;
+    private javax.swing.JButton jButtonOver;
     private javax.swing.JButton jButtonPlus;
     private javax.swing.JButton jButtonSquareRoot;
     private javax.swing.JButton jButtonSwap;

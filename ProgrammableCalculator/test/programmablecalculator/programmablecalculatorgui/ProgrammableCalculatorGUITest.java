@@ -5,6 +5,7 @@
  */
 package programmablecalculator.programmablecalculatorgui;
 
+import javax.swing.DefaultListModel;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -18,9 +19,11 @@ import programmablecalculator.programmablecalculatorgui.ProgrammableCalculatorGU
  */
 
 public class ProgrammableCalculatorGUITest {
-    public ProgrammableCalculatorGUI calculator=new ProgrammableCalculatorGUI();
+    private ProgrammableCalculatorGUI calculator;
+    private DefaultListModel<String> model;
     public  ProgrammableCalculatorGUITest(){
-        
+        calculator=new ProgrammableCalculatorGUI();
+        model=new DefaultListModel<>();
     }
   
     @Test 
@@ -45,7 +48,7 @@ public class ProgrammableCalculatorGUITest {
         calculator.setTextField("50u");
         assertFalse("50u".equals(calculator.checkInputField()));
         calculator.setTextField("50.0i");
-        assertTrue("0.0 + 50.0i".equals(calculator.checkInputField()));
+        assertTrue("0.0+50.0i".equals(calculator.checkInputField()));
         calculator.setTextField("g50.0i");
         assertFalse("g50.0i".equals(calculator.checkInputField()));
         calculator.setTextField("50g.0i");
@@ -60,7 +63,48 @@ public class ProgrammableCalculatorGUITest {
         assertFalse("50.0+1.0gi".equals(calculator.checkInputField()));
         
 }
-        
+ 
+    @Test
+ public void checkOperationStatusAndUpdate(){
+     
+     calculator.checkOperationStatusAndUpdate("1+2i");
+     model=calculator.getModel();
+     assertTrue(model.get(0).equals("1 + 2i"));
+     calculator.checkOperationStatusAndUpdate("1-2i");
+     assertTrue(model.get(0).equals("1 - 2i"));
+     calculator.checkOperationStatusAndUpdate("*");
+     assertTrue(model.get(0).equals("5"));
+     calculator.checkOperationStatusAndUpdate("7-2i");
+     calculator.checkOperationStatusAndUpdate("/");
+     assertTrue(model.get(0).equals("0.66 + 0.189i"));
+     calculator.checkOperationStatusAndUpdate("1+2i");
+     calculator.checkOperationStatusAndUpdate("+");
+     assertTrue(model.get(0).equals("1.66 + 2.189i"));
+     calculator.checkOperationStatusAndUpdate("1+2i");
+     calculator.checkOperationStatusAndUpdate("-");
+     assertTrue(model.get(0).equals("0.66 + 0.189i"));
+     calculator.checkOperationStatusAndUpdate("+-");
+     assertTrue(model.get(0).equals("-0.66 - 0.189i"));
+     calculator.checkOperationStatusAndUpdate("sqrt");
+     assertTrue(model.get(0).equals("0.115 - 0.821i"));
+     //calculator.checkOperationStatusAndUpdate("clear");
+     //assertTrue(model.isEmpty());
+     calculator.checkOperationStatusAndUpdate("1+2i");
+     calculator.checkOperationStatusAndUpdate("drop");
+     assertFalse(model.get(0).equals("1+2i"));
+     calculator.checkOperationStatusAndUpdate("1+2i");
+     calculator.checkOperationStatusAndUpdate("dup");
+     assertTrue(model.get(0).equals("1 + 2i"));
+     assertTrue(model.get(1).equals("1 + 2i"));
+     calculator.checkOperationStatusAndUpdate("1-2i");
+     calculator.checkOperationStatusAndUpdate("swap");
+     assertTrue(model.get(0).equals("1 + 2i"));
+     calculator.checkOperationStatusAndUpdate("over");
+     assertTrue(model.get(0).equals("1 - 2i"));
+     
+     
+     
+ }
         
     
 }

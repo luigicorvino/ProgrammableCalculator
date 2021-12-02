@@ -72,9 +72,14 @@
                                       <Component id="jButtonClear" alignment="0" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
-                                  <Component id="jButtonDrop" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="jButtonDup" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Component id="jButtonDrop" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="jButtonDup" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Component id="jButtonOver" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                           </Group>
                       </Group>
@@ -133,6 +138,7 @@
                       <Component id="jButtonSquareRoot" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jButtonInvertSign" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jButtonSwap" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonOver" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
                   <Component id="jLabelVisibleStack" min="-2" max="-2" attributes="0"/>
@@ -143,6 +149,9 @@
       </Layout>
       <SubComponents>
         <Component class="javax.swing.JTextField" name="inputField">
+          <Events>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="inputFieldKeyPressed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="processInputButton">
           <Properties>
@@ -324,6 +333,20 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Number Operations"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButtonOver">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="f0" green="33" red="33" type="rgb"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="OVER"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonOverActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
