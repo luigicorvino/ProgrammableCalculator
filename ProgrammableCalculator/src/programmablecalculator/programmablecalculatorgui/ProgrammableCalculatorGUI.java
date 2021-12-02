@@ -30,15 +30,14 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     /**
      * Creates new form ProgrammableCalculatorGUI
      */
-    /*if find bothParts  
-    matchergroup(0) contains a letter -> error
-    matchergroup(1) contains a letter except i -> error
     
-    */
     
     public ProgrammableCalculatorGUI() {
+        
+        
         visibleStackModel=new DefaultListModel<>();
         initComponents();
+        jFrame1.setVisible(false);
         visibleStack.setModel(visibleStackModel);
         controller= new ProgrammableCalculatorController();
         bothParts="(^[-]?\\d+\\.?\\d*)([-|+]+\\d*\\.?\\d*)[i$]+";
@@ -56,6 +55,13 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jFrame1 = new javax.swing.JFrame();
+        jPanelInputChoice = new javax.swing.JPanel();
+        jButtonPerformChoice = new javax.swing.JButton();
+        jCheckBoxAddNumber = new javax.swing.JCheckBox();
+        jCheckBoxSubtract = new javax.swing.JCheckBox();
+        jLabelInputChoice = new javax.swing.JLabel();
+        buttonGroupCheckBoxes = new javax.swing.ButtonGroup();
         CalculatorPanel = new javax.swing.JPanel();
         inputField = new javax.swing.JTextField();
         processInputButton = new javax.swing.JButton();
@@ -75,6 +81,77 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         jButtonOver = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         visibleStack = new javax.swing.JList<String>();
+
+        jFrame1.setBounds(new java.awt.Rectangle(0, 0, 0, 0));
+
+        jPanelInputChoice.setBackground(new java.awt.Color(51, 51, 240));
+        jPanelInputChoice.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        jPanelInputChoice.setToolTipText("");
+        jPanelInputChoice.setName("InputChoice"); // NOI18N
+
+        jButtonPerformChoice.setBackground(new java.awt.Color(51, 51, 240));
+        jButtonPerformChoice.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonPerformChoice.setText("Perform");
+        jButtonPerformChoice.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPerformChoiceActionPerformed(evt);
+            }
+        });
+
+        buttonGroupCheckBoxes.add(jCheckBoxAddNumber);
+        jCheckBoxAddNumber.setForeground(new java.awt.Color(255, 255, 255));
+        jCheckBoxAddNumber.setText("Add the complex number -i to the stack");
+
+        buttonGroupCheckBoxes.add(jCheckBoxSubtract);
+        jCheckBoxSubtract.setForeground(new java.awt.Color(255, 255, 255));
+        jCheckBoxSubtract.setText("Subtract the last value of the stack from the variable");
+
+        jLabelInputChoice.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelInputChoice.setText("In order to avoid conflicts, choose the operation to perform:");
+
+        javax.swing.GroupLayout jPanelInputChoiceLayout = new javax.swing.GroupLayout(jPanelInputChoice);
+        jPanelInputChoice.setLayout(jPanelInputChoiceLayout);
+        jPanelInputChoiceLayout.setHorizontalGroup(
+            jPanelInputChoiceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelInputChoiceLayout.createSequentialGroup()
+                .addGroup(jPanelInputChoiceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelInputChoiceLayout.createSequentialGroup()
+                        .addGap(169, 169, 169)
+                        .addComponent(jButtonPerformChoice))
+                    .addGroup(jPanelInputChoiceLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jCheckBoxSubtract))
+                    .addGroup(jPanelInputChoiceLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jCheckBoxAddNumber))
+                    .addComponent(jLabelInputChoice))
+                .addContainerGap(81, Short.MAX_VALUE))
+        );
+        jPanelInputChoiceLayout.setVerticalGroup(
+            jPanelInputChoiceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelInputChoiceLayout.createSequentialGroup()
+                .addComponent(jLabelInputChoice, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jCheckBoxAddNumber)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addComponent(jCheckBoxSubtract, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonPerformChoice)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
+        jFrame1.getContentPane().setLayout(jFrame1Layout);
+        jFrame1Layout.setHorizontalGroup(
+            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jFrame1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jPanelInputChoice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jFrame1Layout.setVerticalGroup(
+            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanelInputChoice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ProgrammableCalculator");
@@ -216,24 +293,21 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
                 .addComponent(jButtonSquareRoot, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 712, Short.MAX_VALUE))
             .addGroup(CalculatorPanelLayout.createSequentialGroup()
+                .addComponent(jLabelNumberOperations)
+                .addGap(284, 284, 284)
                 .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelVisibleStack, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelStackOperations)
                     .addGroup(CalculatorPanelLayout.createSequentialGroup()
-                        .addComponent(jLabelNumberOperations)
-                        .addGap(284, 284, 284)
+                        .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jButtonSwap, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButtonClear, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(25, 25, 25)
                         .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelStackOperations)
                             .addGroup(CalculatorPanelLayout.createSequentialGroup()
-                                .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jButtonSwap, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButtonClear, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(25, 25, 25)
-                                .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(CalculatorPanelLayout.createSequentialGroup()
-                                        .addComponent(jButtonDrop)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jButtonDup))
-                                    .addComponent(jButtonOver))))))
+                                .addComponent(jButtonDrop)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButtonDup))
+                            .addComponent(jButtonOver))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(CalculatorPanelLayout.createSequentialGroup()
                 .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -252,6 +326,9 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(processInputButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36))
+            .addGroup(CalculatorPanelLayout.createSequentialGroup()
+                .addComponent(jLabelVisibleStack, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         CalculatorPanelLayout.setVerticalGroup(
             CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -321,10 +398,14 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         String input;
         input=this.checkInputField();
         if (input!=null){
-           checkOperationStatusAndUpdate(input);
+           if(input.equals("-i")){
+               jFrame1.setVisible(true);
+               jFrame1.setSize(426,240);
+            }
+        checkOperationStatusAndUpdate(input);
         }
         inputField.setText("");
-        
+       
     }//GEN-LAST:event_processInputButtonActionPerformed
 
     private void InputFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InputFieldActionPerformed
@@ -365,20 +446,38 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
 
     private void inputFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inputFieldKeyPressed
         if(evt.getKeyCode()== KeyEvent.VK_ENTER){
-             String message="";
-             String input;
-             input=checkInputField();
-            if (input!=null){
-               checkOperationStatusAndUpdate(input);
+            String message="";
+            String input;
+            input=checkInputField();
+            if(input!=null){
+                if(input.equals("-i")){
+                jFrame1.setVisible(true);
+                jFrame1.setSize(426,240);
+            }
+            checkOperationStatusAndUpdate(input);
         }
         inputField.setText("");
         }
-            
+        
     }//GEN-LAST:event_inputFieldKeyPressed
 
     private void jButtonOverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOverActionPerformed
        checkOperationStatusAndUpdate("over");
     }//GEN-LAST:event_jButtonOverActionPerformed
+
+    private void jButtonPerformChoiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPerformChoiceActionPerformed
+        String input;
+        if(jCheckBoxAddNumber.isSelected()){
+            input="-i".replace("i","1.0i");
+            checkOperationStatusAndUpdate("0.0"+input);
+        }
+        if(jCheckBoxSubtract.isSelected()) {
+           checkOperationStatusAndUpdate("-i");
+        }
+        inputField.setText("");
+        jFrame1.dispose();
+        
+    }//GEN-LAST:event_jButtonPerformChoiceActionPerformed
     protected String checkInputField(){
      String input;
      String numberWithNoSpace=inputField.getText().replaceAll("\\s","");
@@ -387,7 +486,9 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
              || inputText.equals("clear") || inputText.equals("drop") || inputText.equals("dup") || inputText.equals("over") 
              || inputText.equals("swap"))   //check for an input that represents an operation
          return inputText;
-    
+     else if(checkVariableOperations(inputText)!=null){
+         return inputText;
+     }
      else{
          input=checkNumberProcess(inputText);
          return input;
@@ -437,10 +538,7 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
                 String input=inputText.replace("i","1.0i");
                 return "0.0+" + input;
             }
-            else if(inputText.equals("-i")){
-                    String input=inputText.replace("i","1.0i");
-                    return "0.0" + input;
-            }    
+            
             else if( inputText.contains("+i") || inputText.contains("-i")){
                 return inputText.replace("i","1.0i");
             
@@ -457,6 +555,13 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
             return null;
         } 
     
+    }
+    protected String checkVariableOperations(String inputText){
+        if(inputText.matches("^\\>{1}[a-z]{1}$")|| inputText.matches("^\\<{1}[a-z]{1}$")|| inputText.matches("^\\+{1}[a-z]{1}$") 
+           || inputText.matches("^\\-{1}[a-z]{1}$"))
+            return inputText;
+        else
+            return null;
     }
     protected void checkOperationStatusAndUpdate(String input){
         String message=controller.elaborateInput(input);
@@ -493,6 +598,7 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ProgrammableCalculatorGUI().setVisible(true);
+                
             }
         });
     }
@@ -502,6 +608,7 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel CalculatorPanel;
+    private javax.swing.ButtonGroup buttonGroupCheckBoxes;
     private javax.swing.JTextField inputField;
     private javax.swing.JButton jButtonClear;
     private javax.swing.JButton jButtonDivision;
@@ -511,12 +618,18 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     private javax.swing.JButton jButtonMinus;
     private javax.swing.JButton jButtonMultiply;
     private javax.swing.JButton jButtonOver;
+    private javax.swing.JButton jButtonPerformChoice;
     private javax.swing.JButton jButtonPlus;
     private javax.swing.JButton jButtonSquareRoot;
     private javax.swing.JButton jButtonSwap;
+    private javax.swing.JCheckBox jCheckBoxAddNumber;
+    private javax.swing.JCheckBox jCheckBoxSubtract;
+    private javax.swing.JFrame jFrame1;
+    private javax.swing.JLabel jLabelInputChoice;
     private javax.swing.JLabel jLabelNumberOperations;
     private javax.swing.JLabel jLabelStackOperations;
     private javax.swing.JLabel jLabelVisibleStack;
+    private javax.swing.JPanel jPanelInputChoice;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton processInputButton;
     private javax.swing.JList<String> visibleStack;
