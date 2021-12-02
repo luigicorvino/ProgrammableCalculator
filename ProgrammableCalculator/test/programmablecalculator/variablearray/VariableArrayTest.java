@@ -52,6 +52,19 @@ public class VariableArrayTest {
      * Test of getIndex method, of class VariableArray.
      * @throws programmablecalculator.variablearray.NotACharacterException
      */
+    
+    @Test
+    public void checkCharacterTest(){
+        assertTrue(variables.checkCharacter("a".charAt(0)));
+        assertTrue(variables.checkCharacter("z".charAt(0)));
+        assertTrue(variables.checkCharacter("m".charAt(0)));
+        assertFalse(variables.checkCharacter("+".charAt(0)));
+        assertFalse(variables.checkCharacter("-".charAt(0)));
+        assertFalse(variables.checkCharacter(">".charAt(0)));
+        assertFalse(variables.checkCharacter("<".charAt(0)));
+    }
+    
+    
     @Test (expected=NotACharacterException.class)
     public void getIndexExceptionTest() throws NotACharacterException{
         variables.getIndex("-".charAt(0));
@@ -73,7 +86,6 @@ public class VariableArrayTest {
         expResult = 12;
         result = variables.getIndex(variable.charAt(0));
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
     }
     
     @Test (expected=NotACharacterException.class)
