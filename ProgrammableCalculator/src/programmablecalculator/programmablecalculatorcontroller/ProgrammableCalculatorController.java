@@ -81,6 +81,7 @@ public class ProgrammableCalculatorController {
     public ProgrammableCalculatorController() {
         numberStack = new NumbersStack();
         NumberFormat nf=NumberFormat.getInstance(new Locale("en","US"));
+        nf.setMaximumFractionDigits(8);
         format=new ComplexFormat(nf);
         
         variableStack = new SaveVariableStack();
