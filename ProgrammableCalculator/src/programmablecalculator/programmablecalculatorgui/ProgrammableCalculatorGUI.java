@@ -454,6 +454,7 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
                 if(input.equals("-i")){
                 jFrame1.setVisible(true);
                 jFrame1.setSize(426,240);
+                return;
             }
             checkOperationStatusAndUpdate(input);
         }
