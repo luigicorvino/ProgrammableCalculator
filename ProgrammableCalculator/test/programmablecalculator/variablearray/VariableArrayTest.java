@@ -50,9 +50,10 @@ public class VariableArrayTest {
 
     /**
      * Test of getIndex method, of class VariableArray.
+     * @throws programmablecalculator.variablearray.NotACharacterException
      */
     @Test
-    public void testGetIndex() {
+    public void testGetIndex() throws NotACharacterException{
         String variable = "a";
         int expResult = 0;
         int result = variables.getIndex(variable.charAt(0));
@@ -69,7 +70,7 @@ public class VariableArrayTest {
     }
     
     @Test
-    public void insertValueTest(){
+    public void insertValueTest() throws NotACharacterException{
         String variable = "a";
         int index = variables.getIndex(variable.charAt(0));
         Complex value = new Complex (5,4);
@@ -88,7 +89,7 @@ public class VariableArrayTest {
     }
     
     @Test
-    public void getValueTest(){
+    public void getValueTest() throws NotACharacterException{
         String variable = "a";
         Complex value = new Complex (5,4);
         variables.insertValue(variable.charAt(0), value);

@@ -13,24 +13,28 @@ import org.apache.commons.math3.complex.Complex;
  * @author luigi
  */
 public class VariableArray{
-    private static final int alphabetStart = 97;
+    private static final int ALPHABET_START = 97;
     private Complex[] variables;
     
     public VariableArray(){
         variables = new Complex[26];
     }
     
-    public void insertValue(char variable, Complex value){
+    public void insertValue(char variable, Complex value) throws NotACharacterException{
        variables[getIndex(variable)] = value;
     }
     
-    public Complex getValue(char variable){
+    public Complex getValue(char variable) throws NotACharacterException{
+        if(!checkCharacter(variable))
+            throw new NotACharacterException();
         return variables[getIndex(variable)];
     }
     
     
-    protected int getIndex(char variable){
-        return (int) variable - alphabetStart;
+    protected int getIndex(char variable) throws NotACharacterException{
+        if(!checkCharacter(variable))
+            throw new NotACharacterException();
+        return (int) variable - ALPHABET_START;
     }
 
     protected Complex[] getVariables(){
@@ -38,7 +42,9 @@ public class VariableArray{
     }
     
     
-    
+    protected boolean checkCharacter(char variable){
+        return Character.isLetter(variable);
+    }
     
     
 }
