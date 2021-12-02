@@ -16,13 +16,16 @@ import java.util.regex.*;
 import programmablecalculator.complexnumberoperations.ComplexNumberOperations;
 import programmablecalculator.numbersstack.NotEnoughElementsException;
 import programmablecalculator.numbersstack.NumbersStack;
+import programmablecalculator.savevariablestack.SaveVariableStack;
+import programmablecalculator.variablearray.NotACharacterException;
 /**
  *
  * @author lex99
  */
 public class ProgrammableCalculatorController {
-    private NumbersStack numberStack;
+    protected NumbersStack numberStack;
     private final ComplexFormat format;
+    protected SaveVariableStack variableStack;
     
     public abstract class CallBackBinaryOperation {       
         public abstract Complex call(Complex c1, Complex c2);
@@ -79,6 +82,9 @@ public class ProgrammableCalculatorController {
         numberStack = new NumbersStack();
         NumberFormat nf=NumberFormat.getInstance(new Locale("en","US"));
         format=new ComplexFormat(nf);
+        
+        variableStack = new SaveVariableStack();
+        numberStack = new NumbersStack();
     }
     
       /*@brief: elaborate the user's input implementing the calculator's logic
@@ -141,27 +147,62 @@ public class ProgrammableCalculatorController {
             
             case "swap": {
             try { 
-                if (numberStack.size() < 2)
-                    return result = "There isn't 2 complex numbers to swap ";
+                
                 numberStack.swap();
-                } catch (NotEnoughElementsException ex) {
-                Logger.getLogger(ProgrammableCalculatorController.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                    } catch (NotEnoughElementsException ex) {
+                        return result = "There isn't 2 complex numbers to swap ";
+                    }
                 break;
             }
             
             case "over": {
             try {
-                //if (numberStack.size() < 2)
                     
                 numberStack.over();
-                } catch (NotEnoughElementsException ex) {
-                    return result = "There isn't 2 complex numbers to over "; 
-                }
+                    } catch (NotEnoughElementsException ex) {
+                        return result = "There isn't 2 complex numbers to over "; 
+                    }
                 break;
             }
             
+            case "clear": {
+                numberStack.clear();
+            }
+            
             default: {
+                
+                if(operation.matches(">[a-z]")) {
+                    System.out.println(operation);
+                    System.out.println("length: "+operation.length());
+                    System.out.println(operation.charAt(1));
+                    try {
+                        if(numberStack.size() > 0) {
+                            System.out.println(numberStack.peekFirst());
+                            Complex c = numberStack.peekFirst();
+                            char ch = operation.charAt(1);
+                            variableStack.insertValue(ch, c);
+                        }
+                        else
+                            result = "There isn't a complex number in the stack";
+                        
+                    } catch (NotACharacterException ex) {}
+                    break;
+                }
+                
+                
+                if(operation.matches("<[a-z]")) {
+                    try {
+                        Complex c = variableStack.getValue(operation.charAt(1));
+                        if(c == null) 
+                            return result = "The variable '"+operation.charAt(1)+"' haven't a value";
+                        else
+                            numberStack.push(c);
+                    } catch (NotACharacterException ex) {
+                    }
+                    break;
+                }
+       
+                
                 // Insert complex number in the numbersStack
                 Complex complex = format.parse(operation);
                 numberStack.push(complex);

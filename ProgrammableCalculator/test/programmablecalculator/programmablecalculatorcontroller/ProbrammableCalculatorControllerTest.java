@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import programmablecalculator.variablearray.NotACharacterException;
 
 /**
  *
@@ -387,6 +388,51 @@ public class ProbrammableCalculatorControllerTest {
         controller.elaborateInput("over");
         c = controller.popNumberStack();
         assertEquals(format.format(c), "0 + 9i");
+    }
+    
+    
+    @Test
+    public void testDoPushVariableStack() throws NotACharacterException {
+        Complex c;
+        
+        assertEquals("There isn't a complex number in the stack",controller.elaborateInput(">x"));
+        controller.elaborateInput("7 + 4i");
+        controller.elaborateInput(">m");
+        c = controller.variableStack.getValue('m');
+        assertEquals(format.format(c), "7 + 4i");
+        
+        controller.elaborateInput("0 + 5i");
+        controller.elaborateInput(">b");
+        c = controller.variableStack.getValue('b');
+        assertEquals(format.format(c), "0 + 5i");
+        
+        controller.elaborateInput("3 + 4i");
+        controller.elaborateInput(">v");
+        c = controller.variableStack.getValue('v');
+        assertEquals(format.format(c), "3 + 4i");
+    }
+    
+    @Test
+    public void testDoTakeVariableStakeAndPushNumberStack() throws NotACharacterException {
+        Complex c;
+        
+        assertEquals("The variable 'f' haven't a value",controller.elaborateInput("<f"));
+        controller.elaborateInput("7 + 4i");
+        controller.elaborateInput(">f");
+        controller.variableStack.getValue('f');
+        controller.elaborateInput("3+ 8i");
+        controller.elaborateInput("<f");
+        c = controller.topNumberStack();
+        assertEquals(format.format(c), "7 + 4i");
+        
+        controller.elaborateInput("5 + 6i");
+        controller.elaborateInput(">f");
+        controller.variableStack.getValue('f');
+        controller.elaborateInput("0 + 8i");
+        controller.elaborateInput("<f");
+        c = controller.topNumberStack();
+        assertEquals(format.format(c), "5 + 6i");
+        
     }
    
     // TODO add test methods here.
