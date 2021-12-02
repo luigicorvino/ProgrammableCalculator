@@ -82,6 +82,7 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         visibleStack = new javax.swing.JList<String>();
 
+        jFrame1.setTitle("InputChoice");
         jFrame1.setBounds(new java.awt.Rectangle(0, 0, 0, 0));
 
         jPanelInputChoice.setBackground(new java.awt.Color(51, 51, 240));
@@ -104,7 +105,7 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
 
         buttonGroupCheckBoxes.add(jCheckBoxSubtract);
         jCheckBoxSubtract.setForeground(new java.awt.Color(255, 255, 255));
-        jCheckBoxSubtract.setText("Subtract the last value of the stack from the variable");
+        jCheckBoxSubtract.setText("Subtract the last value of the stack from the variable i");
 
         jLabelInputChoice.setForeground(new java.awt.Color(255, 255, 255));
         jLabelInputChoice.setText("In order to avoid conflicts, choose the operation to perform:");
