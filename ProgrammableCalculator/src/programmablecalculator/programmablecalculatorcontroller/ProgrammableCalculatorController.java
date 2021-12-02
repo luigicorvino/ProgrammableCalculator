@@ -167,6 +167,7 @@ public class ProgrammableCalculatorController {
             
             case "clear": {
                 numberStack.clear();
+                break;
             }
             
             default: {
