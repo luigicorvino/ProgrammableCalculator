@@ -171,6 +171,16 @@ public class ProgrammableCalculatorController {
                 break;
             }
             
+            case "save": {
+                variableStack.save();
+                break;
+            }
+            
+            case "restore": {
+                variableStack.restore();
+                break;
+            }
+            
             default: {
                 
                 if(operation.matches("\\>[a-z]")) {

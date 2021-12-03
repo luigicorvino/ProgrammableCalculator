@@ -498,6 +498,55 @@ public class ProbrammableCalculatorControllerTest {
         assertEquals(format.format(c), "-13 - 8i");
         
     }
+    
+    @Test
+    public void testDoSaveAndRestore() throws NotACharacterException {
+        Complex c1, c2, c3, c4;
+        
+        controller.elaborateInput("1 + 2i");
+        controller.elaborateInput(">a");
+        controller.elaborateInput("5 + 6i");
+        controller.elaborateInput(">z");
+        controller.elaborateInput("3 + 4i");
+        controller.elaborateInput(">m");
+        controller.elaborateInput("save");
+        controller.elaborateInput("8 + 6i");
+        controller.elaborateInput(">a");
+        controller.elaborateInput("7 + 9i");
+        controller.elaborateInput(">m");
+        controller.elaborateInput("restore");
+        c1 = controller.variableStack.getValue('a');
+        c2 = controller.variableStack.getValue('z');
+        c3 = controller.variableStack.getValue('m');
+        assertEquals(format.format(c1), "1 + 2i");
+        assertEquals(format.format(c2), "5 + 6i");
+        assertEquals(format.format(c3), "3 + 4i");
+        
+        controller.elaborateInput("1 + 2i");
+        controller.elaborateInput(">h");
+        controller.elaborateInput("5 + 6i");
+        controller.elaborateInput(">b");
+        controller.elaborateInput("3 + 4i");
+        controller.elaborateInput(">n");
+        controller.elaborateInput("save");
+        controller.elaborateInput("8 + 6i");
+        controller.elaborateInput(">h");
+        controller.elaborateInput("7 + 9i");
+        controller.elaborateInput(">b");
+        controller.elaborateInput("+n");
+        controller.elaborateInput("4 + 7i");
+        controller.elaborateInput(">v");
+        controller.elaborateInput("restore");
+        c1 = controller.variableStack.getValue('a');
+        c2 = controller.variableStack.getValue('z');
+        c3 = controller.variableStack.getValue('m');
+        c4 = controller.variableStack.getValue('v');
+        assertEquals(format.format(c1), "1 + 2i");
+        assertEquals(format.format(c2), "5 + 6i");
+        assertEquals(format.format(c3), "3 + 4i");
+        assertEquals(c4, null);
+        
+    }
    
     // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:
