@@ -173,17 +173,10 @@ public class ProgrammableCalculatorController {
             
             default: {
                 
-                if(operation.matches(">[a-z]")) {
-                    System.out.println(operation);
-                    System.out.println("length: "+operation.length());
-                    System.out.println(operation.charAt(1));
+                if(operation.matches("\\>[a-z]")) {
                     try {
-                        if(numberStack.size() > 0) {
-                            System.out.println(numberStack.peekFirst());
-                            Complex c = numberStack.peekFirst();
-                            char ch = operation.charAt(1);
-                            variableStack.insertValue(ch, c);
-                        }
+                        if(numberStack.size() > 0) 
+                            variableStack.insertValue(operation.charAt(1), numberStack.peekFirst());
                         else
                             result = "There isn't a complex number in the stack";
                         
@@ -192,14 +185,44 @@ public class ProgrammableCalculatorController {
                 }
                 
                 
-                if(operation.matches("<[a-z]")) {
+                if(operation.matches("\\<[a-z]")) {
                     try {
                         Complex c = variableStack.getValue(operation.charAt(1));
                         if(c == null) 
-                            return result = "The variable '"+operation.charAt(1)+"' haven't a value";
+                            result = "The variable '"+operation.charAt(1)+"' haven't a value";
                         else
                             numberStack.push(c);
                     } catch (NotACharacterException ex) {
+                    }
+                    break;
+                }
+                
+                if(operation.matches("\\+{1}[a-z]{1}")) {
+                    try {
+                        Complex complexVariable = variableStack.getValue(operation.charAt(1));
+                        if (complexVariable == null)
+                            result = "The variable '"+operation.charAt(1)+"' haven't a value";
+                        else if (numberStack.size() < 1) 
+                            result = "There isn't a complex number in the stack";
+                        else 
+                            variableStack.insertValue(operation.charAt(1), ComplexNumberOperations.add(numberStack.peekFirst(),complexVariable));                         
+                    } catch (NotACharacterException ex) {
+                        
+                    }
+                    break;
+                }
+                
+                if(operation.matches("\\-{1}[a-z]{1}")) {
+                    try {
+                        Complex complexVariable = variableStack.getValue(operation.charAt(1));
+                        if (complexVariable == null)
+                            result = "The variable '"+operation.charAt(1)+"' haven't a value";
+                        else if (numberStack.size() < 1) 
+                            result = "There isn't a complex number in the stack";
+                        else 
+                            variableStack.insertValue(operation.charAt(1), ComplexNumberOperations.sub(numberStack.peekFirst(),complexVariable));                         
+                    } catch (NotACharacterException ex) {
+                        
                     }
                     break;
                 }
