@@ -30,8 +30,11 @@ public class SaveVariableStack {
     }
     
     
-    public void restore(){
+    public boolean restore(){
+        if(variableStack.isEmpty())
+            return false;
         currentArray = variableStack.pop();
+        return true;
     }
 
 

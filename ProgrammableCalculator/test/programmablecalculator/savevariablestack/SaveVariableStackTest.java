@@ -105,6 +105,15 @@ public class SaveVariableStackTest {
     }
     
     
+    @Test
+    public void testRestoreEmptyStack() throws NotACharacterException{
+        assertFalse(variableStack.restore());
+        variableStack.insertValue("a".charAt(0), new Complex(1,2));
+        variableStack.save();
+        assertTrue(variableStack.restore());
+        assertFalse(variableStack.restore());
+    }
+    
     
     @Test
     public void testRestore() throws NotACharacterException {
