@@ -402,6 +402,7 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
            if(input.equals("-i")){
                jFrame1.setVisible(true);
                jFrame1.setSize(426,240);
+               return;
             }
         checkOperationStatusAndUpdate(input);
         }
@@ -486,7 +487,7 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
      String inputText=inputField.getText().toLowerCase();
      if(inputText.equals("+") || inputText.equals("-") || inputText.equals("*") || inputText.equals("/") || inputText.equals("sqrt") || inputText.equals("+-")
              || inputText.equals("clear") || inputText.equals("drop") || inputText.equals("dup") || inputText.equals("over") 
-             || inputText.equals("swap"))   //check for an input that represents an operation
+             || inputText.equals("swap") || inputText.equals("save") || inputText.equals("restore"))   //check for an input that represents an operation
          return inputText;
      else if(checkVariableOperations(inputText)!=null){
          return inputText;

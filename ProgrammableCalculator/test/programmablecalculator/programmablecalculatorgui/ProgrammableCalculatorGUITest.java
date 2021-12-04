@@ -6,13 +6,9 @@
 package programmablecalculator.programmablecalculatorgui;
 
 import javax.swing.DefaultListModel;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import programmablecalculator.programmablecalculatorgui.ProgrammableCalculatorGUI;
+
 /**
  *
  * @author bad-b
@@ -101,6 +97,24 @@ public class ProgrammableCalculatorGUITest {
      assertTrue(model.get(0).equals("1 + 2i"));
      calculator.checkOperationStatusAndUpdate("over");
      assertTrue(model.get(0).equals("1 - 2i"));
+     calculator.checkOperationStatusAndUpdate(">a");
+     calculator.checkOperationStatusAndUpdate("<a");
+     assertTrue(model.get(0).equals("1 - 2i"));
+     calculator.checkOperationStatusAndUpdate("+a");
+     calculator.checkOperationStatusAndUpdate("<a");
+     assertTrue(model.get(0).equals("2 - 4i"));
+     calculator.checkOperationStatusAndUpdate("-a");
+     calculator.checkOperationStatusAndUpdate("<a");
+     assertTrue(model.get(0).equals("0"));
+     calculator.checkOperationStatusAndUpdate("save");
+     calculator.checkOperationStatusAndUpdate("1-2i");
+     assertTrue(model.get(0).equals("1 - 2i"));
+     calculator.checkOperationStatusAndUpdate("restore");
+     calculator.checkOperationStatusAndUpdate("<a");
+     assertTrue(model.get(0).equals("0"));
+     
+     
+     
      
      
      
