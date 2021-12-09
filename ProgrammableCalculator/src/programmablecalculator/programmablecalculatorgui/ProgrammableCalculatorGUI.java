@@ -22,6 +22,8 @@ import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.complex.ComplexFormat;
 public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     private DefaultListModel<String> visibleStackModel;
+    private DefaultListModel<String> userDefinedOperationModel;
+    private DefaultListModel<String> currentVariableModel;
     public ProgrammableCalculatorController controller;
     
     private final String bothParts;
@@ -36,9 +38,13 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         
         
         visibleStackModel=new DefaultListModel<>();
+        currentVariableModel=new DefaultListModel<>();
+        userDefinedOperationModel= new DefaultListModel<>();
         initComponents();
-        jFrame1.setVisible(false);
+        jFrameChoice.setVisible(false);
         visibleStack.setModel(visibleStackModel);
+        jListVariables.setModel(currentVariableModel);
+        userDefinedOperationVisualizer.setModel(userDefinedOperationModel);
         controller= new ProgrammableCalculatorController();
         bothParts="(^[-]?\\d+\\.?\\d*)([-|+]+\\d*\\.?\\d*)[i$]+";
         onlyRealPart="^[-]?\\d+\\.?\\d*$";
@@ -55,13 +61,27 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jFrame1 = new javax.swing.JFrame();
+        jFrameChoice = new javax.swing.JFrame();
         jPanelInputChoice = new javax.swing.JPanel();
         jButtonPerformChoice = new javax.swing.JButton();
         jCheckBoxAddNumber = new javax.swing.JCheckBox();
         jCheckBoxSubtract = new javax.swing.JCheckBox();
         jLabelInputChoice = new javax.swing.JLabel();
         buttonGroupCheckBoxes = new javax.swing.ButtonGroup();
+        jFrameUserDefinedOperation = new javax.swing.JFrame();
+        jPanelUserDefinedOperation = new javax.swing.JPanel();
+        jTextFieldOperationName = new javax.swing.JTextField();
+        jLabelOperationName = new javax.swing.JLabel();
+        jLabelOperationSequence = new javax.swing.JLabel();
+        jTextFieldOperationSequence = new javax.swing.JTextField();
+        jButtonAddOperation = new javax.swing.JButton();
+        jButtonModifyOperation = new javax.swing.JButton();
+        jButtonRemoveOperation = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        userDefinedOperationVisualizer = new javax.swing.JList<String>();
+        jFrameVariables = new javax.swing.JFrame();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jListVariables = new javax.swing.JList<String>();
         CalculatorPanel = new javax.swing.JPanel();
         inputField = new javax.swing.JTextField();
         processInputButton = new javax.swing.JButton();
@@ -79,11 +99,20 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         jLabelVisibleStack = new javax.swing.JLabel();
         jLabelNumberOperations = new javax.swing.JLabel();
         jButtonOver = new javax.swing.JButton();
+        jLabelUserDefinedOperations = new javax.swing.JLabel();
+        jButtonShowOperationsFrame = new javax.swing.JButton();
+        jLabelVariables = new javax.swing.JLabel();
+        showCurrentVariablesValues = new javax.swing.JButton();
+        pushOnStack = new javax.swing.JButton();
+        pushOnTheVariable = new javax.swing.JButton();
+        subtractFromVariableValue = new javax.swing.JButton();
+        addToVariableValue = new javax.swing.JButton();
+        jLabelCurrentValues = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         visibleStack = new javax.swing.JList<String>();
 
-        jFrame1.setTitle("InputChoice");
-        jFrame1.setBounds(new java.awt.Rectangle(0, 0, 0, 0));
+        jFrameChoice.setTitle("InputChoice");
+        jFrameChoice.setBounds(new java.awt.Rectangle(0, 0, 0, 0));
 
         jPanelInputChoice.setBackground(new java.awt.Color(51, 51, 240));
         jPanelInputChoice.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
@@ -141,17 +170,128 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
-        jFrame1.getContentPane().setLayout(jFrame1Layout);
-        jFrame1Layout.setHorizontalGroup(
-            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jFrame1Layout.createSequentialGroup()
+        javax.swing.GroupLayout jFrameChoiceLayout = new javax.swing.GroupLayout(jFrameChoice.getContentPane());
+        jFrameChoice.getContentPane().setLayout(jFrameChoiceLayout);
+        jFrameChoiceLayout.setHorizontalGroup(
+            jFrameChoiceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jFrameChoiceLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jPanelInputChoice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jFrame1Layout.setVerticalGroup(
-            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        jFrameChoiceLayout.setVerticalGroup(
+            jFrameChoiceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanelInputChoice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jFrameUserDefinedOperation.setTitle("User Defined Operations Editor");
+
+        jPanelUserDefinedOperation.setBackground(new java.awt.Color(51, 51, 240));
+
+        jLabelOperationName.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelOperationName.setText("Inserisci il nome dell'operazione da creare/modificare/rimuovere");
+
+        jLabelOperationSequence.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelOperationSequence.setText("Inserisci la sequenza di operazioni da assegnare");
+
+        jButtonAddOperation.setBackground(new java.awt.Color(51, 51, 240));
+        jButtonAddOperation.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonAddOperation.setText("Add");
+        jButtonAddOperation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAddOperationActionPerformed(evt);
+            }
+        });
+
+        jButtonModifyOperation.setBackground(new java.awt.Color(51, 51, 240));
+        jButtonModifyOperation.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonModifyOperation.setText("Modify");
+        jButtonModifyOperation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonModifyOperationActionPerformed(evt);
+            }
+        });
+
+        jButtonRemoveOperation.setBackground(new java.awt.Color(51, 51, 240));
+        jButtonRemoveOperation.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonRemoveOperation.setText("Remove");
+        jButtonRemoveOperation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRemoveOperationActionPerformed(evt);
+            }
+        });
+
+        jScrollPane3.setViewportView(userDefinedOperationVisualizer);
+
+        javax.swing.GroupLayout jPanelUserDefinedOperationLayout = new javax.swing.GroupLayout(jPanelUserDefinedOperation);
+        jPanelUserDefinedOperation.setLayout(jPanelUserDefinedOperationLayout);
+        jPanelUserDefinedOperationLayout.setHorizontalGroup(
+            jPanelUserDefinedOperationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelUserDefinedOperationLayout.createSequentialGroup()
+                .addGroup(jPanelUserDefinedOperationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabelOperationName)
+                    .addComponent(jLabelOperationSequence)
+                    .addComponent(jTextFieldOperationName)
+                    .addComponent(jTextFieldOperationSequence))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 144, Short.MAX_VALUE)
+                .addGroup(jPanelUserDefinedOperationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButtonAddOperation, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonModifyOperation, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonRemoveOperation, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE))
+                .addGap(69, 69, 69))
+            .addComponent(jScrollPane3)
+        );
+        jPanelUserDefinedOperationLayout.setVerticalGroup(
+            jPanelUserDefinedOperationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelUserDefinedOperationLayout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(jLabelOperationName)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelUserDefinedOperationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelUserDefinedOperationLayout.createSequentialGroup()
+                        .addComponent(jTextFieldOperationName, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabelOperationSequence)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextFieldOperationSequence, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelUserDefinedOperationLayout.createSequentialGroup()
+                        .addComponent(jButtonAddOperation)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButtonModifyOperation)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonRemoveOperation)))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jFrameUserDefinedOperationLayout = new javax.swing.GroupLayout(jFrameUserDefinedOperation.getContentPane());
+        jFrameUserDefinedOperation.getContentPane().setLayout(jFrameUserDefinedOperationLayout);
+        jFrameUserDefinedOperationLayout.setHorizontalGroup(
+            jFrameUserDefinedOperationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanelUserDefinedOperation, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jFrameUserDefinedOperationLayout.setVerticalGroup(
+            jFrameUserDefinedOperationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanelUserDefinedOperation, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jFrameVariables.setTitle("Variables");
+        jFrameVariables.setAlwaysOnTop(true);
+
+        jListVariables.setBackground(new java.awt.Color(51, 51, 255));
+        jListVariables.setForeground(new java.awt.Color(255, 255, 255));
+        jScrollPane2.setViewportView(jListVariables);
+
+        javax.swing.GroupLayout jFrameVariablesLayout = new javax.swing.GroupLayout(jFrameVariables.getContentPane());
+        jFrameVariables.getContentPane().setLayout(jFrameVariablesLayout);
+        jFrameVariablesLayout.setHorizontalGroup(
+            jFrameVariablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jFrameVariablesLayout.createSequentialGroup()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        jFrameVariablesLayout.setVerticalGroup(
+            jFrameVariablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE)
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -286,55 +426,128 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
             }
         });
 
+        jLabelUserDefinedOperations.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelUserDefinedOperations.setText("User Defined Operations");
+
+        jButtonShowOperationsFrame.setBackground(new java.awt.Color(51, 51, 240));
+        jButtonShowOperationsFrame.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonShowOperationsFrame.setText(" User Defined Operations Editor");
+        jButtonShowOperationsFrame.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonShowOperationsFrameActionPerformed(evt);
+            }
+        });
+
+        jLabelVariables.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelVariables.setText("Variables");
+
+        showCurrentVariablesValues.setBackground(new java.awt.Color(51, 51, 240));
+        showCurrentVariablesValues.setForeground(new java.awt.Color(255, 255, 255));
+        showCurrentVariablesValues.setText("Show");
+        showCurrentVariablesValues.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showCurrentVariablesValuesActionPerformed(evt);
+            }
+        });
+
+        pushOnStack.setBackground(new java.awt.Color(51, 51, 240));
+        pushOnStack.setForeground(new java.awt.Color(255, 255, 255));
+        pushOnStack.setText(">");
+        pushOnStack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pushOnStackActionPerformed(evt);
+            }
+        });
+
+        pushOnTheVariable.setBackground(new java.awt.Color(51, 51, 240));
+        pushOnTheVariable.setForeground(new java.awt.Color(255, 255, 255));
+        pushOnTheVariable.setText("<");
+        pushOnTheVariable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pushOnTheVariableActionPerformed(evt);
+            }
+        });
+
+        subtractFromVariableValue.setBackground(new java.awt.Color(51, 51, 240));
+        subtractFromVariableValue.setForeground(new java.awt.Color(255, 255, 255));
+        subtractFromVariableValue.setText("-");
+        subtractFromVariableValue.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subtractFromVariableValueActionPerformed(evt);
+            }
+        });
+
+        addToVariableValue.setBackground(new java.awt.Color(51, 51, 240));
+        addToVariableValue.setForeground(new java.awt.Color(255, 255, 255));
+        addToVariableValue.setText("+");
+        addToVariableValue.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addToVariableValueActionPerformed(evt);
+            }
+        });
+
+        jLabelCurrentValues.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelCurrentValues.setText("Current Values");
+
         javax.swing.GroupLayout CalculatorPanelLayout = new javax.swing.GroupLayout(CalculatorPanel);
         CalculatorPanel.setLayout(CalculatorPanelLayout);
         CalculatorPanelLayout.setHorizontalGroup(
             CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(CalculatorPanelLayout.createSequentialGroup()
-                .addComponent(jButtonSquareRoot, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 712, Short.MAX_VALUE))
-            .addGroup(CalculatorPanelLayout.createSequentialGroup()
-                .addComponent(jLabelNumberOperations)
-                .addGap(284, 284, 284)
                 .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelStackOperations)
+                    .addComponent(jLabelVisibleStack, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(CalculatorPanelLayout.createSequentialGroup()
-                        .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jButtonSwap, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButtonClear, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(25, 25, 25)
-                        .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(CalculatorPanelLayout.createSequentialGroup()
-                                .addComponent(jButtonDrop)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButtonDup))
-                            .addComponent(jButtonOver))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(CalculatorPanelLayout.createSequentialGroup()
-                .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(inputField, javax.swing.GroupLayout.PREFERRED_SIZE, 627, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(processInputButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(CalculatorPanelLayout.createSequentialGroup()
-                        .addComponent(jButtonPlus, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)
                         .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButtonInvertSign, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelNumberOperations)
                             .addGroup(CalculatorPanelLayout.createSequentialGroup()
-                                .addComponent(jButtonMinus, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(CalculatorPanelLayout.createSequentialGroup()
+                                        .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                .addComponent(addToVariableValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jButtonPlus, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
+                                                .addComponent(jButtonSquareRoot, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE))
+                                            .addComponent(pushOnStack, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(26, 26, 26)
+                                        .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(subtractFromVariableValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jButtonInvertSign, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jButtonMinus, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
+                                            .addComponent(pushOnTheVariable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addComponent(jLabelVariables))
                                 .addGap(28, 28, 28)
-                                .addComponent(jButtonMultiply, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(33, 33, 33)
-                                .addComponent(jButtonDivision, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(inputField, javax.swing.GroupLayout.PREFERRED_SIZE, 627, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(processInputButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36))
-            .addGroup(CalculatorPanelLayout.createSequentialGroup()
-                .addComponent(jLabelVisibleStack, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButtonMultiply, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(showCurrentVariablesValues, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabelCurrentValues, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(jButtonDivision, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(238, 238, 238)
+                        .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelStackOperations)
+                            .addGroup(CalculatorPanelLayout.createSequentialGroup()
+                                .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButtonClear)
+                                    .addComponent(jButtonSwap, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(25, 25, 25)
+                                .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButtonOver)
+                                    .addGroup(CalculatorPanelLayout.createSequentialGroup()
+                                        .addComponent(jButtonDrop)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jButtonDup))))
+                            .addComponent(jLabelUserDefinedOperations)
+                            .addComponent(jButtonShowOperationsFrame))))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
         CalculatorPanelLayout.setVerticalGroup(
             CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(CalculatorPanelLayout.createSequentialGroup()
-                .addGap(47, 47, 47)
+                .addGap(18, 18, 18)
                 .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(inputField, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(processInputButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -342,22 +555,37 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
                 .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelNumberOperations)
                     .addComponent(jLabelStackOperations))
-                .addGap(5, 5, 5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonPlus)
-                    .addComponent(jButtonMinus)
-                    .addComponent(jButtonMultiply)
-                    .addComponent(jButtonDivision)
                     .addComponent(jButtonClear)
                     .addComponent(jButtonDrop)
-                    .addComponent(jButtonDup))
-                .addGap(18, 18, 18)
+                    .addComponent(jButtonDup)
+                    .addComponent(jButtonMultiply)
+                    .addComponent(jButtonMinus)
+                    .addComponent(jButtonPlus))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonOver)
+                    .addComponent(jButtonSwap)
                     .addComponent(jButtonSquareRoot)
                     .addComponent(jButtonInvertSign)
-                    .addComponent(jButtonSwap)
-                    .addComponent(jButtonOver))
-                .addGap(35, 35, 35)
+                    .addComponent(jButtonDivision))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelUserDefinedOperations)
+                    .addComponent(jLabelVariables)
+                    .addComponent(jLabelCurrentValues))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonShowOperationsFrame)
+                    .addComponent(subtractFromVariableValue)
+                    .addComponent(addToVariableValue)
+                    .addComponent(showCurrentVariablesValues))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(CalculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(pushOnStack)
+                    .addComponent(pushOnTheVariable))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
                 .addComponent(jLabelVisibleStack)
                 .addContainerGap())
         );
@@ -374,7 +602,7 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(CalculatorPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(CalculatorPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -400,8 +628,8 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         input=this.checkInputField();
         if (input!=null){
            if(input.equals("-i")){
-               jFrame1.setVisible(true);
-               jFrame1.setSize(426,240);
+               jFrameChoice.setVisible(true);
+               jFrameChoice.setSize(426,240);
                return;
             }
         checkOperationStatusAndUpdate(input);
@@ -453,8 +681,8 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
             input=checkInputField();
             if(input!=null){
                 if(input.equals("-i")){
-                jFrame1.setVisible(true);
-                jFrame1.setSize(426,240);
+                jFrameChoice.setVisible(true);
+                jFrameChoice.setSize(426,240);
                 return;
             }
             checkOperationStatusAndUpdate(input);
@@ -478,9 +706,48 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
            checkOperationStatusAndUpdate("-i");
         }
         inputField.setText("");
-        jFrame1.dispose();
+        jFrameChoice.dispose();
         
     }//GEN-LAST:event_jButtonPerformChoiceActionPerformed
+
+    private void jButtonAddOperationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddOperationActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonAddOperationActionPerformed
+
+    private void jButtonRemoveOperationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoveOperationActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonRemoveOperationActionPerformed
+
+    private void jButtonShowOperationsFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonShowOperationsFrameActionPerformed
+        jFrameUserDefinedOperation.setVisible(true);
+        jFrameUserDefinedOperation.setSize(800,400);
+    }//GEN-LAST:event_jButtonShowOperationsFrameActionPerformed
+
+    private void jButtonModifyOperationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModifyOperationActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonModifyOperationActionPerformed
+
+    private void addToVariableValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addToVariableValueActionPerformed
+       inputField.setText("+");
+    }//GEN-LAST:event_addToVariableValueActionPerformed
+
+    private void subtractFromVariableValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subtractFromVariableValueActionPerformed
+       inputField.setText("-");
+    }//GEN-LAST:event_subtractFromVariableValueActionPerformed
+
+    private void pushOnStackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pushOnStackActionPerformed
+       inputField.setText(">");
+    }//GEN-LAST:event_pushOnStackActionPerformed
+
+    private void pushOnTheVariableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pushOnTheVariableActionPerformed
+       inputField.setText("<");
+    }//GEN-LAST:event_pushOnTheVariableActionPerformed
+
+    private void showCurrentVariablesValuesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showCurrentVariablesValuesActionPerformed
+        jFrameVariables.setVisible(true);
+        
+        jFrameVariables.setSize(200,550);
+    }//GEN-LAST:event_showCurrentVariablesValuesActionPerformed
     protected String checkInputField(){
      String input;
      String numberWithNoSpace=inputField.getText().replaceAll("\\s","");
@@ -505,7 +772,7 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         return visibleStackModel;
     }
     
-    protected void update(){
+    protected void updateVisibleStack(){
         ComplexFormat format;
         NumberFormat nf= NumberFormat.getInstance(new Locale("en","US"));
         format=new ComplexFormat(nf);
@@ -516,6 +783,13 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         while(stack.hasNext() && i<12) {
             visibleStackModel.addElement(format.format(stack.next()));
             i+=1;
+        }
+    }
+    protected void updateVariablesValues(){
+        String arrayVariable="abcdefghijklmnopqrstuvz";
+        currentVariableModel.clear();
+        for(int i=0;i<arrayVariable.length();i++){
+            currentVariableModel.addElement(arrayVariable.charAt(i)+"\t\t\t\t \n");
         }
     }
     private String checkNumberProcess(String inputText){
@@ -570,8 +844,10 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         String message=controller.elaborateInput(input);
         if(message!=null)
             showMessageDialog(null,message);
-        else
-            update();
+        else{
+            updateVisibleStack();
+            updateVariablesValues();
+        }
     }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -611,30 +887,53 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel CalculatorPanel;
+    private javax.swing.JButton addToVariableValue;
     private javax.swing.ButtonGroup buttonGroupCheckBoxes;
     private javax.swing.JTextField inputField;
+    private javax.swing.JButton jButtonAddOperation;
     private javax.swing.JButton jButtonClear;
     private javax.swing.JButton jButtonDivision;
     private javax.swing.JButton jButtonDrop;
     private javax.swing.JButton jButtonDup;
     private javax.swing.JButton jButtonInvertSign;
     private javax.swing.JButton jButtonMinus;
+    private javax.swing.JButton jButtonModifyOperation;
     private javax.swing.JButton jButtonMultiply;
     private javax.swing.JButton jButtonOver;
     private javax.swing.JButton jButtonPerformChoice;
     private javax.swing.JButton jButtonPlus;
+    private javax.swing.JButton jButtonRemoveOperation;
+    private javax.swing.JButton jButtonShowOperationsFrame;
     private javax.swing.JButton jButtonSquareRoot;
     private javax.swing.JButton jButtonSwap;
     private javax.swing.JCheckBox jCheckBoxAddNumber;
     private javax.swing.JCheckBox jCheckBoxSubtract;
-    private javax.swing.JFrame jFrame1;
+    private javax.swing.JFrame jFrameChoice;
+    private javax.swing.JFrame jFrameUserDefinedOperation;
+    private javax.swing.JFrame jFrameVariables;
+    private javax.swing.JLabel jLabelCurrentValues;
     private javax.swing.JLabel jLabelInputChoice;
     private javax.swing.JLabel jLabelNumberOperations;
+    private javax.swing.JLabel jLabelOperationName;
+    private javax.swing.JLabel jLabelOperationSequence;
     private javax.swing.JLabel jLabelStackOperations;
+    private javax.swing.JLabel jLabelUserDefinedOperations;
+    private javax.swing.JLabel jLabelVariables;
     private javax.swing.JLabel jLabelVisibleStack;
+    private javax.swing.JList<String> jListVariables;
     private javax.swing.JPanel jPanelInputChoice;
+    private javax.swing.JPanel jPanelUserDefinedOperation;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTextField jTextFieldOperationName;
+    private javax.swing.JTextField jTextFieldOperationSequence;
     private javax.swing.JButton processInputButton;
+    private javax.swing.JButton pushOnStack;
+    private javax.swing.JButton pushOnTheVariable;
+    private javax.swing.JButton showCurrentVariablesValues;
+    private javax.swing.JButton subtractFromVariableValue;
+    private javax.swing.JList<String> userDefinedOperationVisualizer;
     private javax.swing.JList<String> visibleStack;
     // End of variables declaration//GEN-END:variables
 }
