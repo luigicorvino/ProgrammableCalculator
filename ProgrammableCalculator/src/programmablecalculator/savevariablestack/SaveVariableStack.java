@@ -6,6 +6,7 @@
 package programmablecalculator.savevariablestack;
 
 import java.util.ArrayDeque;
+import java.util.Iterator;
 import org.apache.commons.math3.complex.Complex;
 import programmablecalculator.variablearray.NotACharacterException;
 import programmablecalculator.variablearray.VariableArray;
@@ -48,8 +49,9 @@ public class SaveVariableStack {
         return currentArray.getValue(variable);
     }
     
+
     
-    protected VariableArray getCurrentArray() {
+    public VariableArray getCurrentArray() {
         return currentArray;
     }
     
