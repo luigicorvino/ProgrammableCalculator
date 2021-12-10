@@ -6,6 +6,7 @@
 package programmablecalculator.userdefinedoperations;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -35,4 +36,24 @@ public class UserDefinedOperation {
     public void setOperationsSequence(List<String> operationsSequence) {
         this.operationsSequence = operationsSequence;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final UserDefinedOperation other = (UserDefinedOperation) obj;
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 }
