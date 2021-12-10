@@ -25,7 +25,6 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     private DefaultListModel<String> userDefinedOperationModel;
     private DefaultListModel<String> currentVariableModel;
     public ProgrammableCalculatorController controller;
-    
     private final String bothParts;
     private final String onlyRealPart;
     private final String onlyImmaginaryPart;
@@ -35,8 +34,6 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     
     
     public ProgrammableCalculatorGUI() {
-        
-        
         visibleStackModel=new DefaultListModel<>();
         currentVariableModel=new DefaultListModel<>();
         userDefinedOperationModel= new DefaultListModel<>();
@@ -49,7 +46,6 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         bothParts="(^[-]?\\d+\\.?\\d*)([-|+]+\\d*\\.?\\d*)[i$]+";
         onlyRealPart="^[-]?\\d+\\.?\\d*$";
         onlyImmaginaryPart="^[-]?\\d*\\.?\\d*[i{1}$]+";
-        
     }
 
     /**
@@ -79,9 +75,16 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         jButtonRemoveOperation = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         userDefinedOperationVisualizer = new javax.swing.JList<String>();
+        jButtonInvokeOperation = new javax.swing.JButton();
+        jTextFieldNewName = new javax.swing.JTextField();
+        jLabelModfiyName = new javax.swing.JLabel();
         jFrameVariables = new javax.swing.JFrame();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jListVariables = new javax.swing.JList<String>();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         CalculatorPanel = new javax.swing.JPanel();
         inputField = new javax.swing.JTextField();
         processInputButton = new javax.swing.JButton();
@@ -222,45 +225,68 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
 
         jScrollPane3.setViewportView(userDefinedOperationVisualizer);
 
+        jButtonInvokeOperation.setBackground(new java.awt.Color(51, 51, 240));
+        jButtonInvokeOperation.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonInvokeOperation.setText("Invoke");
+        jButtonInvokeOperation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonInvokeOperationActionPerformed(evt);
+            }
+        });
+
+        jLabelModfiyName.setBackground(new java.awt.Color(51, 51, 240));
+        jLabelModfiyName.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelModfiyName.setText("Inserisci il nuovo nome dell'operazione da modificare");
+
         javax.swing.GroupLayout jPanelUserDefinedOperationLayout = new javax.swing.GroupLayout(jPanelUserDefinedOperation);
         jPanelUserDefinedOperation.setLayout(jPanelUserDefinedOperationLayout);
         jPanelUserDefinedOperationLayout.setHorizontalGroup(
             jPanelUserDefinedOperationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelUserDefinedOperationLayout.createSequentialGroup()
-                .addGroup(jPanelUserDefinedOperationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabelOperationName)
-                    .addComponent(jLabelOperationSequence)
-                    .addComponent(jTextFieldOperationName)
-                    .addComponent(jTextFieldOperationSequence))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 144, Short.MAX_VALUE)
-                .addGroup(jPanelUserDefinedOperationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButtonAddOperation, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonModifyOperation, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonRemoveOperation, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE))
-                .addGap(69, 69, 69))
             .addComponent(jScrollPane3)
+            .addGroup(jPanelUserDefinedOperationLayout.createSequentialGroup()
+                .addGroup(jPanelUserDefinedOperationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jLabelModfiyName, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelOperationName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelOperationSequence, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextFieldOperationSequence, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextFieldOperationName, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextFieldNewName, javax.swing.GroupLayout.Alignment.LEADING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 144, Short.MAX_VALUE)
+                .addGroup(jPanelUserDefinedOperationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelUserDefinedOperationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jButtonModifyOperation, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonRemoveOperation, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
+                        .addComponent(jButtonInvokeOperation, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButtonAddOperation, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(69, 69, 69))
         );
         jPanelUserDefinedOperationLayout.setVerticalGroup(
             jPanelUserDefinedOperationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelUserDefinedOperationLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
                 .addComponent(jLabelOperationName)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelUserDefinedOperationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(5, 5, 5)
+                .addGroup(jPanelUserDefinedOperationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanelUserDefinedOperationLayout.createSequentialGroup()
-                        .addComponent(jTextFieldOperationName, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanelUserDefinedOperationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextFieldOperationName, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonAddOperation))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabelOperationSequence)
+                        .addGroup(jPanelUserDefinedOperationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanelUserDefinedOperationLayout.createSequentialGroup()
+                                .addComponent(jButtonInvokeOperation)
+                                .addGap(38, 38, 38)
+                                .addComponent(jButtonModifyOperation))
+                            .addGroup(jPanelUserDefinedOperationLayout.createSequentialGroup()
+                                .addComponent(jLabelOperationSequence)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextFieldOperationSequence, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabelModfiyName)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextFieldOperationSequence, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanelUserDefinedOperationLayout.createSequentialGroup()
-                        .addComponent(jButtonAddOperation)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButtonModifyOperation)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButtonRemoveOperation)))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE))
+                        .addComponent(jTextFieldNewName, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButtonRemoveOperation))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout jFrameUserDefinedOperationLayout = new javax.swing.GroupLayout(jFrameUserDefinedOperation.getContentPane());
@@ -276,23 +302,58 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
 
         jFrameVariables.setTitle("Variables");
         jFrameVariables.setAlwaysOnTop(true);
+        jFrameVariables.setBackground(new java.awt.Color(51, 51, 240));
+
+        jPanel1.setBackground(new java.awt.Color(51, 51, 240));
+
+        jLabel1.setBackground(new java.awt.Color(51, 51, 240));
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("The values will show when an update occurs");
 
         jListVariables.setBackground(new java.awt.Color(51, 51, 255));
         jListVariables.setForeground(new java.awt.Color(255, 255, 255));
         jScrollPane2.setViewportView(jListVariables);
 
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
         javax.swing.GroupLayout jFrameVariablesLayout = new javax.swing.GroupLayout(jFrameVariables.getContentPane());
         jFrameVariables.getContentPane().setLayout(jFrameVariablesLayout);
         jFrameVariablesLayout.setHorizontalGroup(
             jFrameVariablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jFrameVariablesLayout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jFrameVariablesLayout.setVerticalGroup(
             jFrameVariablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE)
+            .addGroup(jFrameVariablesLayout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane4.setViewportView(jTable1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ProgrammableCalculator");
@@ -625,7 +686,7 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     private void processInputButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_processInputButtonActionPerformed
         String message="";
         String input;
-        input=this.checkInputField();
+        input=this.checkInputField(inputField.getText());
         if (input!=null){
            if(input.equals("-i")){
                jFrameChoice.setVisible(true);
@@ -678,7 +739,7 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         if(evt.getKeyCode()== KeyEvent.VK_ENTER){
             String message="";
             String input;
-            input=checkInputField();
+            input=checkInputField(inputField.getText());
             if(input!=null){
                 if(input.equals("-i")){
                 jFrameChoice.setVisible(true);
@@ -711,7 +772,29 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonPerformChoiceActionPerformed
 
     private void jButtonAddOperationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddOperationActionPerformed
-        // TODO add your handling code here:
+        String name=jTextFieldOperationName.getText();
+        String sequence=jTextFieldOperationSequence.getText();
+        String message="";
+        if(name.equals("") || sequence.equals("")){
+            showMessageDialog(null,"Errore nell'inserimento del nome o della sequenza");
+            jTextFieldOperationName.setText("");
+            jTextFieldOperationSequence.setText("");
+            return;
+        }
+        if(checkOperationSequence(sequence)){
+            message=controller.createUserDefinedOperation(name,sequence);
+            if(message!=null && (!(message.equals("")))){
+                showMessageDialog(null,message);
+                jTextFieldOperationName.setText("");
+                jTextFieldOperationSequence.setText("");
+        }
+            else{
+                showMessageDialog(null,"Operazione creata con successo");
+                jTextFieldOperationName.setText("");
+                jTextFieldOperationSequence.setText("");
+                updateUserDefinedOperationsVisualizer(); //update the User Defined Operation list.
+            }
+        }    
     }//GEN-LAST:event_jButtonAddOperationActionPerformed
 
     private void jButtonRemoveOperationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoveOperationActionPerformed
@@ -724,7 +807,34 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonShowOperationsFrameActionPerformed
 
     private void jButtonModifyOperationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModifyOperationActionPerformed
-        // TODO add your handling code here:
+        String name=jTextFieldOperationName.getText();
+        String newName=jTextFieldNewName.getText();
+        String sequence=jTextFieldOperationSequence.getText();
+        if(!(name.equals("")) || (!(newName.equals("")))){
+            String message=controller.modifyNameUserDefinedOperation(name,newName);
+            if(message!=null)
+                showMessageDialog(null,message);
+            jTextFieldOperationName.setText("");
+            jTextFieldNewName.setText("");
+            jTextFieldOperationSequence.setText("");
+            return;
+        }
+        if(!(checkOperationSequence(sequence)))
+            return;
+        else if(!(name.equals(""))|| (!(sequence.equals("")))){
+            String message=controller.modifySequenceUserDefinedOperation(name, sequence);
+            if(message!=null)
+                showMessageDialog(null,message);
+            jTextFieldOperationName.setText("");
+            jTextFieldNewName.setText("");
+            jTextFieldOperationSequence.setText("");
+        }
+        else{
+            showMessageDialog(null,"Errore nell'operazione di modifica");
+            jTextFieldOperationName.setText("");
+            jTextFieldNewName.setText("");
+            jTextFieldOperationSequence.setText("");
+        }            
     }//GEN-LAST:event_jButtonModifyOperationActionPerformed
 
     private void addToVariableValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addToVariableValueActionPerformed
@@ -744,24 +854,27 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_pushOnTheVariableActionPerformed
 
     private void showCurrentVariablesValuesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showCurrentVariablesValuesActionPerformed
-        jFrameVariables.setVisible(true);
-        
-        jFrameVariables.setSize(200,550);
+       jFrameVariables.setVisible(true);
+       jFrameVariables.setSize(270,500);
     }//GEN-LAST:event_showCurrentVariablesValuesActionPerformed
-    protected String checkInputField(){
+
+    private void jButtonInvokeOperationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInvokeOperationActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonInvokeOperationActionPerformed
+    protected String checkInputField(String text){
      String input;
-     String numberWithNoSpace=inputField.getText().replaceAll("\\s","");
-     String inputText=inputField.getText().toLowerCase();
+     String numberWithNoSpace=text.replaceAll("\\s","");
+     String inputText=numberWithNoSpace.toLowerCase();
      if(inputText.equals("+") || inputText.equals("-") || inputText.equals("*") || inputText.equals("/") || inputText.equals("sqrt") || inputText.equals("+-")
-             || inputText.equals("clear") || inputText.equals("drop") || inputText.equals("dup") || inputText.equals("over") 
-             || inputText.equals("swap") || inputText.equals("save") || inputText.equals("restore"))   //check for an input that represents an operation
-         return inputText;
+        || inputText.equals("clear") || inputText.equals("drop") || inputText.equals("dup") || inputText.equals("over") 
+        || inputText.equals("swap") || inputText.equals("save") || inputText.equals("restore"))   //check for an input that represents an operation
+        return inputText;
      else if(checkVariableOperations(inputText)!=null){
-         return inputText;
+        return inputText;
      }
      else{
-         input=checkNumberProcess(inputText);
-         return input;
+        input=checkNumberProcess(inputText);
+        return input;
      }
     }    
     
@@ -787,10 +900,21 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     }
     protected void updateVariablesValues(){
         String arrayVariable="abcdefghijklmnopqrstuvz";
+        ComplexFormat format;
+        NumberFormat nf= NumberFormat.getInstance(new Locale("en","US"));
+        format=new ComplexFormat(nf);
+        nf.setMaximumFractionDigits(8);
         currentVariableModel.clear();
-        for(int i=0;i<arrayVariable.length();i++){
-            currentVariableModel.addElement(arrayVariable.charAt(i)+"\t\t\t\t \n");
+        Complex[] variableArray = controller.getVariableArray();
+        for(int i=0;i<variableArray.length;i++){
+            if(variableArray[i]!=null)
+                currentVariableModel.addElement(arrayVariable.charAt(i)+"\t"+variableArray[i]+"\n");
         }
+    }
+    protected void updateUserDefinedOperationsVisualizer(){
+        userDefinedOperationModel.clear();
+        userDefinedOperationModel.addElement("Operation's name"+"                  "
+                + "Operation's sequence\n");
     }
     private String checkNumberProcess(String inputText){
         Pattern inputCheck=Pattern.compile(bothParts); //input sequence of a complex number with both real and immaginary part
@@ -835,19 +959,32 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     }
     protected String checkVariableOperations(String inputText){
         if(inputText.matches("^\\>{1}[a-z]{1}$")|| inputText.matches("^\\<{1}[a-z]{1}$")|| inputText.matches("^\\+{1}[a-z]{1}$") 
-           || inputText.matches("^\\-{1}[a-z]{1}$"))
+           || inputText.matches("^\\-{1}[a-z]{1}$")) //check for a variable operation that is +/-/</> followed by an alphabet letter.
             return inputText;
         else
             return null;
     }
     protected void checkOperationStatusAndUpdate(String input){
         String message=controller.elaborateInput(input);
-        if(message!=null)
+        if(message!=null) //check the status of the operation 
             showMessageDialog(null,message);
         else{
-            updateVisibleStack();
-            updateVariablesValues();
+            updateVisibleStack(); //updates the values of jList VisibleStack.
+            updateVariablesValues();//updates the values of jList VariablesValues.
+            
         }
+    }
+    private boolean checkOperationSequence(String sequence){
+        String[] operationList=sequence.split("\\s+");
+        String result=null;
+        for(String line: operationList){
+            result=checkInputField(line);
+            if(result==null)
+                return false;
+        }
+        return true;
+        
+        
     }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -896,6 +1033,7 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     private javax.swing.JButton jButtonDrop;
     private javax.swing.JButton jButtonDup;
     private javax.swing.JButton jButtonInvertSign;
+    private javax.swing.JButton jButtonInvokeOperation;
     private javax.swing.JButton jButtonMinus;
     private javax.swing.JButton jButtonModifyOperation;
     private javax.swing.JButton jButtonMultiply;
@@ -911,8 +1049,10 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     private javax.swing.JFrame jFrameChoice;
     private javax.swing.JFrame jFrameUserDefinedOperation;
     private javax.swing.JFrame jFrameVariables;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabelCurrentValues;
     private javax.swing.JLabel jLabelInputChoice;
+    private javax.swing.JLabel jLabelModfiyName;
     private javax.swing.JLabel jLabelNumberOperations;
     private javax.swing.JLabel jLabelOperationName;
     private javax.swing.JLabel jLabelOperationSequence;
@@ -921,11 +1061,15 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelVariables;
     private javax.swing.JLabel jLabelVisibleStack;
     private javax.swing.JList<String> jListVariables;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanelInputChoice;
     private javax.swing.JPanel jPanelUserDefinedOperation;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextFieldNewName;
     private javax.swing.JTextField jTextFieldOperationName;
     private javax.swing.JTextField jTextFieldOperationSequence;
     private javax.swing.JButton processInputButton;
