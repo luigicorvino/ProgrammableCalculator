@@ -511,6 +511,10 @@ public class ProgrammableCalculatorController {
         return numberStack;
     }
     
+    public Complex[] getVariableArray() {
+        return variableStack.getCurrentArray().getVariables();
+    }
+    
     
     public String createUserDefinedOperation(String name, String sequence) {
         try {
