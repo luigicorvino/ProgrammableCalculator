@@ -60,7 +60,7 @@ public class UserDefinedOperationController {
     
 
     
-    private UserDefinedOperation getOperation(String name) throws NoSuchOperationException{
+    public UserDefinedOperation getOperation(String name) throws NoSuchOperationException{
         for (UserDefinedOperation operation : userDefinedOperations){
             if(operation.getName().equals(name))
                 return operation;
