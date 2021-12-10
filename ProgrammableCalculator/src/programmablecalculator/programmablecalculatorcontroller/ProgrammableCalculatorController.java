@@ -487,13 +487,20 @@ public class ProgrammableCalculatorController {
                 }
                 
                 
+                if(input.matches("^(?=[iI.\\d+-])([+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][+-]?\\d+)?(?![iI.\\d]))?([+-]?(?:(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][+-]?\\d+)?)?[iI])?$"))
+                {
+                     // Insert complex number in the numbersStack
+                    Operation operation = new OperationInsertComplex(input);
+                    operation.execute(numberStack, variableStack);
+                    break;
+                }
+            
+                List<String> sequence = getSequenceUserDefinedOperation(input);
+                if(sequence != null) {
+                    return invokeUserDefinedOperation(sequence);
+                }
                 
-                // Insert complex number in the numbersStack
-                //Complex complex = format.parse(input);
-                //numberStack.push(complex);
-                Operation operation = new OperationInsertComplex(input);
-                operation.execute(numberStack, variableStack);
-                break;
+  
             }
                
         }
@@ -544,6 +551,32 @@ public class ProgrammableCalculatorController {
            return "Operation "+ name + " doesn't exist";
         }
     }
+    
+    public Iterator<String> getUserDefinedOperationList() {
+        return userDefinedOperations.getOperationsList().iterator();
+    }
+    
+    
+    protected List<String> getSequenceUserDefinedOperation(String name) {
+        
+        try {
+            List<String> sequence = userDefinedOperations.invoke(name);
+            return sequence;
+        } catch (NoSuchOperationException ex) {
+            return null;
+        }
+    }
+    
+    protected String invokeUserDefinedOperation(List<String> sequence) {
+        String result = null;
+        for (String operation: sequence) {
+            result = elaborateInput(operation);
+            if(result != null) 
+                return result;
+        }
+        
+        return null;
+    } 
     
     /*
     private boolean takeComplexAndBinaryOperation( CallBackBinaryOperation operation) {

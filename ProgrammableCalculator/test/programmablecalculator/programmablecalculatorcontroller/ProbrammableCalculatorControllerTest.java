@@ -8,7 +8,11 @@ package programmablecalculator.programmablecalculatorcontroller;
 import programmablecalculator.programmablecalculatorcontroller.ProgrammableCalculatorController;
 import java.text.NumberFormat;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.complex.ComplexFormat;
 import org.junit.After;
@@ -17,6 +21,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import programmablecalculator.userdefinedoperations.NoSuchOperationException;
+import programmablecalculator.userdefinedoperations.OperationAlreadyExistsException;
 import programmablecalculator.variablearray.NotACharacterException;
 
 /**
@@ -231,14 +237,14 @@ public class ProbrammableCalculatorControllerTest {
         Complex c;
         
         assertEquals("There aren't 2 complex numbers to divide ",controller.elaborateInput("/"));
-        controller.elaborateInput("20 +4i");
-        controller.elaborateInput("0 + 2i");
+        controller.elaborateInput("20+4i");
+        controller.elaborateInput("0+2i");
         controller.elaborateInput("/");
         c = controller.topNumberStack();
         assertEquals(format.format(c), "2 - 10i");
         
-        controller.elaborateInput("0 + 50i");
-        controller.elaborateInput("2 + 2i");
+        controller.elaborateInput("0+50i");
+        controller.elaborateInput("2+2i");
         controller.elaborateInput("/");
         c = controller.topNumberStack();
         assertEquals(format.format(c), "12.5 + 12.5i");
@@ -250,12 +256,12 @@ public class ProbrammableCalculatorControllerTest {
         Complex c;
         
         assertEquals("There isn't one complex numbers to invert sign ",controller.elaborateInput("+-"));
-        controller.elaborateInput("20 + 4i");
+        controller.elaborateInput("20+4i");
         controller.elaborateInput("+-");
         c = controller.topNumberStack();
         assertEquals(format.format(c), "-20 - 4i");
         
-        controller.elaborateInput("0 + 50i");
+        controller.elaborateInput("0+50i");
         controller.elaborateInput("+-");
         c = controller.topNumberStack();
         assertEquals(format.format(c), "-0 - 50i");
@@ -265,12 +271,12 @@ public class ProbrammableCalculatorControllerTest {
         c = controller.topNumberStack();
         assertEquals(format.format(c), "4");
         
-        controller.elaborateInput("0 - 9i");
+        controller.elaborateInput("0-9i");
         controller.elaborateInput("+-");
         c = controller.topNumberStack();
         assertEquals(format.format(c), "-0 + 9i");
         
-        controller.elaborateInput("12 - 9i");
+        controller.elaborateInput("12-9i");
         controller.elaborateInput("+-");
         c = controller.topNumberStack();
         assertEquals(format.format(c), "-12 + 9i");
@@ -281,12 +287,12 @@ public class ProbrammableCalculatorControllerTest {
         Complex c;
         
         assertEquals("There isn't one complex numbers to sqrt ",controller.elaborateInput("sqrt"));
-        controller.elaborateInput("25 + 4i");
+        controller.elaborateInput("25+4i");
         controller.elaborateInput("sqrt");
         c = controller.topNumberStack();
         assertEquals(format.format(c), "5.01587369 + 0.39873412i");
         
-        controller.elaborateInput("21 - 6i");
+        controller.elaborateInput("21-6i");
         controller.elaborateInput("sqrt");
         c = controller.topNumberStack();
         assertEquals(format.format(c), "4.62819239 - 0.64820123i");
@@ -302,7 +308,7 @@ public class ProbrammableCalculatorControllerTest {
         Complex c;
         
         assertEquals("There isn't one complex numbers to drop ",controller.elaborateInput("drop"));
-        controller.elaborateInput("5 - 5i");
+        controller.elaborateInput("5-5i");
         controller.elaborateInput("drop");
         c = controller.topNumberStack();
         assertEquals(c, null);
@@ -312,8 +318,8 @@ public class ProbrammableCalculatorControllerTest {
         c = controller.topNumberStack();
         assertEquals(c, null);
         
-        controller.elaborateInput("-4 + 8i");
-        controller.elaborateInput("3 + 9i");
+        controller.elaborateInput("-4+8i");
+        controller.elaborateInput("3+9i");
         controller.elaborateInput("drop");
         c = controller.topNumberStack();
         assertEquals(format.format(c), "-4 + 8i");
@@ -324,22 +330,22 @@ public class ProbrammableCalculatorControllerTest {
         Complex c;
         
         assertEquals("There isn't one complex numbers to dup ",controller.elaborateInput("dup"));
-        controller.elaborateInput("3 - 9i");
+        controller.elaborateInput("3-9i");
         controller.elaborateInput("dup");
         c = controller.topNumberStack();
         assertEquals(format.format(c), "3 - 9i");
         c = controller.popNumberStack();
         assertEquals(format.format(c), "3 - 9i");
         
-        controller.elaborateInput("-4 + 123i");
+        controller.elaborateInput("-4+123i");
         controller.elaborateInput("dup");
         c = controller.topNumberStack();
         assertEquals(format.format(c), "-4 + 123i");
         c = controller.popNumberStack();
         assertEquals(format.format(c), "-4 + 123i");
         
-        controller.elaborateInput("43 + 6i");
-        controller.elaborateInput("7 + 9i");
+        controller.elaborateInput("43+6i");
+        controller.elaborateInput("7+9i");
         controller.elaborateInput("dup");
         c = controller.topNumberStack();
         assertEquals(format.format(c), "7 + 9i");
@@ -352,17 +358,17 @@ public class ProbrammableCalculatorControllerTest {
         Complex c;
         
         assertEquals("There isn't 2 complex numbers to swap ",controller.elaborateInput("swap"));
-        controller.elaborateInput("3 - 9i");
+        controller.elaborateInput("3-9i");
         assertEquals("There isn't 2 complex numbers to swap ",controller.elaborateInput("swap"));
-        controller.elaborateInput("4 + 7i");
+        controller.elaborateInput("4+7i");
         controller.elaborateInput("swap");
         c = controller.popNumberStack();
         assertEquals(format.format(c), "3 - 9i");
         c = controller.popNumberStack();
         assertEquals(format.format(c), "4 + 7i");
         
-        controller.elaborateInput("-9 + 2i");
-        controller.elaborateInput("6 + 8i");
+        controller.elaborateInput("-9+2i");
+        controller.elaborateInput("6+8i");
         controller.elaborateInput("swap");
         c = controller.popNumberStack();
         assertEquals(format.format(c), "-9 + 2i");
@@ -376,15 +382,15 @@ public class ProbrammableCalculatorControllerTest {
         Complex c;
         
         assertEquals("There isn't 2 complex numbers to swap ",controller.elaborateInput("swap"));
-        controller.elaborateInput("-21 - 9i");
+        controller.elaborateInput("-21-9i");
         assertEquals("There isn't 2 complex numbers to swap ",controller.elaborateInput("swap"));
-        controller.elaborateInput("6 + 7i");
+        controller.elaborateInput("6+7i");
         controller.elaborateInput("over");
         c = controller.popNumberStack();
         assertEquals(format.format(c), "-21 - 9i");
         
-        controller.elaborateInput("0 + 9i");
-        controller.elaborateInput("33 - 3i");
+        controller.elaborateInput("0+9i");
+        controller.elaborateInput("33-3i");
         controller.elaborateInput("over");
         c = controller.popNumberStack();
         assertEquals(format.format(c), "0 + 9i");
@@ -396,17 +402,17 @@ public class ProbrammableCalculatorControllerTest {
         Complex c;
         
         assertEquals("There isn't a complex number in the stack",controller.elaborateInput(">x"));
-        controller.elaborateInput("7 + 4i");
+        controller.elaborateInput("7+4i");
         controller.elaborateInput(">m");
         c = controller.variableStack.getValue('m');
         assertEquals(format.format(c), "7 + 4i");
         
-        controller.elaborateInput("0 + 5i");
+        controller.elaborateInput("0+5i");
         controller.elaborateInput(">b");
         c = controller.variableStack.getValue('b');
         assertEquals(format.format(c), "0 + 5i");
         
-        controller.elaborateInput("3 + 4i");
+        controller.elaborateInput("3+4i");
         controller.elaborateInput(">v");
         c = controller.variableStack.getValue('v');
         assertEquals(format.format(c), "3 + 4i");
@@ -417,18 +423,18 @@ public class ProbrammableCalculatorControllerTest {
         Complex c;
         
         assertEquals("The variable 'f' haven't a value",controller.elaborateInput("<f"));
-        controller.elaborateInput("7 + 4i");
+        controller.elaborateInput("7+4i");
         controller.elaborateInput(">f");
         controller.variableStack.getValue('f');
-        controller.elaborateInput("3+ 8i");
+        controller.elaborateInput("3+8i");
         controller.elaborateInput("<f");
         c = controller.topNumberStack();
         assertEquals(format.format(c), "7 + 4i");
         
-        controller.elaborateInput("5 + 6i");
+        controller.elaborateInput("5+6i");
         controller.elaborateInput(">f");
         controller.variableStack.getValue('f');
-        controller.elaborateInput("0 + 8i");
+        controller.elaborateInput("0+8i");
         controller.elaborateInput("<f");
         c = controller.topNumberStack();
         assertEquals(format.format(c), "5 + 6i");
@@ -440,27 +446,27 @@ public class ProbrammableCalculatorControllerTest {
         Complex c;
         
         assertEquals("The variable 'f' haven't a value",controller.elaborateInput("+f"));
-        controller.elaborateInput("7 + 4i");
+        controller.elaborateInput("7+4i");
         controller.elaborateInput(">f");
 //        controller.popNumberStack();
         assertEquals("There isn't a complex number in the stack",controller.elaborateInput("+f"));
-        controller.elaborateInput("9 + 4i");
+        controller.elaborateInput("9+4i");
         controller.elaborateInput("+f");
         c = controller.variableStack.getValue('f');
         assertEquals(format.format(c), "16 + 8i");
         
-        controller.elaborateInput("3 + 2i");
+        controller.elaborateInput("3+2i");
         controller.elaborateInput(">l");
         //controller.popNumberStack();
-        controller.elaborateInput("10 - 10i");
+        controller.elaborateInput("10-10i");
         controller.elaborateInput("+l");
         c = controller.variableStack.getValue('l');
         assertEquals(format.format(c), "13 - 8i");
         
-        controller.elaborateInput("3 - 2i");
+        controller.elaborateInput("3-2i");
         controller.elaborateInput(">u");
         //controller.popNumberStack();
-        controller.elaborateInput("-10 - 10i");
+        controller.elaborateInput("-10-10i");
         controller.elaborateInput("+u");
         c = controller.variableStack.getValue('u');
         assertEquals(format.format(c), "-7 - 12i");
@@ -472,24 +478,24 @@ public class ProbrammableCalculatorControllerTest {
         Complex c;
         
         assertEquals("The variable 'f' haven't a value",controller.elaborateInput("+f"));
-        controller.elaborateInput("7 + 4i");
+        controller.elaborateInput("7+4i");
         controller.elaborateInput(">f");
         assertEquals("There isn't a complex number in the stack",controller.elaborateInput("+f"));
-        controller.elaborateInput("9 + 4i");
+        controller.elaborateInput("9+4i");
         controller.elaborateInput("-f");
         c = controller.variableStack.getValue('f');
         assertEquals(format.format(c), "2");
         
-        controller.elaborateInput("3 + 2i");
+        controller.elaborateInput("3+2i");
         controller.elaborateInput(">l");
-        controller.elaborateInput("10 - 10i");
+        controller.elaborateInput("10-10i");
         controller.elaborateInput("-l");
         c = controller.variableStack.getValue('l');
         assertEquals(format.format(c), "7 - 12i");
         
-        controller.elaborateInput("3 - 2i");
+        controller.elaborateInput("3-2i");
         controller.elaborateInput(">u");
-        controller.elaborateInput("-10 - 10i");
+        controller.elaborateInput("-10-10i");
         controller.elaborateInput("-u");
         c = controller.variableStack.getValue('u');
         assertEquals(format.format(c), "-13 - 8i");
@@ -500,16 +506,16 @@ public class ProbrammableCalculatorControllerTest {
     public void testDoSaveAndRestore() throws NotACharacterException {
         Complex c1, c2, c3, c4;
         
-        controller.elaborateInput("1 + 2i");
+        controller.elaborateInput("1+2i");
         controller.elaborateInput(">a");
-        controller.elaborateInput("5 + 6i");
+        controller.elaborateInput("5+6i");
         controller.elaborateInput(">z");
-        controller.elaborateInput("3 + 4i");
+        controller.elaborateInput("3+4i");
         controller.elaborateInput(">m");
         controller.elaborateInput("save");
-        controller.elaborateInput("8 + 6i");
+        controller.elaborateInput("8+6i");
         controller.elaborateInput(">a");
-        controller.elaborateInput("7 + 9i");
+        controller.elaborateInput("7+9i");
         controller.elaborateInput(">m");
         controller.elaborateInput("restore");
         c1 = controller.variableStack.getValue('a');
@@ -519,19 +525,19 @@ public class ProbrammableCalculatorControllerTest {
         assertEquals(format.format(c2), "5 + 6i");
         assertEquals(format.format(c3), "3 + 4i");
         
-        controller.elaborateInput("1 + 2i");
+        controller.elaborateInput("1+2i");
         controller.elaborateInput(">h");
-        controller.elaborateInput("5 + 6i");
+        controller.elaborateInput("5+6i");
         controller.elaborateInput(">b");
-        controller.elaborateInput("3 + 4i");
+        controller.elaborateInput("3+4i");
         controller.elaborateInput(">n");
         controller.elaborateInput("save");
-        controller.elaborateInput("8 + 6i");
+        controller.elaborateInput("8+6i");
         controller.elaborateInput(">h");
-        controller.elaborateInput("7 + 9i");
+        controller.elaborateInput("7+9i");
         controller.elaborateInput(">b");
         controller.elaborateInput("+n");
-        controller.elaborateInput("4 + 7i");
+        controller.elaborateInput("4+7i");
         controller.elaborateInput(">v");
         controller.elaborateInput("restore");
         c1 = controller.variableStack.getValue('a');
@@ -544,6 +550,105 @@ public class ProbrammableCalculatorControllerTest {
         assertEquals(c4, null);
         
     }
+    
+    @Test
+    public void testDoCreateUserDefinedOperation() throws NoSuchOperationException {
+        List<String> sequence = new LinkedList<>();
+        List<String> seq = new LinkedList<>();
+        String s;
+        
+        s = controller.createUserDefinedOperation("operation1", "+ - *");    
+        assertEquals(s, null);
+        
+        controller.createUserDefinedOperation("operation2", "- sqrt swap * dup +");  
+        assertEquals(s, null);
+        
+        s = controller.createUserDefinedOperation("operation1", "* dup +");
+        assertEquals("Operation already exists", s);
+        
+    }
+    
+    @Test
+    public void testDoModifyNameUserDefinedOperation() {
+        String s;
+        
+        controller.createUserDefinedOperation("operation1", "+ swap /");
+        s = controller.modifyNameUserDefinedOperation("operation1", "oper");
+        assertEquals(s, null);
+        
+        s = controller.modifyNameUserDefinedOperation("operation1", "jacket");
+        assertEquals(s, "Operation operation1 doesn't exist");
+        
+        controller.createUserDefinedOperation("train", "+ over /");
+        s = controller.modifyNameUserDefinedOperation("oper", "train");
+        assertEquals(s, "train Operation already exists");
+    }
+    
+    @Test
+    public void testDoModifySequenceUserDefinedOperation() {
+        String s;
+        
+        controller.createUserDefinedOperation("operation1", "+ + + /");
+        s = controller.modifySequenceUserDefinedOperation("operation1", "swap - + +");
+        assertEquals(s, null);
+        
+        s = controller.modifySequenceUserDefinedOperation("read", "swap +a");
+        assertEquals("Operation read doesn't exist", s);
+        
+        controller.createUserDefinedOperation("operation5", "+ + swap /");
+        s = controller.modifySequenceUserDefinedOperation("operation5", "swap - +a +");
+        assertEquals(s, null);
+        
+    }
+    
+    @Test
+    public void testDoGetSequenceUserDefinedOperation() {
+        
+        controller.createUserDefinedOperation("operation1", "swap / +");
+        List<String> sequence = new LinkedList<>();
+        sequence.add("swap");
+        sequence.add("/");
+        assertNotEquals(sequence, controller.getSequenceUserDefinedOperation("operation1"));
+        sequence.add("+");
+        assertEquals(sequence, controller.getSequenceUserDefinedOperation("operation1"));
+        
+        assertEquals(null, controller.getSequenceUserDefinedOperation("oper"));
+        
+    }
+    
+    
+    @Test
+    public void testDoInvokeUserDefinedOperation() throws NotACharacterException {
+        Complex c;
+        
+        controller.elaborateInput("operation1");
+        controller.createUserDefinedOperation("operation1", "+ + +");
+        controller.elaborateInput("3+5i");
+        controller.elaborateInput("6-5i");
+        controller.elaborateInput("-2+7i");
+        controller.elaborateInput("10+5i");
+        
+        controller.elaborateInput("operation1");
+        c = controller.topNumberStack();  
+        assertEquals(format.format(c), "17 + 12i");
+        
+        controller.createUserDefinedOperation("operation2", "operation1 +");
+        controller.elaborateInput("3+5i");
+        controller.elaborateInput("6-5i");
+        controller.elaborateInput("-2+7i");
+        controller.elaborateInput("10+5i");
+        controller.elaborateInput("operation2");
+        c = controller.topNumberStack();  
+        assertEquals(format.format(c), "34 + 24i");
+        
+        controller.createUserDefinedOperation("operation3", "8+6i - >a");
+        controller.elaborateInput("operation3");
+        c = controller.variableStack.getValue('a');
+        assertEquals(format.format(c), "26 + 18i");
+        
+        
+    }
+    
    
     // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:
