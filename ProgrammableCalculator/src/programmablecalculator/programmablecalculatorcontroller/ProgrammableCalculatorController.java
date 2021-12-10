@@ -17,6 +17,9 @@ import programmablecalculator.complexnumberoperations.ComplexNumberOperations;
 import programmablecalculator.numbersstack.NotEnoughElementsException;
 import programmablecalculator.numbersstack.NumbersStack;
 import programmablecalculator.savevariablestack.SaveVariableStack;
+import programmablecalculator.userdefinedoperations.NoSuchOperationException;
+import programmablecalculator.userdefinedoperations.OperationAlreadyExistsException;
+import programmablecalculator.userdefinedoperations.UserDefinedOperationController;
 import programmablecalculator.variablearray.NotACharacterException;
 /**
  *
@@ -26,6 +29,7 @@ public class ProgrammableCalculatorController {
     protected NumbersStack numberStack;
     private final ComplexFormat format;
     protected SaveVariableStack variableStack;
+    protected UserDefinedOperationController userDefinedOperations;
     
     
     
@@ -309,6 +313,7 @@ public class ProgrammableCalculatorController {
         
         variableStack = new SaveVariableStack();
         numberStack = new NumbersStack();
+        userDefinedOperations = new UserDefinedOperationController();
     }
     
       /*@brief: elaborate the user's input implementing the calculator's logic
@@ -480,7 +485,8 @@ public class ProgrammableCalculatorController {
                     }
                     break;
                 }
-       
+                
+                
                 
                 // Insert complex number in the numbersStack
                 //Complex complex = format.parse(input);
@@ -503,6 +509,36 @@ public class ProgrammableCalculatorController {
 
     public NumbersStack getNumberStack() {
         return numberStack;
+    }
+    
+    
+    public String createUserDefinedOperation(String name, String sequence) {
+        try {
+            userDefinedOperations.create(name, sequence);
+            return null;
+        } catch (OperationAlreadyExistsException ex) {
+            return "Operation already exists";
+        }
+    }
+    
+    public String modifyNameUserDefinedOperation(String oldName, String newName) {
+        try {
+            userDefinedOperations.modifyName(oldName, newName);
+            return null;
+        } catch (NoSuchOperationException ex) {
+           return "Operation "+ oldName + " doesn't exist";
+        } catch (OperationAlreadyExistsException ex) {
+           return newName + " Operation already exists";
+        }
+    }
+    
+    public String modifySequenceUserDefinedOperation(String name, String sequence) {
+        try {
+            userDefinedOperations.modifySequence(name, sequence);
+            return null;
+        } catch (NoSuchOperationException ex) {
+           return "Operation "+ name + " doesn't exist";
+        }
     }
     
     /*
