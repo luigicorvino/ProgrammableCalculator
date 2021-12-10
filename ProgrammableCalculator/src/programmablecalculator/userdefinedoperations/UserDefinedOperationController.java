@@ -58,10 +58,10 @@ public class UserDefinedOperationController {
         return Arrays.asList(sequence.split("\\s+"));
     }
     
-    public List<String> getNames(){
+    public List<String> getOperationsList(){
         List<String> names = new LinkedList<>();
         for(UserDefinedOperation operation : userDefinedOperations)
-            names.add(operation.getName());
+            names.add(operation.toString());
         return names;
     }
     

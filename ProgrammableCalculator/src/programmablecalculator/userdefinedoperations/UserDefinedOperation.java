@@ -54,6 +54,11 @@ public class UserDefinedOperation {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return this.name +" : "+ this.operationsSequence;
+    }
     
     
 }
