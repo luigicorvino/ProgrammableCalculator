@@ -191,4 +191,16 @@ public class UserDefinedOperationControllerTest {
     }
     
     
+    @Test
+    public void getNames() throws OperationAlreadyExistsException{
+        System.out.println("Get Names");
+        operations.create("op1", "+ +");
+        operations.create("op2", "- -");
+        operations.create("op3", "* sqrt");
+        List<String> names = operations.getNames();
+        assertEquals(names.get(0), "op1");
+        assertEquals(names.get(1), "op2");
+        assertEquals(names.get(2),"op3");
+    }
+    
 }

@@ -58,7 +58,12 @@ public class UserDefinedOperationController {
         return Arrays.asList(sequence.split("\\s+"));
     }
     
-
+    public List<String> getNames(){
+        List<String> names = new LinkedList<>();
+        for(UserDefinedOperation operation : userDefinedOperations)
+            names.add(operation.getName());
+        return names;
+    }
     
     private UserDefinedOperation getOperation(String name) throws NoSuchOperationException{
         for (UserDefinedOperation operation : userDefinedOperations){
