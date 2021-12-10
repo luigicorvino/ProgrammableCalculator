@@ -442,7 +442,7 @@ public class ProbrammableCalculatorControllerTest {
         assertEquals("The variable 'f' haven't a value",controller.elaborateInput("+f"));
         controller.elaborateInput("7 + 4i");
         controller.elaborateInput(">f");
-        controller.popNumberStack();
+//        controller.popNumberStack();
         assertEquals("There isn't a complex number in the stack",controller.elaborateInput("+f"));
         controller.elaborateInput("9 + 4i");
         controller.elaborateInput("+f");
@@ -451,7 +451,7 @@ public class ProbrammableCalculatorControllerTest {
         
         controller.elaborateInput("3 + 2i");
         controller.elaborateInput(">l");
-        controller.popNumberStack();
+        //controller.popNumberStack();
         controller.elaborateInput("10 - 10i");
         controller.elaborateInput("+l");
         c = controller.variableStack.getValue('l');
@@ -459,7 +459,7 @@ public class ProbrammableCalculatorControllerTest {
         
         controller.elaborateInput("3 - 2i");
         controller.elaborateInput(">u");
-        controller.popNumberStack();
+        //controller.popNumberStack();
         controller.elaborateInput("-10 - 10i");
         controller.elaborateInput("+u");
         c = controller.variableStack.getValue('u');
@@ -474,7 +474,6 @@ public class ProbrammableCalculatorControllerTest {
         assertEquals("The variable 'f' haven't a value",controller.elaborateInput("+f"));
         controller.elaborateInput("7 + 4i");
         controller.elaborateInput(">f");
-        controller.popNumberStack();
         assertEquals("There isn't a complex number in the stack",controller.elaborateInput("+f"));
         controller.elaborateInput("9 + 4i");
         controller.elaborateInput("-f");
@@ -483,7 +482,6 @@ public class ProbrammableCalculatorControllerTest {
         
         controller.elaborateInput("3 + 2i");
         controller.elaborateInput(">l");
-        controller.popNumberStack();
         controller.elaborateInput("10 - 10i");
         controller.elaborateInput("-l");
         c = controller.variableStack.getValue('l');
@@ -491,7 +489,6 @@ public class ProbrammableCalculatorControllerTest {
         
         controller.elaborateInput("3 - 2i");
         controller.elaborateInput(">u");
-        controller.popNumberStack();
         controller.elaborateInput("-10 - 10i");
         controller.elaborateInput("-u");
         c = controller.variableStack.getValue('u');

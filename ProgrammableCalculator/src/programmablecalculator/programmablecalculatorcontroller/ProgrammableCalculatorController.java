@@ -27,56 +27,279 @@ public class ProgrammableCalculatorController {
     private final ComplexFormat format;
     protected SaveVariableStack variableStack;
     
-    public abstract class CallBackBinaryOperation {       
-        public abstract Complex call(Complex c1, Complex c2);
     
+    
+    
+    public abstract class Operation {
+        protected Complex[] c;
+        public Operation() {
+        }       
+        public abstract boolean execute(NumbersStack stack, SaveVariableStack variables);
     }
     
-    public class CallbackAdd extends CallBackBinaryOperation {
-            
-        @Override
-        public  Complex call(Complex c1, Complex c2) {
-            return ComplexNumberOperations.add(c1, c2);
+    public class OperationDrop extends Operation{
+        public OperationDrop() {
+            super();
         }
-    }
-    public class CallbackSub extends CallBackBinaryOperation {
-            
         @Override
-        public  Complex call(Complex c1, Complex c2) {
-            return ComplexNumberOperations.sub(c1, c2);
-        }
-    }
-    public class CallbackMultiply extends CallBackBinaryOperation {
-            
-        @Override
-        public  Complex call(Complex c1, Complex c2) {
-            return ComplexNumberOperations.multiply(c1, c2);
-        }
-    }
-    public class CallbackDivide extends CallBackBinaryOperation {
-            
-        @Override
-        public  Complex call(Complex c1, Complex c2) {
-            return ComplexNumberOperations.divide(c1, c2);
+        public boolean execute(NumbersStack stack, SaveVariableStack variables) {
+            if(!stack.isEmpty())
+                stack.drop();
+            else
+                return false;
+            return true;
         }
     }
     
+    public class OperationDup extends Operation{
+        public OperationDup() {
+            super();
+        }
+
+        @Override
+        public boolean execute(NumbersStack stack, SaveVariableStack variables) {
+            if(stack.size() < 1)
+                return false;
+            else
+                stack.dup();
+            return true;
+        }
+    }
     
-    public abstract class CallBackUnaryOperation {
-        public abstract Complex call(Complex c1);
+    public class OperationSwap extends Operation{
+        public OperationSwap() {
+            super();
+        }
+
+        @Override
+        public boolean execute(NumbersStack stack, SaveVariableStack variables) {
+            
+            try {
+                stack.swap();
+            } catch (NotEnoughElementsException ex) {
+                return false;
+            }
+            return true;
+        }
+    }
+    
+    public class OperationOver extends Operation{
+        public OperationOver() {
+            super();
+        }
+
+        @Override
+        public boolean execute(NumbersStack stack, SaveVariableStack variables) {
+            try {
+                stack.over();
+            } catch (NotEnoughElementsException ex) {
+                return false;
+            }
+            return true;
+        }
+    }
+    
+    public class OperationClear extends Operation{
+        public OperationClear() {
+            super();
+        }
+
+        @Override
+        public boolean execute(NumbersStack stack, SaveVariableStack variables) {
+            stack.clear();
+            return true;
+        }
+    }
+    
+    public class OperationSave extends Operation{
+        public OperationSave() {
+            super();
+        }
+
+        @Override
+        public boolean execute(NumbersStack stack, SaveVariableStack variables) {
+            variables.save();
+            return true;
+        }
+    }
+    
+    public class OperationRestore extends Operation{
+        public OperationRestore() {
+            super();
+        }
+
+        @Override
+        public boolean execute(NumbersStack stack, SaveVariableStack variables) {
+            variables.restore();
+            return true;
+        }
+    }
+    
+    public class OperationInsertComplex extends Operation{
+        private Complex complex;
+        private ComplexFormat cformat;
+        public OperationInsertComplex(String s) {
+            NumberFormat nf=NumberFormat.getInstance(new Locale("en","US"));
+            nf.setMaximumFractionDigits(8);
+            cformat=new ComplexFormat(nf);
+            complex = cformat.parse(s);
+        }
+        @Override
+        public boolean execute(NumbersStack stack, SaveVariableStack variables) {
+            if (complex != null) {
+                stack.push(complex);
+                return true; 
+            }
+            else return false; 
+        }
         
     }
-    public class CallBackInvertSign extends CallBackUnaryOperation {
-        public Complex call(Complex c1) {
-            return ComplexNumberOperations.invert(c1);
+    
+    public abstract class OperationNumberStack extends Operation{
+        
+        private int operands;
+    
+        public OperationNumberStack(int ops) {
+            super();
+            operands = ops;
+        }
+        
+        protected boolean takeComplex(NumbersStack stack) {
+            if(stack.size()<operands)
+                return false;
+            
+            c = new Complex[operands];
+            for (int i = operands-1; i >= 0; i--) {
+                c[i] = stack.pop();
+            }
+            return true;
+        }
+        public Complex operating(){return null;};
+        @Override
+        public boolean execute(NumbersStack stack, SaveVariableStack variables) {
+            boolean success = takeComplex(stack);
+            if(success) 
+                stack.push(operating());
+            return success;
         }
     }
-    public class CallBackSqrt extends CallBackUnaryOperation {
-        public Complex call(Complex c1) {
-            return ComplexNumberOperations.sqrt(c1);
+
+    public class OperationAdd extends OperationNumberStack {
+
+        public OperationAdd() {
+            super(2);
         }
+
+        @Override
+        public Complex operating() {
+            return ComplexNumberOperations.add(super.c[0], super.c[1]);
+        }
+            
     }
         
+    public class OperationSub extends OperationNumberStack {
+        public OperationSub() {
+            super(2);
+        }
+
+        @Override
+        public Complex operating() {
+            return ComplexNumberOperations.sub(super.c[0], super.c[1]);
+        }    
+        
+    }
+    public class OperationMultiply extends OperationNumberStack {
+            
+        public OperationMultiply() {
+            super(2);
+        }
+
+        @Override
+        public Complex operating() {
+            return ComplexNumberOperations.multiply(super.c[0], super.c[1]);
+        }
+    }
+    public class OperationDivide extends OperationNumberStack {
+            
+        public OperationDivide() {
+            super(2);
+        }
+
+        @Override
+        public Complex operating() {
+            return ComplexNumberOperations.divide(super.c[0], super.c[1]);
+        }
+    }
+    
+    
+    public class OperationInvertSign extends OperationNumberStack {
+        public OperationInvertSign() {
+            super(1);
+        }
+
+        @Override
+        public Complex operating() {
+            return ComplexNumberOperations.invert(super.c[0]);
+        }
+    }
+    public class OperationSqrt extends OperationNumberStack {
+        public OperationSqrt() {
+            super(1);
+        }
+
+        @Override
+        public Complex operating() {
+            return ComplexNumberOperations.sqrt(super.c[0]);
+        }
+    }
+    
+    public abstract class OperationVariable extends OperationNumberStack {
+        char character;
+        public OperationVariable(char character) {
+            super(1);
+            this.character = character;
+        }   
+    }
+    
+    public class OperationSetVariable extends OperationVariable {
+        public OperationSetVariable(char character) {
+            super(character);
+        }
+
+        @Override
+        public boolean execute(NumbersStack stack, SaveVariableStack variables) {
+            Complex complex = stack.peekFirst();
+            try {
+                if(complex != null) {
+                    stack.pop();
+                    variables.insertValue(character, complex);
+                }
+            } catch (NotACharacterException ex) {
+                return false;
+            }
+            return (complex != null);
+        }
+    }
+    
+    public class OperationGetVariable extends OperationVariable {
+        
+        public OperationGetVariable(char character) {
+            super(character);
+        }
+        
+        @Override
+        public boolean execute(NumbersStack stack, SaveVariableStack variables) {
+            Complex complex = null;
+                try {
+                    complex = variables.getValue(character);
+                    if (complex != null)
+                        stack.push(complex);
+            } catch (NotACharacterException ex) {
+                return false;
+            }
+            return (complex != null);
+        }
+    }
     
     public ProgrammableCalculatorController() {
         numberStack = new NumbersStack();
@@ -92,155 +315,178 @@ public class ProgrammableCalculatorController {
       @param1: user's input
       @return: An error message if needed, a null String otherwise
     */
-    public String elaborateInput(String operation) {
+    public String elaborateInput(String input) {
         String result = null;
-        switch (operation) {
+        switch (input) {
             
             case "+": {
-                if (takeComplexAndBinaryOperation(new CallbackAdd()) == false)
+                Operation operation = new OperationAdd();          
+                if (operation.execute(numberStack, variableStack) == false)
                    result = "There aren't 2 complex numbers to add ";
                 break;
             } 
             
             case "-": {
-                if (takeComplexAndBinaryOperation(new CallbackSub())== false)
+                Operation operation = new OperationSub();          
+                if (operation.execute(numberStack, variableStack) == false)
                    result = "There aren't 2 complex numbers to sub ";
                 break;
             }
             
             case "*": {
-                if (takeComplexAndBinaryOperation(new CallbackMultiply())== false)
+                Operation operation = new OperationMultiply();          
+                if (operation.execute(numberStack, variableStack) == false)
                    result = "There aren't 2 complex numbers to multiply ";
                 break;
             }
             
             case "/": {
-                if (takeComplexAndBinaryOperation(new CallbackDivide())== false)
+                Operation operation = new OperationDivide();          
+                if (operation.execute(numberStack, variableStack) == false)
                    result = "There aren't 2 complex numbers to divide ";
                 break;
             }
             
             case "+-": {
-                if (takeComplexAndUnaryOperation(new CallBackInvertSign())== false)
+                Operation operation = new OperationInvertSign();          
+                if (operation.execute(numberStack, variableStack) == false)
                    result = "There isn't one complex numbers to invert sign ";
                 break;
             }
             case "sqrt": {
-                if (takeComplexAndUnaryOperation(new CallBackSqrt())== false)
+                Operation operation = new OperationSqrt();          
+                if (operation.execute(numberStack, variableStack) == false)
                    result = "There isn't one complex numbers to sqrt ";
                 break;
             }
             
             case "drop": {
-                if (numberStack.isEmpty())
-                    return result = "There isn't one complex numbers to drop ";
-                numberStack.drop();
+                Operation operation = new OperationDrop();          
+                if (operation.execute(numberStack, variableStack) == false)
+                   result = "There isn't one complex numbers to drop ";
                 break;
             }
             
             case "dup": {
-                if (numberStack.size() < 1)
-                    return result = "There isn't one complex numbers to dup ";
-                numberStack.dup();
+                Operation operation = new OperationDup();          
+                if (operation.execute(numberStack, variableStack) == false)
+                   result = "There isn't one complex numbers to dup ";
                 break;
+                
             }
             
             
             case "swap": {
-            try { 
-                
-                numberStack.swap();
-                    } catch (NotEnoughElementsException ex) {
-                        return result = "There isn't 2 complex numbers to swap ";
-                    }
+            
+                Operation operation = new OperationSwap();          
+                if (operation.execute(numberStack, variableStack) == false)
+                   result = "There isn't 2 complex numbers to swap ";
                 break;
             }
             
             case "over": {
-            try {
-                    
-                numberStack.over();
-                    } catch (NotEnoughElementsException ex) {
-                        return result = "There isn't 2 complex numbers to over "; 
-                    }
+            
+                Operation operation = new OperationOver();          
+                if (operation.execute(numberStack, variableStack) == false)
+                   result = "There isn't 2 complex numbers to over ";
                 break;
             }
             
             case "clear": {
-                numberStack.clear();
+                Operation operation = new OperationClear();
+                operation.execute(numberStack, variableStack);
                 break;
             }
             
             case "save": {
-                variableStack.save();
+                Operation operation = new OperationSave();
+                operation.execute(numberStack, variableStack);
                 break;
             }
             
             case "restore": {
-                variableStack.restore();
+                Operation operation = new OperationRestore();
+                operation.execute(numberStack, variableStack);
                 break;
             }
             
             default: {
-                
-                if(operation.matches("\\>[a-z]")) {
+                if(input.matches("\\>[a-z]")) {
+                    Operation operation = new OperationSetVariable(input.charAt(1));
+                    if(operation.execute(numberStack, variableStack) == false)
+                        result = "There isn't a complex number in the stack";
+                /*
+                if(input.matches("\\>[a-z]")) {
                     try {
                         if(numberStack.size() > 0) 
-                            variableStack.insertValue(operation.charAt(1), numberStack.peekFirst());
+                            variableStack.insertValue(input.charAt(1), numberStack.peekFirst());
                         else
                             result = "There isn't a complex number in the stack";
                         
                     } catch (NotACharacterException ex) {}
+                */
                     break;
+                    
                 }
                 
                 
-                if(operation.matches("\\<[a-z]")) {
+                if(input.matches("\\<[a-z]")) {
+                    Operation operation = new OperationGetVariable(input.charAt(1));
+                    if(operation.execute(numberStack, variableStack) == false)
+                        result = "The variable '"+input.charAt(1)+"' haven't a value";
+                    /*
                     try {
-                        Complex c = variableStack.getValue(operation.charAt(1));
+                        Complex c = variableStack.getValue(input.charAt(1));
                         if(c == null) 
-                            result = "The variable '"+operation.charAt(1)+"' haven't a value";
+                            result = "The variable '"+input.charAt(1)+"' haven't a value";
                         else
                             numberStack.push(c);
                     } catch (NotACharacterException ex) {
                     }
+                    */
                     break;
                 }
                 
-                if(operation.matches("\\+{1}[a-z]{1}")) {
-                    try {
-                        Complex complexVariable = variableStack.getValue(operation.charAt(1));
-                        if (complexVariable == null)
-                            result = "The variable '"+operation.charAt(1)+"' haven't a value";
-                        else if (numberStack.size() < 1) 
+                if(input.matches("\\+{1}[a-z]{1}")) {
+                    Operation operation = new OperationGetVariable(input.charAt(1));
+                    if(!operation.execute(numberStack, variableStack)) 
+                        result = "The variable '"+input.charAt(1)+"' haven't a value";
+                    else {
+                        operation = new OperationAdd();
+                        if(!operation.execute(numberStack, variableStack))
                             result = "There isn't a complex number in the stack";
-                        else 
-                            variableStack.insertValue(operation.charAt(1), ComplexNumberOperations.add(numberStack.peekFirst(),complexVariable));                         
-                    } catch (NotACharacterException ex) {
-                        
+                        else {
+                            operation = new OperationSetVariable(input.charAt(1));
+                            operation.execute(numberStack, variableStack);
+                        }
+                            
                     }
                     break;
                 }
                 
-                if(operation.matches("\\-{1}[a-z]{1}")) {
-                    try {
-                        Complex complexVariable = variableStack.getValue(operation.charAt(1));
-                        if (complexVariable == null)
-                            result = "The variable '"+operation.charAt(1)+"' haven't a value";
-                        else if (numberStack.size() < 1) 
+                if(input.matches("\\-{1}[a-z]{1}")) {
+                    Operation operation = new OperationGetVariable(input.charAt(1));
+                    if(!operation.execute(numberStack, variableStack)) 
+                        result = "The variable '"+input.charAt(1)+"' haven't a value";
+                    else {
+                        operation = new OperationSub();
+                        if(!operation.execute(numberStack, variableStack))
                             result = "There isn't a complex number in the stack";
-                        else 
-                            variableStack.insertValue(operation.charAt(1), ComplexNumberOperations.sub(numberStack.peekFirst(),complexVariable));                         
-                    } catch (NotACharacterException ex) {
-                        
+                        else {
+                            operation = new OperationSetVariable(input.charAt(1));
+                            operation.execute(numberStack, variableStack);
+                        }
+                            
                     }
                     break;
                 }
        
                 
                 // Insert complex number in the numbersStack
-                Complex complex = format.parse(operation);
-                numberStack.push(complex);
+                //Complex complex = format.parse(input);
+                //numberStack.push(complex);
+                Operation operation = new OperationInsertComplex(input);
+                operation.execute(numberStack, variableStack);
                 break;
             }
                
@@ -259,7 +505,7 @@ public class ProgrammableCalculatorController {
         return numberStack;
     }
     
-
+    /*
     private boolean takeComplexAndBinaryOperation( CallBackBinaryOperation operation) {
         if(numberStack.size()<2)
             return false;
@@ -276,7 +522,7 @@ public class ProgrammableCalculatorController {
         numberStack.push(operation.call(numberStack.pop()));
         return true;
     }
-    
+    */
 
     
 }
