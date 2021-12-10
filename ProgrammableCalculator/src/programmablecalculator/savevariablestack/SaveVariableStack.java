@@ -49,12 +49,12 @@ public class SaveVariableStack {
         return currentArray.getValue(variable);
     }
     
-
+    
     
     public VariableArray getCurrentArray() {
         return currentArray;
     }
-    
+   
     protected ArrayDeque<VariableArray> getVariableStack() {
         return variableStack;
     }
