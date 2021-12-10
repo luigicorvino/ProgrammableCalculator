@@ -37,7 +37,7 @@ public class VariableArray{
         return (int) variable - ALPHABET_START;
     }
 
-    protected Complex[] getVariables(){
+    public Complex[] getVariables(){
         return variables;
     }
     
