@@ -45,7 +45,7 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         controller= new ProgrammableCalculatorController();
         bothParts="(^[-]?\\d+\\.?\\d*)([-|+]+\\d*\\.?\\d*)[i$]+";
         onlyRealPart="^[-]?\\d+\\.?\\d*$";
-        onlyImmaginaryPart="^[-]?\\d*\\.?\\d*[i{1}$]+";
+        onlyImmaginaryPart="^[-]?\\d*\\.?\\d*[i{1}$]";
     }
 
     /**
@@ -75,7 +75,6 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         jButtonRemoveOperation = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         userDefinedOperationVisualizer = new javax.swing.JList<String>();
-        jButtonInvokeOperation = new javax.swing.JButton();
         jTextFieldNewName = new javax.swing.JTextField();
         jLabelModfiyName = new javax.swing.JLabel();
         jFrameVariables = new javax.swing.JFrame();
@@ -225,15 +224,6 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
 
         jScrollPane3.setViewportView(userDefinedOperationVisualizer);
 
-        jButtonInvokeOperation.setBackground(new java.awt.Color(51, 51, 240));
-        jButtonInvokeOperation.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonInvokeOperation.setText("Invoke");
-        jButtonInvokeOperation.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonInvokeOperationActionPerformed(evt);
-            }
-        });
-
         jLabelModfiyName.setBackground(new java.awt.Color(51, 51, 240));
         jLabelModfiyName.setForeground(new java.awt.Color(255, 255, 255));
         jLabelModfiyName.setText("Inserisci il nuovo nome dell'operazione da modificare");
@@ -255,8 +245,7 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
                 .addGroup(jPanelUserDefinedOperationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelUserDefinedOperationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jButtonModifyOperation, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButtonRemoveOperation, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
-                        .addComponent(jButtonInvokeOperation, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jButtonRemoveOperation, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE))
                     .addComponent(jButtonAddOperation, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(69, 69, 69))
         );
@@ -271,22 +260,18 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
                             .addComponent(jTextFieldOperationName, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButtonAddOperation))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanelUserDefinedOperationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanelUserDefinedOperationLayout.createSequentialGroup()
-                                .addComponent(jButtonInvokeOperation)
-                                .addGap(38, 38, 38)
-                                .addComponent(jButtonModifyOperation))
-                            .addGroup(jPanelUserDefinedOperationLayout.createSequentialGroup()
-                                .addComponent(jLabelOperationSequence)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextFieldOperationSequence, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabelModfiyName)))
+                        .addComponent(jLabelOperationSequence)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanelUserDefinedOperationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextFieldOperationSequence, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonModifyOperation))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabelModfiyName)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextFieldNewName, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jButtonRemoveOperation))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout jFrameUserDefinedOperationLayout = new javax.swing.GroupLayout(jFrameUserDefinedOperation.getContentPane());
@@ -803,7 +788,7 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
 
     private void jButtonShowOperationsFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonShowOperationsFrameActionPerformed
         jFrameUserDefinedOperation.setVisible(true);
-        jFrameUserDefinedOperation.setSize(800,400);
+        jFrameUserDefinedOperation.setSize(800,600);
     }//GEN-LAST:event_jButtonShowOperationsFrameActionPerformed
 
     private void jButtonModifyOperationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModifyOperationActionPerformed
@@ -817,6 +802,7 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
             jTextFieldOperationName.setText("");
             jTextFieldNewName.setText("");
             jTextFieldOperationSequence.setText("");
+            updateUserDefinedOperationsVisualizer();
             return;
         }
         if(!(checkOperationSequence(sequence)))
@@ -828,6 +814,7 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
             jTextFieldOperationName.setText("");
             jTextFieldNewName.setText("");
             jTextFieldOperationSequence.setText("");
+            updateUserDefinedOperationsVisualizer();
         }
         else{
             showMessageDialog(null,"Errore nell'operazione di modifica");
@@ -857,14 +844,15 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
        jFrameVariables.setVisible(true);
        jFrameVariables.setSize(270,500);
     }//GEN-LAST:event_showCurrentVariablesValuesActionPerformed
-
-    private void jButtonInvokeOperationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInvokeOperationActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonInvokeOperationActionPerformed
     protected String checkInputField(String text){
      String input;
      String numberWithNoSpace=text.replaceAll("\\s","");
      String inputText=numberWithNoSpace.toLowerCase();
+     Iterator<String> listOperation=controller.getUserDefinedOperationList();
+     while(listOperation.hasNext()){
+         if(inputText.equals(listOperation.next().split("\\s+")[0]))
+             return inputText;
+     }
      if(inputText.equals("+") || inputText.equals("-") || inputText.equals("*") || inputText.equals("/") || inputText.equals("sqrt") || inputText.equals("+-")
         || inputText.equals("clear") || inputText.equals("drop") || inputText.equals("dup") || inputText.equals("over") 
         || inputText.equals("swap") || inputText.equals("save") || inputText.equals("restore"))   //check for an input that represents an operation
@@ -878,13 +866,15 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
      }
     }    
     
-    public void setTextField(String text){
-        inputField.setText(text);
-    }
-    public DefaultListModel getModel(){
+    public DefaultListModel getModelVisibleStack(){
         return visibleStackModel;
     }
-    
+    public DefaultListModel getModelVariableArray(){
+        return currentVariableModel;
+    }
+    public DefaultListModel getModelUserDefinedOperationVisualizer(){
+        return userDefinedOperationModel;
+    }
     protected void updateVisibleStack(){
         ComplexFormat format;
         NumberFormat nf= NumberFormat.getInstance(new Locale("en","US"));
@@ -898,6 +888,8 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
             i+=1;
         }
     }
+    //update JList methods (stack,variable array, user defined operation list)
+    
     protected void updateVariablesValues(){
         String arrayVariable="abcdefghijklmnopqrstuvz";
         ComplexFormat format;
@@ -908,18 +900,23 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         Complex[] variableArray = controller.getVariableArray();
         for(int i=0;i<variableArray.length;i++){
             if(variableArray[i]!=null)
-                currentVariableModel.addElement(arrayVariable.charAt(i)+"\t"+variableArray[i]+"\n");
+                currentVariableModel.addElement(arrayVariable.charAt(i)+": "+format.format(variableArray[i]));
         }
     }
     protected void updateUserDefinedOperationsVisualizer(){
         userDefinedOperationModel.clear();
-        userDefinedOperationModel.addElement("Operation's name"+"                  "
-                + "Operation's sequence\n");
+        Iterator<String> listOperation=controller.getUserDefinedOperationList();
+        userDefinedOperationModel.addElement("Operations");
+        while(listOperation.hasNext()){
+            userDefinedOperationModel.addElement(listOperation.next());
+        }
     }
+    //check input methods for number,operations,variable operations and sequence of user defined operations.
+    
     private String checkNumberProcess(String inputText){
         Pattern inputCheck=Pattern.compile(bothParts); //input sequence of a complex number with both real and immaginary part
         Matcher inputMatcher=inputCheck.matcher(inputText);
-        if(inputMatcher.find()) {
+        if(inputMatcher.matches()) {
                  if(inputText.contains("+i") || inputText.contains("-i")){
                      return inputText.replaceAll("[i$]", "1.0i"); //modify the input in order to get the right format
                  }else{
@@ -929,12 +926,12 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
         }    
         inputCheck=Pattern.compile(onlyRealPart); //input sequence of a complex number with only real part
         inputMatcher=inputCheck.matcher(inputText);
-        if(inputMatcher.find())
+        if(inputMatcher.matches())
             return inputText;
         
         inputCheck=Pattern.compile(onlyImmaginaryPart); // input sequence of a complex number with only immaginary part
         inputMatcher=inputCheck.matcher(inputText);
-        if (inputMatcher.find()){
+        if (inputMatcher.matches()){
             if(inputText.equals("i")){
                 String input=inputText.replace("i","1.0i");
                 return "0.0+" + input;
@@ -974,7 +971,7 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
             
         }
     }
-    private boolean checkOperationSequence(String sequence){
+    protected boolean checkOperationSequence(String sequence){
         String[] operationList=sequence.split("\\s+");
         String result=null;
         for(String line: operationList){
@@ -1033,7 +1030,6 @@ public class ProgrammableCalculatorGUI extends javax.swing.JFrame {
     private javax.swing.JButton jButtonDrop;
     private javax.swing.JButton jButtonDup;
     private javax.swing.JButton jButtonInvertSign;
-    private javax.swing.JButton jButtonInvokeOperation;
     private javax.swing.JButton jButtonMinus;
     private javax.swing.JButton jButtonModifyOperation;
     private javax.swing.JButton jButtonMultiply;
