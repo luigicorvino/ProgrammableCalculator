@@ -57,7 +57,11 @@ public class UserDefinedOperation {
 
     @Override
     public String toString() {
-        return this.name +" : "+ this.operationsSequence;
+        String result="";
+        result = this.name +":";
+        for(String operation : this.operationsSequence)
+            result+=" "+operation;
+        return result;
     }
     
     

@@ -192,16 +192,20 @@ public class UserDefinedOperationControllerTest {
     
     
     @Test
-    public void testGetOperationsList() throws OperationAlreadyExistsException{
+    public void testGetOperationsList() throws OperationAlreadyExistsException, NoSuchOperationException{
         System.out.println("Get Operations List");
         operations.create("op1", "+ +");
         operations.create("op2", "- -");
         operations.create("op3", "* sqrt");
         List<String> names = operations.getOperationsList();
         System.out.println(names.get(0));
-        assertEquals(names.get(0), "op1 : [+, +]");
-        assertEquals(names.get(1), "op2 : [-, -]");
-        assertEquals(names.get(2),"op3 : [*, sqrt]");
+        assertEquals(names.get(0), "op1: + +");
+        assertEquals(names.get(1), "op2: - -");
+        assertEquals(names.get(2),"op3: * sqrt");
+        operations.modifyName("op1", "operazione1");
+        operations.modifySequence("operazione1", "dup drop over");
+        names = operations.getOperationsList();
+        assertEquals(names.get(0), "operazione1: dup drop over");
     }
     
 }
