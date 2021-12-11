@@ -57,10 +57,14 @@ public class UserDefinedOperation {
 
     @Override
     public String toString() {
+        int i=0;
         String result="";
         result = this.name +":";
-        for(String operation : this.operationsSequence)
-            result+=" "+operation;
+        for(String operation : this.operationsSequence){
+            if(i++!=0)
+                result+=" ";
+            result+=operation;
+        }
         return result;
     }
     
