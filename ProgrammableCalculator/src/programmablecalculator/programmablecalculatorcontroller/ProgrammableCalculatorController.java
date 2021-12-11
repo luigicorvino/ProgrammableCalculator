@@ -578,6 +578,15 @@ public class ProgrammableCalculatorController {
         return null;
     } 
     
+    public String deleteSequenceUserDefinedOperation(String name) {
+        try {
+            userDefinedOperations.delete(name);
+            return null;
+        } catch (NoSuchOperationException ex) {
+            return name + " operation doesn't exist";
+        }
+    }
+    
     /*
     private boolean takeComplexAndBinaryOperation( CallBackBinaryOperation operation) {
         if(numberStack.size()<2)

@@ -649,6 +649,21 @@ public class ProbrammableCalculatorControllerTest {
         
     }
     
+    @Test
+    public void testDoDeleteUserDefinedOperation() {
+        String s;
+        s = controller.deleteSequenceUserDefinedOperation("operation1");
+        assertEquals(s, "operation1 operation doesn't exist");
+        
+        controller.createUserDefinedOperation("moltiplicazione", "+ + +");
+        controller.createUserDefinedOperation("multisottrazione", "* - * - drop");
+        s = controller.deleteSequenceUserDefinedOperation("moltiplicazione");
+        assertEquals(s, null);
+        
+        s = controller.deleteSequenceUserDefinedOperation("oper");
+        assertEquals(s, "oper operation doesn't exist");
+    }
+    
    
     // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:
