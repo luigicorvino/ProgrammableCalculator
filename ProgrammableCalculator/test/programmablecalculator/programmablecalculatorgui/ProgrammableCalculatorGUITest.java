@@ -16,10 +16,12 @@ import static org.junit.Assert.*;
 
 public class ProgrammableCalculatorGUITest {
     private ProgrammableCalculatorGUI calculator;
-    private DefaultListModel<String> model;
+    private DefaultListModel<String> modelVisibleStack;
+    private DefaultListModel<String> modelVariables;
     public  ProgrammableCalculatorGUITest(){
         calculator=new ProgrammableCalculatorGUI();
-        model=new DefaultListModel<>();
+        modelVisibleStack=new DefaultListModel<>();
+        modelVariables=new DefaultListModel<>();
     }
   
     @Test 
@@ -41,68 +43,105 @@ public class ProgrammableCalculatorGUITest {
         assertFalse("50.0+g1.0i".equals(calculator.checkInputField("50.0+g1.0i")));
         assertFalse("50.0+1.g0i".equals(calculator.checkInputField("50.0+1.g0i")));
         assertFalse("50.0+1.0gi".equals(calculator.checkInputField("50.0+1.0gi")));
-        
+        assertFalse("<ai".equals(calculator.checkInputField("<ai")));
+        assertTrue("<b".equals(calculator.checkInputField("<b")));
+        assertFalse(">ai".equals(calculator.checkInputField(">ai")));
+        assertFalse("+ai".equals(calculator.checkInputField("+ai")));
+        assertFalse("-ai".equals(calculator.checkInputField("-ai")));
+        assertTrue(">b".equals(calculator.checkInputField(">b")));
+        assertTrue("+b".equals(calculator.checkInputField("+b")));
+        assertTrue("-b".equals(calculator.checkInputField("-b")));
 }
  
     @Test
- public void checkOperationStatusAndUpdate(){
+ public void TestCheckOperationStatusAndUpdate(){
      
      calculator.checkOperationStatusAndUpdate("1+2i");
-     model=calculator.getModel();
-     assertTrue(model.get(0).equals("1 + 2i"));
+     modelVisibleStack=calculator.getModelVisibleStack();
+     modelVariables=calculator.getModelVariableArray();
+     assertTrue(modelVisibleStack.get(0).equals("1 + 2i"));
      calculator.checkOperationStatusAndUpdate("1-2i");
-     assertTrue(model.get(0).equals("1 - 2i"));
+     assertTrue(modelVisibleStack.get(0).equals("1 - 2i"));
      calculator.checkOperationStatusAndUpdate("*");
-     assertTrue(model.get(0).equals("5"));
+     assertTrue(modelVisibleStack.get(0).equals("5"));
      calculator.checkOperationStatusAndUpdate("7-2i");
      calculator.checkOperationStatusAndUpdate("/");
-     assertTrue(model.get(0).equals("0.66037736 + 0.18867925i"));
+     assertTrue(modelVisibleStack.get(0).equals("0.66037736 + 0.18867925i"));
      calculator.checkOperationStatusAndUpdate("1+2i");
      calculator.checkOperationStatusAndUpdate("+");
-     assertTrue(model.get(0).equals("1.66037736 + 2.18867925i"));
+     assertTrue(modelVisibleStack.get(0).equals("1.66037736 + 2.18867925i"));
      calculator.checkOperationStatusAndUpdate("1+2i");
      calculator.checkOperationStatusAndUpdate("-");
-     assertTrue(model.get(0).equals("0.66037736 + 0.18867925i"));
+     assertTrue(modelVisibleStack.get(0).equals("0.66037736 + 0.18867925i"));
      calculator.checkOperationStatusAndUpdate("+-");
-     assertTrue(model.get(0).equals("-0.66037736 - 0.18867925i"));
+     assertTrue(modelVisibleStack.get(0).equals("-0.66037736 - 0.18867925i"));
      calculator.checkOperationStatusAndUpdate("sqrt");
-     assertTrue(model.get(0).equals("0.11494664 - 0.82072534i"));
+     assertTrue(modelVisibleStack.get(0).equals("0.11494664 - 0.82072534i"));
      calculator.checkOperationStatusAndUpdate("clear");
-     assertTrue(model.isEmpty());
+     assertTrue(modelVisibleStack.isEmpty());
      calculator.checkOperationStatusAndUpdate("1+2i");
      calculator.checkOperationStatusAndUpdate("drop");
-     assertTrue(model.isEmpty());
+     assertTrue(modelVisibleStack.isEmpty());
      calculator.checkOperationStatusAndUpdate("1+2i");
      calculator.checkOperationStatusAndUpdate("dup");
-     assertTrue(model.get(0).equals("1 + 2i"));
-     assertTrue(model.get(1).equals("1 + 2i"));
+     assertTrue(modelVisibleStack.get(0).equals("1 + 2i"));
+     assertTrue(modelVisibleStack.get(1).equals("1 + 2i"));
      calculator.checkOperationStatusAndUpdate("1-2i");
      calculator.checkOperationStatusAndUpdate("swap");
-     assertTrue(model.get(0).equals("1 + 2i"));
+     assertTrue(modelVisibleStack.get(0).equals("1 + 2i"));
      calculator.checkOperationStatusAndUpdate("over");
-     assertTrue(model.get(0).equals("1 - 2i"));
+     assertTrue(modelVisibleStack.get(0).equals("1 - 2i"));
+     
      calculator.checkOperationStatusAndUpdate(">a");
+     assertTrue(modelVariables.get(0).equals("a: 1 - 2i"));
      calculator.checkOperationStatusAndUpdate("<a");
-     assertTrue(model.get(0).equals("1 - 2i"));
+     assertTrue(modelVisibleStack.get(0).equals("1 - 2i"));
      calculator.checkOperationStatusAndUpdate("+a");
+     assertTrue(modelVariables.get(0).equals("a: 2 - 4i"));
      calculator.checkOperationStatusAndUpdate("<a");
-     assertTrue(model.get(0).equals("2 - 4i"));
+     assertTrue(modelVisibleStack.get(0).equals("2 - 4i"));
      calculator.checkOperationStatusAndUpdate("-a");
      calculator.checkOperationStatusAndUpdate("<a");
-     assertTrue(model.get(0).equals("0"));
+     assertTrue(modelVisibleStack.get(0).equals("0"));
      calculator.checkOperationStatusAndUpdate("save");
      calculator.checkOperationStatusAndUpdate("1-2i");
-     assertTrue(model.get(0).equals("1 - 2i"));
+     assertTrue(modelVisibleStack.get(0).equals("1 - 2i"));
      calculator.checkOperationStatusAndUpdate("restore");
      calculator.checkOperationStatusAndUpdate("<a");
-     assertTrue(model.get(0).equals("0"));
-     
-     
-     
-     
-     
-     
- }
-        
+     assertTrue(modelVisibleStack.get(0).equals("0"));
+     calculator.checkOperationStatusAndUpdate(">v");
+     assertTrue(modelVariables.get(1).equals("v: 0"));
+     calculator.checkOperationStatusAndUpdate("1-2i");
+     calculator.checkOperationStatusAndUpdate("-v");
+     assertTrue(modelVariables.get(1).equals("v: 1 - 2i"));
+    }
+
+    @Test
+public void TestCheckOperationSequence(){
+    assertFalse(calculator.checkOperationSequence("5.2-2.1u"));
+    assertTrue(calculator.checkOperationSequence("5.2+2.1i"));
+    assertFalse(calculator.checkOperationSequence("-5.2-2.1u"));
+    assertTrue(calculator.checkOperationSequence("-5.2-2.1i"));
+    assertFalse(calculator.checkOperationSequence("5.2+2.1u"));
+    assertTrue(calculator.checkOperationSequence("5.2+2.1i"));
+    assertTrue(calculator.checkOperationSequence("50"));
+    assertTrue(calculator.checkOperationSequence("-50.0"));
+    assertFalse(calculator.checkOperationSequence("50u"));
+    assertTrue(calculator.checkOperationSequence("50.0i"));
+    assertFalse(calculator.checkOperationSequence("g50.0i"));
+    assertFalse(calculator.checkOperationSequence("50g.0i"));
+    assertFalse(calculator.checkOperationSequence("5g0.0i"));
+    assertFalse(calculator.checkOperationSequence("50.0+g1.0i"));
+    assertFalse(calculator.checkOperationSequence("50.0+1.g0i"));
+    assertFalse(calculator.checkOperationSequence("50.0+1.0gi"));
+    assertFalse(calculator.checkOperationSequence("<ai"));
+    assertTrue(calculator.checkOperationSequence("<b"));
+    assertFalse(calculator.checkOperationSequence(">ai"));
+    assertFalse(calculator.checkOperationSequence("+ai"));
+    assertFalse(calculator.checkOperationSequence("-ai"));
+    assertTrue(calculator.checkOperationSequence(">b"));
+    assertTrue(calculator.checkOperationSequence("+b"));
+    assertTrue(calculator.checkOperationSequence("-b"));
+}
     
 }
