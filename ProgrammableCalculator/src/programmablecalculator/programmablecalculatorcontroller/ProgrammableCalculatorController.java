@@ -258,7 +258,7 @@ public class ProgrammableCalculatorController {
     }
     
     public abstract class OperationVariable extends OperationNumberStack {
-        char character;
+        protected char character;
         public OperationVariable(char character) {
             super(1);
             this.character = character;
